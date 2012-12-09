@@ -1,13 +1,19 @@
 <?php
 namespace SMGregsList\Frontend;
-use SMGregsList\Messager, SMGregsList\Frontend;
+use SMGregsList\Messager, SMGregsList\Frontend, SMGregsList\SearchPlayer;
 class HTML extends Messager implements Frontend
 {
-    protected $controller;
-
-    function __construct()
+    protected $template;
+    function __construct(HTMLController $controller = null)
     {
-        $this->controller = new HTMLController;
+        if (null === $controller) {
+            $controller = new HTMLController;
+        }
+        $this->addDependency($controller);
+        $this->template = new \PEAR2\Templates\Savant\Main(array(
+            'template_path' => realpath(__DIR__ . '/../templates'),
+            'escape' => 'htmlentities',
+        ));
     }
 
     function listMessages()
@@ -30,8 +36,6 @@ class HTML extends Messager implements Frontend
                 }
             }
             $this->displaySearchResults($content);
-        } elseif ($message == 'attach') {
-            $this->controller->attach($this->controllers[count($this->controllers) - 1]);
         }
     }
 
@@ -48,7 +52,7 @@ class HTML extends Messager implements Frontend
 
     function displaySearchForm()
     {
-        echo "<p>Search Form</p>\n";
+        echo $this->template->render(new SearchPlayer);
     }
 
     function displaySearchResults(array $results)

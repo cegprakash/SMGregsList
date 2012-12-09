@@ -1,6 +1,6 @@
 <?php
 namespace SMGregsList;
-class SearchablePlayer extends Player
+class SearchPlayer extends Player
 {
     function getSearchComponents()
     {
