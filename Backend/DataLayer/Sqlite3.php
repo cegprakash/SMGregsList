@@ -1,6 +1,6 @@
 <?php
-namespace SMGregsList\DataLayer;
-use SMGregsList\WriteablePlayer, SMGregsList\SearchablePlayer, SMGregsList\Player;
+namespace SMGregsList\Backend\DataLayer;
+use SMGregsList\WriteablePlayer, SMGregsList\SearchablePlayer, SMGregsList\Player, SMGregsList\Backend\DataLayer;
 class Sqlite3 extends DataLayer
 {
     protected $db;

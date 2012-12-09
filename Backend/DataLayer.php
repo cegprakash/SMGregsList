@@ -1,11 +1,12 @@
 <?php
-namespace SMGregsList;
+namespace SMGregsList\Backend;
+use SMGregsList\Player,SMGregsList\WriteablePlayer,SMGregsList\SearchablePlayer,SMGregsList\Messager;
 abstract class DataLayer extends Messager
 {
     abstract function exists(Player $player);
     abstract function retrieve(Player $player);
     abstract function remove(Player $player);
-    abstract function store(WriteablePlayer $player);
+    abstract function save(WriteablePlayer $player);
     abstract function search(SearchablePlayer $player);
 
     function listMessages()
