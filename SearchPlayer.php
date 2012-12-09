@@ -2,7 +2,6 @@
 namespace SMGregsList;
 class SearchablePlayer extends Player
 {
-    protected $maxaverage;
     function getSearchComponents()
     {
         $ret = array();
@@ -42,6 +41,12 @@ class SearchablePlayer extends Player
         }
         if ($this->experience) {
             $ret['experience'] = $this->experience;
+        }
+        if ($this->forecast) {
+            $ret['forecast'] = $this->forecast;
+        }
+        if ($this->progression) {
+            $ret['progression'] = $this->progression;
         }
         if (count($this->skills)) {
             $ret['skills'] = array();

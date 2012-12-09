@@ -3,9 +3,16 @@ namespace SMGregsList\Frontend;
 use SMGregsList\Messager, SMGregsList\Frontend;
 class HTML extends Messager implements Frontend
 {
+    protected $controller;
+
+    function __construct()
+    {
+        $this->controller = new HTMLController;
+    }
+
     function listMessages()
     {
-        return array('ready', 'searchResults');
+        return parent::listMessages(array('ready', 'searchResults'));
     }
 
     function receive($message, $content)
@@ -23,16 +30,31 @@ class HTML extends Messager implements Frontend
                 }
             }
             $this->displaySearchResults($content);
+        } elseif ($message == 'attach') {
+            $this->controller->attach($this->controllers[count($this->controllers) - 1]);
         }
     }
 
     function displayMainPage()
     {
-        
+        $this->displaySearchForm();
+        $this->discoverSearch();
+    }
+
+    function discoverSearch()
+    {
+        $this->broadcast('detectSearch');
+    }
+
+    function displaySearchForm()
+    {
+        echo "<p>Search Form</p>\n";
     }
 
     function displaySearchResults(array $results)
     {
-        
+        if (!count($results)) {
+            echo "<p><strong>No results</strong></p>\n";
+        }
     }
 }

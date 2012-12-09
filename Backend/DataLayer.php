@@ -11,7 +11,7 @@ abstract class DataLayer extends Messager
 
     function listMessages()
     {
-        return array('addPlayer', 'deletePlayer', 'search');
+        return parent::listMessages(array('addPlayer', 'deletePlayer', 'search'));
     }
 
     function receive($message, $content)

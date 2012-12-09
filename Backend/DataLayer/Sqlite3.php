@@ -142,6 +142,12 @@ class Sqlite3 extends DataLayer
                 case 'experience':
                     $playersql .= " AND experience >= " . $t($value);
                     break;
+                case 'forecast':
+                    $playersql .= " AND forecast >= " . $t($value);
+                    break;
+                case 'progression':
+                    $playersql .= " AND progression >= " . $t($value);
+                    break;
                 case 'skills':
                     break;
                 case 'stats':

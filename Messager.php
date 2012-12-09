@@ -8,14 +8,20 @@ class Messager
     /**
      * a list of message names that can be received by this object
      */
-    function listMessages()
+    function listMessages(array $newmessages)
     {
-        return array();
+        return array_merge(array('attach'), $newmessages);
     }
 
     function attach(Messager $controller)
     {
         $this->controllers[] = $controller;
+        $controller->addReceiver($this);
+    }
+
+    function addReceiver(Messager $receiver)
+    {
+        $this->receivers[] = $receiver;
     }
 
     function receive($message, $content)
@@ -23,7 +29,7 @@ class Messager
         
     }
 
-    function broadcast($message, $content)
+    function broadcast($message, $content = false)
     {
         foreach ($this->controllers as $controller) {
             $controller->message($message, $content);
