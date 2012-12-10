@@ -39,7 +39,7 @@ class Stats implements \Iterator, \Countable
         if (!in_array($name, $this->valid)) {
             throw new \Exception('Invalid ' . static::TYPE . ': ' . $name);
         }
-        if (!$this->valid($name, $value)) {
+        if (!$this->validName($name, $value)) {
             throw new \Exception('Invalid ' . $name . ': ' . $value);
         }
         $this->stats[$name] = $value;

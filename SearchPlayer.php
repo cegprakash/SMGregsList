@@ -36,7 +36,7 @@ class SearchPlayer extends Player
                 $ret['positions'] = $positions;
             } else {
                 $ret['positions'] = $this->position;
-                settype('array', $ret['positions']);
+                settype($ret['positions'], 'array');
             }
         }
         if ($this->experience) {
@@ -59,6 +59,22 @@ class SearchPlayer extends Player
             foreach ($this->stats as $stat => $minvalue) {
                 $ret['stats'][$stat]['minvalue'] = $minvalue;
             }
+        }
+        return $ret;
+    }
+
+    function getPositions()
+    {
+        if ($this->position) {
+            if (strpos($this->position, ',')) {
+                $positions = explode(',', $this->position);
+                $ret = $positions;
+            } else {
+                $ret = $this->position;
+                settype($ret, 'array');
+            }
+        } else {
+            return array();
         }
         return $ret;
     }

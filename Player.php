@@ -2,9 +2,10 @@
 namespace SMGregsList;
 abstract class Player
 {
+    const PLAYERURL = 'http://en3.strikermanager.com/jugador.php?id_jugador=';
     protected
         $average = 0,
-        $id,
+        $id = 0,
         $forecast = 0,
         $progression = 0,
         $age = 0,
@@ -42,6 +43,18 @@ abstract class Player
         }
     }
 
+    function getId()
+    {
+        return $this->id;
+    }
+
+    function getFormattedId()
+    {
+        if ($this->id) {
+            return static::PLAYERURL . $this->id;
+        }
+    }
+    
     function getAverage()
     {
         return $this->average;
@@ -60,6 +73,65 @@ abstract class Player
     function getProgression()
     {
         return $this->progression;
+    }
+
+    function listPositions()
+    {
+        return array(
+            'GK',
+            'LB',
+            'LDF',
+            'CDF',
+            'RDF',
+            'RB',
+            'DFM',
+            'LM',
+            'LIM',
+            'IM',
+            'RIM',
+            'RM',
+            'OM',
+            'RW',
+            'RF',
+            'CF',
+            'LF',
+            'LW'
+        );
+    }
+
+    function listStats()
+    {
+        return array(
+            'Pass',
+            'Shot',
+            'Dribbling',
+            'Speed',
+            'Ball Steal',
+            'Saves',
+            'Strength',
+            'Technique',
+            'Aggressiveness',
+            'Leadership',
+            'Versatility'
+        );
+    }
+
+    function listSkills()
+    {
+        return array(
+            'Penalty Expert',
+            'Change of Pace',
+            'Running with the Ball',
+            'Steel Lung',
+            'Net Breaker',
+            'Panther Save',
+            'Aerial Play',
+            'Sliding Tackle',
+            'Precise Pass',
+            'Slalom Ace',
+            'Celebrity',
+            'Defensive Wall'
+        );
     }
 
     function getPosition()
