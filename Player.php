@@ -13,7 +13,7 @@ abstract class Player
         $stats,
         $experience = 0,
         $skills,
-        $datasource;
+        $createstamp;
 
     function __construct()
     {
@@ -26,35 +26,25 @@ abstract class Player
         $this->$name = $value;
     }
 
-    function retrieve()
-    {
-        if (!$this->datasource) {
-            throw new \Exception("Internal error: no data source selected");
-        }
-        return $this->datasource->retrieve($this);
-    }
-
-    function save()
-    {
-        if ($this instanceof WriteablePlayer) {
-            return $this->datasource->save($this);
-        } else {
-            throw new \Exception("Internal error: This is not a writeable player");
-        }
-    }
-
     function getId()
     {
         return $this->id;
     }
 
-    function getFormattedId()
+    function getUrl()
     {
         if ($this->id) {
-            return static::PLAYERURL . $this->id;
+            return static::PLAYERURL;
         }
     }
-    
+
+    function getCreatestamp()
+    {
+        if ($this->createstamp) {
+            return $this->createstamp;
+        }
+    }
+
     function getAverage()
     {
         return $this->average;

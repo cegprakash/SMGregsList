@@ -76,7 +76,7 @@ class Messager
                 continue;
             }
             if (self::$DEBUG) {
-                var_dump("message received: $message");
+                var_dump("message received by " . get_class($receiver) . ": $message");
             }
             $receiver->receive($message, $content);
         }

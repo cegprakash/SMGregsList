@@ -23,8 +23,9 @@ class Sqlite3 extends DataLayer
   position TEXT NOT NULL,
   experience NUMBER NOT NULL,
   forecast NUMBER default 0,
-  progression NUMBER default 0
-, lastmodified DATE NOT NULL default CURRENT_TIMESTAMP);
+  progression NUMBER default 0,
+  lastmodified DATE NOT NULL default CURRENT_TIMESTAMP,
+  createstamp DATE NOT NULL default CURRENT_TIMESTAMP);
 CREATE TABLE skills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));
 CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));';
     }
@@ -71,14 +72,14 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
 
     function remove(Player $player)
     {
-        $new = new Sqlite3\Player($this->db);
+        $new = new Sqlite3\SellPlayer($this->db);
         $new->fromPlayer($player);
         return $new->remove();
     }
 
     function save(WriteablePlayer $player)
     {
-        $new = new Sqlite3\Player($this->db);
+        $new = new Sqlite3\SellPlayer($this->db);
         $new->fromPlayer($player);
         return $new->save();
     }

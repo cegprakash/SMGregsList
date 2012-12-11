@@ -1,7 +1,11 @@
-<h1>Search Form</h1>
-<form name="search" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+ <h1>Search Form</h1>
+ <p>To sell a player <a href="sell.php">Click here</a>.</p>
+ <?php
+ $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
+ ?>
+<form name="search" action="<?php echo $phpSelf ?>" method="post">
 <div><span>Player ID</span><input type="text" size="100" name="id" id="id" value="<?php
-echo $context->getFormattedId()
+echo $context->getUrl() . $context->getId()
 ?>"/></div>
 <div><span>Minimum Age</span><input type="text" size="3" name="minage" id="minage" value="<?php
 if ($context->getMinage()) echo $context->getMinage()
@@ -15,6 +19,9 @@ if ($context->getMaxaverage()) echo $context->getMaxaverage()
 ?>"/></div>
 <div><span>Minimum Forecast</span><input type="text" size="3" name="forecast" id="forecast" value="<?php
 if ($context->getForecast()) echo $context->getForecast()
+?>"/></div>
+<div><span>Minimum Experience</span><input type="text" size="3" name="experience" id="experience" value="<?php
+if ($context->getExperience()) echo $context->getExperience()
 ?>"/></div>
 <div><span>Minimum Progression</span><input type="text" size="3" name="progression" id="progression" value="<?php
 if ($context->getProgression()) echo $context->getProgression()
