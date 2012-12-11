@@ -46,7 +46,7 @@ class Player extends p implements DataPlayer
     function fillStats()
     {
         $data = $this->db->query("SELECT * FROM stats WHERE id='" . $this->db->escapeString($this->id) . "'");
-        while ($row = $data->fetchArray($SQLITE3_ASSOC)) {
+        while ($row = $data->fetchArray(SQLITE3_ASSOC)) {
             $this->stats[$row['name']] = $row['value'];
         }
         $data->finalize();
@@ -63,19 +63,19 @@ class Player extends p implements DataPlayer
             throw new \Exception("Error: player does not exist");
         }
         $data = $this->db->query("SELECT * FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
-        $row = $data->fetchArray(\SQLITE3_ASSOC);
+        $row = $data->fetchArray(SQLITE3_ASSOC);
         $data->finalize();
         foreach ($row as $name => $value) {
             $this->$name = $value;
         }
         $data = $this->db->query("SELECT * FROM skills WHERE id='" . $this->db->escapeString($this->id) . "'");
-        $row = $data->fetchArray(\SQLITE3_ASSOC);
+        $row = $data->fetchArray(SQLITE3_ASSOC);
         $data->finalize();
         foreach ($row as $name => $value) {
             $this->skills->$name = $value;
         }
         $data = $this->db->query("SELECT * FROM stats WHERE id='" . $this->db->escapeString($this->id) . "'");
-        $row = $data->fetchArray(\SQLITE3_ASSOC);
+        $row = $data->fetchArray(SQLITE3_ASSOC);
         $data->finalize();
         foreach ($row as $name => $value) {
             $this->stats->$name = $value;
