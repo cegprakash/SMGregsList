@@ -9,7 +9,7 @@ abstract class DataLayer extends Messager
     abstract function save(WriteablePlayer $player);
     abstract function search(SearchablePlayer $player);
 
-    function listMessages()
+    function listMessages(array $newmessages)
     {
         return parent::listMessages(array('addPlayer', 'deletePlayer', 'search'));
     }

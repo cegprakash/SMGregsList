@@ -22,7 +22,7 @@ class HTML extends Messager implements Frontend
         ));
     }
 
-    function listMessages()
+    function listMessages(array $newmessages)
     {
         return parent::listMessages(array('ready', 'searchResult', 'search', 'playerAdded', 'sellDetected',
                                           'verify', 'confirm'));

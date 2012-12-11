@@ -3,7 +3,7 @@ namespace SMGregsList\Frontend;
 use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\SellPlayer;
 class HTMLController extends Messager
 {
-    function listMessages()
+    function listMessages(array $newmessages)
     {
         return parent::listMessages(array('detectSearch', 'detectSell'));
     }
