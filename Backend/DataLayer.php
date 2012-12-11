@@ -30,7 +30,7 @@ abstract class DataLayer extends Messager
             if (!($content instanceof SearchablePlayer)) {
                 throw new \Exception('Internal error: search message received, but content was not a SearchablePlayer object');
             }
-            $result = $this->search($player);
+            $result = $this->search($content);
             $this->broadcast('searchResult', $result);
         }
     }

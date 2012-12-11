@@ -21,6 +21,6 @@ class Skills extends Stats
 
     function validName($name, $value)
     {
-        return is_numeric($value) && ($value >= 0 || $value < 5);
+        return !$value || is_numeric($value) && ($value >= 0 || $value < 5);
     }
 }

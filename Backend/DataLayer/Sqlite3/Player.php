@@ -14,7 +14,7 @@ class Player extends p implements WriteablePlayer
     function fromResult(array $result)
     {
         foreach ($result as $name => $value) {
-            $this->name = $value;
+            $this->$name = $value;
         }
         $this->db->fillSkills($this);
         $this->db->fillStats($this);

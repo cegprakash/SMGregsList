@@ -1,18 +1,22 @@
 <h1>Search Form</h1>
-<form name="search" action="<?php echo basename(__FILE__) ?>">
+<form name="search" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
 <div><span>Player ID</span><input type="text" size="100" name="id" id="id" value="<?php
 echo $context->getFormattedId()
 ?>"/></div>
-<div><span>Age</span><input type="text" size="100" name="id" id="id" value="<?php
-if ($context->getAge()) echo $context->getAge()
+<div><span>Minimum Age</span><input type="text" size="3" name="minage" id="minage" value="<?php
+if ($context->getMinage()) echo $context->getMinage()
+?>"/><span>Maximum Age</span><input type="text" size="3" name="maxage" id="maxage" value="<?php
+if ($context->getMaxage()) echo $context->getMaxage()
 ?>"/></div>
-<div><span>Average</span><input type="text" size="100" name="id" id="id" value="<?php
-if ($context->getAverage()) echo $context->getAverage()
+<div><span>Minimum Average</span><input type="text" size="3" name="minaverage" id="minaverage" value="<?php
+if ($context->getMinaverage()) echo $context->getMinaverage()
+?>"/><span>Maximum Average</span><input type="text" size="3" name="maxaverage" id="maxaverage" value="<?php
+if ($context->getMaxaverage()) echo $context->getMaxaverage()
 ?>"/></div>
-<div><span>Forecast</span><input type="text" size="100" name="id" id="id" value="<?php
+<div><span>Minimum Forecast</span><input type="text" size="3" name="forecast" id="forecast" value="<?php
 if ($context->getForecast()) echo $context->getForecast()
 ?>"/></div>
-<div><span>Progression</span><input type="text" size="100" name="id" id="id" value="<?php
+<div><span>Minimum Progression</span><input type="text" size="3" name="progression" id="progression" value="<?php
 if ($context->getProgression()) echo $context->getProgression()
 ?>"/></div>
 <table width="100%">

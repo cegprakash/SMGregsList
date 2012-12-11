@@ -6,7 +6,7 @@ class Sqlite3 extends DataLayer
     protected $db;
     function __construct()
     {
-        $this->db = new \SQLite3(__DIR__ . '/../gregslist.db');
+        $this->db = new \SQLite3(__DIR__ . '/../../gregslist.db');
         $this->db->enableExceptions(true);
     }
 
@@ -130,14 +130,13 @@ class Sqlite3 extends DataLayer
                     $playersql .= " AND age >= " . $t($value);
                     break;
                 case 'maxage':
-                    $playersql .= " AND age >= " . $t($value);
+                    $playersql .= " AND age <= " . $t($value);
                     break;
                 case 'positions':
-                    $playersql .= " AND position IN (" . array_reduce($value,
-                                                                      function(&$result, $item) use($t)
-                                                                      {
-                                                                        if ($result) $result .= ',';$result .= $t($item);},
-                                                                        '') . ")";
+                    foreach ($value as $i => $val) {
+                        $value[$i] = "'" . $db->escapeString($val) . "'";
+                    }
+                    $playersql .= " AND position IN (" . implode(',', $value) . ")";
                     break;
                 case 'experience':
                     $playersql .= " AND experience >= " . $t($value);
@@ -156,6 +155,7 @@ class Sqlite3 extends DataLayer
         }
         $ret = array();
         $sql = $playersql;
+        var_dump($sql);
         $data = $db->query($sql);
         while ($row = $data->fetchArray(SQLITE3_ASSOC)) {
             $player = new Sqlite3\Player($this);

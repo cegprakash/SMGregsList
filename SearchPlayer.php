@@ -1,6 +1,6 @@
 <?php
 namespace SMGregsList;
-class SearchPlayer extends Player
+class SearchPlayer extends Player implements SearchablePlayer
 {
     function getSearchComponents()
     {
@@ -61,6 +61,54 @@ class SearchPlayer extends Player
             }
         }
         return $ret;
+    }
+
+    function getMinage()
+    {
+        if (!$this->age) {
+            return 0;
+        }
+        if (strpos($this->age, '-')) {
+            $age = explode('-', $this->age);
+            return $age[0];
+        }
+        return 0;
+    }
+
+    function getMaxage()
+    {
+        if (!$this->age) {
+            return 0;
+        }
+        if (strpos($this->age, '-')) {
+            $age = explode('-', $this->age);
+            return $age[1];
+        }
+        return $this->age;
+    }
+
+    function getMinaverage()
+    {
+        if (!$this->average) {
+            return 0;
+        }
+        if (strpos($this->average, '-')) {
+            $average = explode('-', $this->average);
+            return $average[0];
+        }
+        return 0;
+    }
+
+    function getMaxaverage()
+    {
+        if (!$this->average) {
+            return 0;
+        }
+        if (strpos($this->average, '-')) {
+            $average = explode('-', $this->average);
+            return $average[1];
+        }
+        return $this->average;
     }
 
     function getPositions()

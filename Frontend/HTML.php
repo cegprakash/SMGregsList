@@ -41,8 +41,8 @@ class HTML extends Messager implements Frontend
 
     function displayMainPage()
     {
-        $this->displaySearchForm();
         $this->discoverSearch();
+        $this->displaySearchForm();
     }
 
     function discoverSearch()

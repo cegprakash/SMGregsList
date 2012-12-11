@@ -28,6 +28,7 @@ class Stats implements \Iterator, \Countable
 
     function validName($name, $value)
     {
+        if (!$value) return true;
         if (!is_numeric($value) || $value < 0 || $value >= 100) {
             return false;
         }
@@ -41,6 +42,10 @@ class Stats implements \Iterator, \Countable
         }
         if (!$this->validName($name, $value)) {
             throw new \Exception('Invalid ' . $name . ': ' . $value);
+        }
+        if (!$value) {
+            unset($this->stats[$name]);
+            return;
         }
         $this->stats[$name] = $value;
     }
