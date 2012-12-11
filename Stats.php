@@ -55,7 +55,7 @@ class Stats implements \Iterator, \Countable
             throw new \Exception('Invalid ' . $name . ': ' . $value);
         }
         if (!$value) {
-            unset($this->stats[$name]);
+            $this->stats[$name] = null;
             return;
         }
         $this->stats[$name] = $value;
