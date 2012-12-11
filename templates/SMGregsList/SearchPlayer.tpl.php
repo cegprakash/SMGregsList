@@ -37,3 +37,4 @@ if ($context->getProgression()) echo $context->getProgression()
 </table>
 <input type="submit" value="Search"/>
 </form>
+<p>Found a bug? <a href="https://github.com/cellog/SMGregsList/issues">Please report it</a>.</p>

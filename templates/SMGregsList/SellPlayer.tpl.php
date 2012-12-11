@@ -35,3 +35,4 @@ if ($context->getExperience()) echo $context->getExperience()
 <input type="submit" value="Cancel" name="cancel"/>
 
 </form>
+<p>Found a bug? <a href="https://github.com/cellog/SMGregsList/issues">Please report it</a>.</p>
