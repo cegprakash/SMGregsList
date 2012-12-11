@@ -3,7 +3,18 @@ namespace SMGregsList;
 class Stats implements \Iterator, \Countable
 {
     const TYPE = 'stat';
-    protected $stats = array();
+    protected $stats = array(
+        'Pass' => null,
+        'Shot' => null,
+        'Dribbling' => null,
+        'Speed' => null,
+        'Ball Steal' => null,
+        'Saves' => null,
+        'Strength' => null,
+        'Technique' => null,
+        'Aggressiveness' => null,
+        'Leadership' => null,
+        'Versatility' => null);
     protected $valid = array(
         'Pass',
         'Shot',
