@@ -2,6 +2,12 @@
 namespace SMGregsList;
 class SearchPlayer extends Player implements SearchablePlayer
 {
+    function search()
+    {
+        // can't search without a data source
+        throw new \Exception("Internal error: attempt to search with a generic searchable player, no data source selected");
+    }
+
     function getSearchComponents()
     {
         $ret = array();
@@ -51,13 +57,13 @@ class SearchPlayer extends Player implements SearchablePlayer
         if (count($this->skills)) {
             $ret['skills'] = array();
             foreach ($this->skills as $skill => $minvalue) {
-                $ret['skills'][$skill]['minvalue'] = $minvalue;
+                $ret['skills'][$skill] = $minvalue;
             }
         }
         if (count($this->stats)) {
             $ret['stats'] = array();
             foreach ($this->stats as $stat => $minvalue) {
-                $ret['stats'][$stat]['minvalue'] = $minvalue;
+                $ret['stats'][$stat] = $minvalue;
             }
         }
         return $ret;

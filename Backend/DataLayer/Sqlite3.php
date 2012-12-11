@@ -3,11 +3,65 @@ namespace SMGregsList\Backend\DataLayer;
 use SMGregsList\WriteablePlayer, SMGregsList\SearchablePlayer, SMGregsList\Player, SMGregsList\Backend\DataLayer;
 class Sqlite3 extends DataLayer
 {
+    public static $DATABASEPATH = '';
     protected $db;
-    function __construct()
+    function __construct($database = null)
     {
-        $this->db = new \SQLite3(__DIR__ . '/../../gregslist.db');
+        if (!$database) {
+            $database = self::$DATABASEPATH;
+        }
+        $this->db = new \SQLite3($database);
         $this->db->enableExceptions(true);
+    }
+
+    function getPlayerSchema()
+    {
+        return 'CREATE TABLE player (
+  id TEXT NOT NULL PRIMARY KEY,
+  average NUMBER NOT NULL,
+  age NUMBER NOT NULL,
+  position TEXT NOT NULL,
+  experience NUMBER NOT NULL,
+  forecast NUMBER default 0,
+  progression NUMBER default 0
+, lastmodified DATE NOT NULL default now);
+CREATE TABLE skills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));
+CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));';
+    }
+
+    function getSearchSchema()
+    {
+        return 'CREATE TABLE playersearch (
+  email TEXT NOT NULL
+  minaverage NUMBER,
+  maxaverage NUMBER
+  minage NUMBER,
+  maxage NUMBER,
+  experience NUMBER,
+  forecast NUMBER,
+  progression NUMBER,
+  GK NUMBER NOT NULL default 0,
+  LB NUMBER NOT NULL default 0,
+  LDF NUMBER NOT NULL default 0,
+  CDF NUMBER NOT NULL default 0,
+  RDF NUMBER NOT NULL default 0,
+  RB NUMBER NOT NULL default 0,
+  DFM NUMBER NOT NULL default 0,
+  LM NUMBER NOT NULL default 0,
+  LIM NUMBER NOT NULL default 0,
+  IM NUMBER NOT NULL default 0,
+  RIM NUMBER NOT NULL default 0,
+  RM NUMBER NOT NULL default 0,
+  OM NUMBER NOT NULL default 0,
+  LW NUMBER NOT NULL default 0,
+  LF NUMBER NOT NULL default 0,
+  CF NUMBER NOT NULL default 0,
+  RF NUMBER NOT NULL default 0,
+  RW NUMBER NOT NULL default 0,
+  lastmodified DATE NOT NULL default now,
+  PRIMARY KEY (email, lastmodified));
+CREATE TABLE skills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));
+CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));';
     }
 
     function exists(Player $player)
@@ -17,152 +71,30 @@ class Sqlite3 extends DataLayer
 
     function remove(Player $player)
     {
-        if (!$player->id) {
-            throw new \Exception('Internal error: player is uninitialized, cannot delete it');
-        }
-        $this->db->exec('BEGIN');
-        try {
-            $this->db->exec("DELETE FROM player WHERE id='" . $this->db->escapeString($player->id) . "'");
-            $this->db->exec("DELETE FROM skills WHERE id='" . $this->db->escapeString($player->id) . "'");
-            $this->db->exec("DELETE FROM stats WHERE id='" . $this->db->escapeString($player->id) . "'");
-            $this->db->exec('COMMIT');
-        } catch (\Exception $e) {
-            $this->db->exec('ROLLBACK');
-        }
+        $new = new Sqlite3\Player($this->db);
+        $new->fromPlayer($player);
+        return $new->remove();
     }
 
     function save(WriteablePlayer $player)
     {
-        $this->db->exec('BEGIN');
-        try {
-            $db = $this->db;
-            $t = function ($a) use ($db) {
-                return $db->escapeString($a);
-            };
-            if ($this->exists($player)) {
-                $this->db->exec("UPDATE player SET
-                                age = '" . $t($player->getAge()) . "',
-                                average = '" . $t($player->getAverage()) . "',
-                                experience = '" . $t($player->getExperience()) . "',
-                                forecast = '" . $t($player->getForecast()) . "',
-                                position = '" . $t($player->getPosition()) . "',
-                                progression = '" . $t($player->getProgression()) . "
-                            WHERE id = '" . $t($player->getId()) . "'");
-            } else {
-                $this->db->exec("INSERT INTO player (id, age, average, experience, forecast, position, progression)
-                                VALUES (
-                                    '" . $t($player->getId()) . "'
-                                    '" . $t($player->getAge()) . "',
-                                    '" . $t($player->getAverage()) . "',
-                                    '" . $t($player->getExperience()) . "',
-                                    '" . $t($player->getForecast()) . "',
-                                    '" . $t($player->getPosition()) . "',
-                                    '" . $t($player->getProgression()) . "')");
-            }
-            $this->db->exec("DELETE FROM skills WHERE id='" . $t($player->getId()) . "'");
-            $this->db->exec("DELETE FROM stats WHERE id='" . $t($player->getId()) . "'");
-            foreach ($player->getSkills() as $skill => $value) {
-                $this->db->exec("INSERT INTO skills (id, name, value) VALUES (
-                    '" . $t($player->getId()) . "',
-                    '" . $skill . "',
-                    '" . $value . "'
-                )");
-            }
-            foreach ($player->getStats() as $stat => $value) {
-                $this->db->exec("INSERT INTO stats (id, name, value) VALUES (
-                    '" . $t($player->getId()) . "',
-                    '" . $stat . "',
-                    '" . $value . "'
-                )");
-            }
-            $this->db->exec('COMMIT');
-        } catch (\Exception $e) {
-            $this->db->exec('ROLLBACK');
-            throw $e;
-        }
+        $new = new Sqlite3\Player($this->db);
+        $new->fromPlayer($player);
+        return $new->save();
     }
 
     function retrieve(Player $player)
     {
-        if (!$this->exists($player)) {
-            throw new \Exception("Error: player does not exist");
-        }
-        $data = $this->db->query("SELECT * FROM player WHERE id='" . $this->db->escapeString($player->id) . "'");
-        $row = $data->fetchArray(SQLITE3_ASSOC);
-        $data->finalize();
-        foreach ($row as $name => $value) {
-            $player->$name = $value;
-        }
-        $data = $this->db->query("SELECT * FROM skills WHERE id='" . $this->db->escapeString($player->id) . "'");
-        $row = $data->fetchArray(SQLITE3_ASSOC);
-        $data->finalize();
-        foreach ($row as $name => $value) {
-            $player->skills->$name = $value;
-        }
-        $data = $this->db->query("SELECT * FROM stats WHERE id='" . $this->db->escapeString($player->id) . "'");
-        $row = $data->fetchArray(SQLITE3_ASSOC);
-        $data->finalize();
-        foreach ($row as $name => $value) {
-            $player->stats->$name = $value;
-        }
+        $new = new Sqlite3\Player($this->db);
+        $new->fromPlayer($player);
+        return $new->retrieve();
     }
 
     function search(SearchablePlayer $player)
     {
-        $components = $player->getSearchComponents();
-        $playersql = 'SELECT * FROM player WHERE 1=1';
-        $statssql = '';
-        $skillssql = '';
-        $db = $this->db;
-        $t = function($a, $quote = true) use ($db) {
-            $r = $db->escapeString($a);
-            return "'" . $r ."'";
-        };
-        foreach ($components as $component => $value) {
-            switch ($component) {
-                case 'minaverage' :
-                    $playersql .= " AND average >= " . $t($value);
-                    break;
-                case 'maxaverage' :
-                    $playersql .= " AND average <= " . $t($value);
-                    break;
-                case 'minage':
-                    $playersql .= " AND age >= " . $t($value);
-                    break;
-                case 'maxage':
-                    $playersql .= " AND age <= " . $t($value);
-                    break;
-                case 'positions':
-                    foreach ($value as $i => $val) {
-                        $value[$i] = "'" . $db->escapeString($val) . "'";
-                    }
-                    $playersql .= " AND position IN (" . implode(',', $value) . ")";
-                    break;
-                case 'experience':
-                    $playersql .= " AND experience >= " . $t($value);
-                    break;
-                case 'forecast':
-                    $playersql .= " AND forecast >= " . $t($value);
-                    break;
-                case 'progression':
-                    $playersql .= " AND progression >= " . $t($value);
-                    break;
-                case 'skills':
-                    break;
-                case 'stats':
-                    break;
-            }
-        }
-        $ret = array();
-        $sql = $playersql;
-        var_dump($sql);
-        $data = $db->query($sql);
-        while ($row = $data->fetchArray(SQLITE3_ASSOC)) {
-            $player = new Sqlite3\Player($this);
-            $player->fromResult($row);
-            $ret[] = $player;
-        }
-        return $ret;
+        $new = new Sqlite3\SearchPlayer($this->db);
+        $new->fromPlayer($player);
+        return $new->search();
     }
 
     function fillSkills(Player $player)

@@ -4,6 +4,7 @@ use SMGregsList\Messager, SMGregsList\Frontend, SMGregsList\SearchPlayer;
 class HTML extends Messager implements Frontend
 {
     protected $template;
+    protected $searchresults = array();
     function __construct(HTMLController $controller = null)
     {
         if (null === $controller) {
@@ -25,7 +26,9 @@ class HTML extends Messager implements Frontend
     {
         if ($message == 'ready') {
             // display html output
+            $this->discoverSearch();
             $this->displayMainPage();
+            $this->displaySearchResults($this->searchresults);
         } elseif ($message == 'searchResults') {
             if (!is_array($content)) {
                 throw new \Exception('internal Error: results of search is not an array');
@@ -35,30 +38,27 @@ class HTML extends Messager implements Frontend
                     throw new \Exception('internal Error: one of the results of search is not a Player object');
                 }
             }
-            $this->displaySearchResults($content);
+            $this->searchresults = $content;
         }
     }
 
     function displayMainPage()
     {
-        $this->discoverSearch();
-        $this->displaySearchForm();
+        echo $this->template->render(new SearchPlayer);
     }
 
     function discoverSearch()
     {
+        $this->searchresults = array();
         $this->broadcast('detectSearch');
-    }
-
-    function displaySearchForm()
-    {
-        echo $this->template->render(new SearchPlayer);
     }
 
     function displaySearchResults(array $results)
     {
         if (!count($results)) {
             echo "<p><strong>No results</strong></p>\n";
+        } else {
+            $this->template->render($this->searchresults, 'SMGregsList/searchresults.tpl.php');
         }
     }
 }

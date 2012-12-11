@@ -1,0 +1,1 @@
+<?php echo $savant->render($context, 'SMGregsList/Player.tpl.php');

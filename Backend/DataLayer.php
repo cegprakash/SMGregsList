@@ -20,10 +20,10 @@ abstract class DataLayer extends Messager
             if (!($content instanceof WriteablePlayer)) {
                 throw new \Exception('Internal error: addPlayer message received, but content was not a WriteablePlayer object');
             }
-            $this->store($content);
+            $this->save($content);
         } elseif ($message == 'deletePlayer') {
-            if (get_class($content) !== __NAMESPACE__ . '\\Player') {
-                throw new \Exception('Internal error: addPlayer message received, but content was not a WriteablePlayer object');
+            if (!($content instanceof Player)) {
+                throw new \Exception('Internal error: deletePlayer message received, but content was not a Player object');
             }
             $this->remove($content);
         } elseif ($message == 'search') {
