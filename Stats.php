@@ -3,18 +3,7 @@ namespace SMGregsList;
 class Stats implements \Iterator, \Countable
 {
     const TYPE = 'stat';
-    protected $stats = array(
-        'Pass' => null,
-        'Shot' => null,
-        'Dribbling' => null,
-        'Speed' => null,
-        'Ball Steal' => null,
-        'Saves' => null,
-        'Strength' => null,
-        'Technique' => null,
-        'Aggressiveness' => null,
-        'Leadership' => null,
-        'Versatility' => null);
+    protected $stats = array();
     protected $valid = array(
         'Pass',
         'Shot',
@@ -33,6 +22,9 @@ class Stats implements \Iterator, \Countable
     {
         if (!in_array($name, $this->valid)) {
             throw new \Exception('Invalid ' . static::TYPE . ': ' . $name);
+        }
+        if (!isset($this->stats[$name])) {
+            return null;
         }
         return $this->stats[$name];
     }
@@ -55,7 +47,7 @@ class Stats implements \Iterator, \Countable
             throw new \Exception('Invalid ' . $name . ': ' . $value);
         }
         if (!$value) {
-            $this->stats[$name] = null;
+            unset($this->stats[$name]);
             return;
         }
         $this->stats[$name] = $value;

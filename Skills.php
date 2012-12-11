@@ -3,20 +3,7 @@ namespace SMGregsList;
 class Skills extends Stats
 {
     const TYPE = 'skill';
-    protected $stats = array(
-        'Penalty Expert' => null,
-        'Change of Pace' => null,
-        'Running with the Ball' => null,
-        'Steel Lung' => null,
-        'Net Breaker' => null,
-        'Panther Save' => null,
-        'Aerial Play' => null,
-        'Sliding Tackle' => null,
-        'Precise Pass' => null,
-        'Slalom Ace' => null,
-        'Celebrity' => null,
-        'Defensive Wall' => null,
-    );
+    protected $stats = array();
     protected $valid = array(
         'Penalty Expert',
         'Change of Pace',
