@@ -1,4 +1,5 @@
-<h1>Sell a Player</h1>
+ <h1>Greg's List: Sell a Player</h1>
+ <p>List a Striker Manager player as being available for transfer agreement</p>
  <p>To search for a player <a href="index.php">Click here</a>.</p>
  <?php
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);

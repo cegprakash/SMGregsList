@@ -1,4 +1,5 @@
- <h1>Search Form</h1>
+ <h1>Greg's List: Search Form</h1>
+ <p>Search for Striker Manager players that are for sale by transfer agreement</p>
  <p>To sell a player <a href="sell.php">Click here</a>.</p>
  <?php
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
