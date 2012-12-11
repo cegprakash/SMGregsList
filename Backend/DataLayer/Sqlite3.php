@@ -24,7 +24,7 @@ class Sqlite3 extends DataLayer
   experience NUMBER NOT NULL,
   forecast NUMBER default 0,
   progression NUMBER default 0
-, lastmodified DATE NOT NULL default now);
+, lastmodified DATE NOT NULL default CURRENT_TIMESTAMP);
 CREATE TABLE skills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));
 CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));';
     }
@@ -58,7 +58,7 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
   CF NUMBER NOT NULL default 0,
   RF NUMBER NOT NULL default 0,
   RW NUMBER NOT NULL default 0,
-  lastmodified DATE NOT NULL default now,
+  lastmodified DATE NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY (email, lastmodified));
 CREATE TABLE skills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));
 CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));';
@@ -95,23 +95,5 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
         $new = new Sqlite3\SearchPlayer($this->db);
         $new->fromPlayer($player);
         return $new->search();
-    }
-
-    function fillSkills(Player $player)
-    {
-        $data = $this->db->query("SELECT * FROM skills WHERE id='" . $this->db->escapeString($player->id) . "'");
-        while ($row = $data->fetchArray($SQLITE3_ASSOC)) {
-            $player->skills[$row['name']] = $row['value'];
-        }
-        $data->finalize();
-    }
-
-    function fillStats(Player $player)
-    {
-        $data = $this->db->query("SELECT * FROM stats WHERE id='" . $this->db->escapeString($player->id) . "'");
-        while ($row = $data->fetchArray($SQLITE3_ASSOC)) {
-            $player->stats[$row['name']] = $row['value'];
-        }
-        $data->finalize();
     }
 }

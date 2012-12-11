@@ -1,6 +1,6 @@
 <?php
 namespace SMGregsList\Frontend;
-use SMGregsList\Messager, SMGregsList\Frontend, SMGregsList\SearchPlayer;
+use SMGregsList\Messager, SMGregsList\Frontend, SMGregsList\SearchPlayer, SMGregsList\Player;
 class HTML extends Messager implements Frontend
 {
     protected $template;
@@ -19,7 +19,7 @@ class HTML extends Messager implements Frontend
 
     function listMessages()
     {
-        return parent::listMessages(array('ready', 'searchResults'));
+        return parent::listMessages(array('ready', 'searchResult'));
     }
 
     function receive($message, $content)
@@ -29,7 +29,7 @@ class HTML extends Messager implements Frontend
             $this->discoverSearch();
             $this->displayMainPage();
             $this->displaySearchResults($this->searchresults);
-        } elseif ($message == 'searchResults') {
+        } elseif ($message == 'searchResult') {
             if (!is_array($content)) {
                 throw new \Exception('internal Error: results of search is not an array');
             }
@@ -58,7 +58,7 @@ class HTML extends Messager implements Frontend
         if (!count($results)) {
             echo "<p><strong>No results</strong></p>\n";
         } else {
-            $this->template->render($this->searchresults, 'SMGregsList/searchresults.tpl.php');
+            echo $this->template->render($this->searchresults, 'SMGregsList/searchresults.tpl.php');
         }
     }
 }

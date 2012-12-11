@@ -82,7 +82,7 @@ class SearchPlayer extends s implements SearchablePlayer
         $sql = 'SELECT DISTINCT player.* FROM player' . $skillssql . $statssql . ' WHERE 1=1' . $playersql;
         $data = $db->query($sql);
         while ($row = $data->fetchArray(SQLITE3_ASSOC)) {
-            $player = new Sqlite3\Player($this);
+            $player = new Player($this->db);
             $player->fromResult($row);
             $ret[] = $player;
         }

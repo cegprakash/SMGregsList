@@ -2,6 +2,7 @@
 namespace SMGregsList;
 class Messager
 {
+    static $DEBUG = 0;
     protected $receivers = array();
     protected $controllers = array();
     protected $dependencies = array();
@@ -67,9 +68,15 @@ class Messager
 
     protected function message($message, $content = false)
     {
+        if (self::$DEBUG) {
+            var_dump("message sending: $message");
+        }
         foreach ($this->receivers as $receiver) {
             if (!in_array($message, $receiver->listMessages())) {
                 continue;
+            }
+            if (self::$DEBUG) {
+                var_dump("message received: $message");
             }
             $receiver->receive($message, $content);
         }

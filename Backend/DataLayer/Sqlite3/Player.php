@@ -28,8 +28,26 @@ class Player extends p implements WriteablePlayer
         foreach ($result as $name => $value) {
             $this->$name = $value;
         }
-        $this->db->fillSkills($this);
-        $this->db->fillStats($this);
+        $this->fillSkills();
+        $this->fillStats();
+    }
+
+    function fillSkills()
+    {
+        $data = $this->db->query("SELECT * FROM skills WHERE id='" . $this->db->escapeString($this->id) . "'");
+        while ($row = $data->fetchArray($SQLITE3_ASSOC)) {
+            $this->skills[$row['name']] = $row['value'];
+        }
+        $data->finalize();
+    }
+
+    function fillStats()
+    {
+        $data = $this->db->query("SELECT * FROM stats WHERE id='" . $this->db->escapeString($this->id) . "'");
+        while ($row = $data->fetchArray($SQLITE3_ASSOC)) {
+            $this->stats[$row['name']] = $row['value'];
+        }
+        $data->finalize();
     }
 
     function exists()
