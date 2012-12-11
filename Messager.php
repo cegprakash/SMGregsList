@@ -72,7 +72,7 @@ class Messager
             var_dump("message sending: $message");
         }
         foreach ($this->receivers as $receiver) {
-            if (!in_array($message, $receiver->listMessages())) {
+            if (!in_array($message, $receiver->listMessages(array()))) {
                 continue;
             }
             if (self::$DEBUG) {
