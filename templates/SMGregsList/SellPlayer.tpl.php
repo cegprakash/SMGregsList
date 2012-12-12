@@ -5,6 +5,12 @@
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
  ?>
 <form name="search" action="<?php echo $phpSelf ?>" method="post">
+<div style="background-color:#FFDDDD">
+ <span>Edit Code</span><input type="text" size="100" name="code" id="code" value="<?php
+ if ($context->getCode()) echo $context->getCode()
+ ?>"/>
+ <input type="submit" value="Update Player" name="edit"/><input type="submit" value="Retrieve Player" name="retrieve"/>
+</div>
 <div><span>Player ID</span><input type="text" size="100" name="id" id="id" value="<?php
 echo $context->getUrl() . $context->getId()
 ?>"/></div>

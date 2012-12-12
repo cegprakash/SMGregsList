@@ -77,7 +77,7 @@ class HTML extends Messager implements Frontend
             echo $this->template->render($this->sellplayer, 'SMGregsList/PlayerListed.tpl.php');
             echo $this->template->render($this->sellplayer);
         } else {
-            echo $this->template->render($this->sellplayer);
+            echo $this->template->render($this->sellplayer, 'SMGregsList/SellPlayer.tpl.php');
         }
     }
 

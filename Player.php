@@ -13,6 +13,7 @@ abstract class Player
         $stats,
         $experience = 0,
         $skills,
+        $code,
         $createstamp;
 
     function __construct()
@@ -24,6 +25,11 @@ abstract class Player
     function __set($name, $value)
     {
         $this->$name = $value;
+    }
+
+    function getCode()
+    {
+        return $this->code;
     }
 
     function getId()

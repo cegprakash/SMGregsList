@@ -1,11 +1,12 @@
 <?php
 namespace SMGregsList\Frontend;
-use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\SellPlayer;
+use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsList\SellPlayer;
 class HTMLController extends Messager
 {
+    protected $retrieved;
     function listMessages(array $newmessages)
     {
-        return parent::listMessages(array('detectSearch', 'detectSell'));
+        return parent::listMessages(array('detectSearch', 'detectSell', 'retrieved'));
     }
 
     function receive($message, $content)
@@ -14,6 +15,8 @@ class HTMLController extends Messager
             return $this->detectSearch();
         } elseif ($message == 'detectSell') {
             return $this->detectSell();
+        } elseif ($message == 'retrieved') {
+            $this->retrieved = $content;
         }
     }
 
@@ -21,6 +24,37 @@ class HTMLController extends Messager
     {
         if (!isset($_POST) || !isset($_POST['id'])) {
             return;
+        }
+        if (isset($_POST['retrieve']) && isset($_POST['code'])) {
+            // find the player
+            $player = new SellPlayer;
+            if (isset($_POST['id']) && $_POST['id']) {
+                if (is_numeric($_POST['id']) && $_POST['id'] == (int) $_POST['id']) {
+                    $player->id = (int) $_POST['id'];
+                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $_POST['id'], $matches)) {
+                    $player->id = (int) $matches[1];
+                }
+            }
+            $player->code = $_POST['code'];
+            $this->broadcast('retrieve', $player);
+            $this->broadcast('sellDetected', $this->retrieved);
+            return;
+        }
+        if (isset($_POST['code'])) {
+            // find the player and verify the edit code before continuing
+            $player = new SellPlayer;
+            if (isset($_POST['id']) && $_POST['id']) {
+                if (is_numeric($_POST['id']) && $_POST['id'] == (int) $_POST['id']) {
+                    $player->id = (int) $_POST['id'];
+                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $_POST['id'], $matches)) {
+                    $player->id = (int) $matches[1];
+                }
+            }
+            $player->code = $_POST['code'];
+            $this->broadcast('retrieve', $player);
+            // if we get to here, the code matched
+        } else {
+            $player = new SellPlayer;
         }
         if (!isset($_POST['verifytoken'])) {
             if (!isset($_POST['cancel'])) {
@@ -33,7 +67,6 @@ class HTMLController extends Messager
                 $this->broadcast('confirm');
             }
         }
-        $player = new SellPlayer;
         if (isset($_POST['id']) && $_POST['id']) {
             if (is_numeric($_POST['id']) && $_POST['id'] == (int) $_POST['id']) {
                 $player->id = (int) $_POST['id'];

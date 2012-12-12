@@ -14,6 +14,7 @@ class Player extends p implements DataPlayer
     function fromPlayer(p $player)
     {
         $this->id = $player->getId();
+        $this->code = $player->getCode();
         $this->age = $player->getAge();
         $this->average = $player->getAverage();
         $this->experience = $player->getExperience();
@@ -64,21 +65,23 @@ class Player extends p implements DataPlayer
         }
         $data = $this->db->query("SELECT * FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
         $row = $data->fetchArray(SQLITE3_ASSOC);
+        if ($this->code && $this->code !== $row['createstamp']) {
+            throw new \Exception("Error: code does not match");
+        }
         $data->finalize();
         foreach ($row as $name => $value) {
             $this->$name = $value;
         }
         $data = $this->db->query("SELECT * FROM skills WHERE id='" . $this->db->escapeString($this->id) . "'");
-        $row = $data->fetchArray(SQLITE3_ASSOC);
-        $data->finalize();
-        foreach ($row as $name => $value) {
-            $this->skills->$name = $value;
+        while ($row = $data->fetchArray(SQLITE3_ASSOC)) {
+            $this->skills->{$row['name']} = $row['value'];
         }
+        $data->finalize();
         $data = $this->db->query("SELECT * FROM stats WHERE id='" . $this->db->escapeString($this->id) . "'");
-        $row = $data->fetchArray(SQLITE3_ASSOC);
-        $data->finalize();
-        foreach ($row as $name => $value) {
-            $this->stats->$name = $value;
+        while ($row = $data->fetchArray(SQLITE3_ASSOC)) {
+            $this->stats->{$row['name']} = $row['value'];
         }
+        $data->finalize();
+        return $this;
     }
 }

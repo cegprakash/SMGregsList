@@ -4,8 +4,15 @@
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
  ?>
 <form name="search" action="<?php echo $phpSelf ?>" method="post">
-<input type="hidden" name="verifytoken" value="verify"/>
 <table>
+<?php if ($context->getCode()): ?>
+<tr style="background-color:#FFDDDD"><td>Edit Code</td><td><input type="hidden" name="code" value="<?php $context->getCode() ?>"/>
+<?php
+echo $context->getCode()
+?>
+</td></tr>
+<?php endif ?>
+<input type="hidden" name="verifytoken" value="verify"/>
 <tr style="background-color:#EEEEEE"><td>Player ID</td><td><input type="hidden" name="id" id="id" value="<?php
 echo $context->getUrl() . $context->getId()
 ?>"/><a href="<?php
