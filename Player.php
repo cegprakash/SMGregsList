@@ -14,6 +14,7 @@ abstract class Player
         $experience = 0,
         $skills,
         $code,
+        $retrieved = false,
         $createstamp;
 
     function __construct()
@@ -54,6 +55,11 @@ abstract class Player
     function getAverage()
     {
         return $this->average;
+    }
+
+    function getRetrieved()
+    {
+        return $this->retrieved;
     }
 
     function getAge()

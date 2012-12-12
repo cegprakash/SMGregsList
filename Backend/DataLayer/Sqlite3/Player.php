@@ -24,6 +24,7 @@ class Player extends p implements DataPlayer
         $this->forecast = $player->getForecast();
         $this->skills = clone $player->getSkills();
         $this->stats = clone $player->getStats();
+        $this->retrieved = $player->getRetrieved();
     }
 
     function fromResult(array $result)
@@ -82,6 +83,7 @@ class Player extends p implements DataPlayer
             $this->stats->{$row['name']} = $row['value'];
         }
         $data->finalize();
+        $this->retrieved = true;
         return $this;
     }
 }

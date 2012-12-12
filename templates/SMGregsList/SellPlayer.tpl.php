@@ -9,7 +9,14 @@
  <span>Edit Code</span><input type="text" size="100" name="code" id="code" value="<?php
  if ($context->getCode()) echo $context->getCode()
  ?>"/>
- <input type="submit" value="Update Player" name="edit"/><input type="submit" value="Retrieve Player" name="retrieve"/>
+ <input type="submit" value="Retrieve Player" name="retrieve"/>
+<?php
+ if ($context->getRetrieved()):
+?>
+ <input type="submit" value="Update Player" name="edit" onclick="return confirm('This will update your player based on the current form.  Are you sure?');"/>
+ <input type="submit" value="Stop Selling" name="delete" onclick="return confirm('This will remove your player from the for sale list.  Are you sure?');"/>
+<?php endif;
+?>
 </div>
 <div><span>Player ID</span><input type="text" size="100" name="id" id="id" value="<?php
 echo $context->getUrl() . $context->getId()

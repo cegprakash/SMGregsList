@@ -19,10 +19,24 @@ class HTMLController extends Messager
             $this->retrieved = $content;
         }
     }
-
+    
     function detectSell()
     {
         if (!isset($_POST) || !isset($_POST['id'])) {
+            return;
+        }
+        if (isset($_POST['delete']) && isset($_POST['code'])) {
+            // find the player
+            $player = new SellPlayer;
+            if (isset($_POST['id']) && $_POST['id']) {
+                if (is_numeric($_POST['id']) && $_POST['id'] == (int) $_POST['id']) {
+                    $player->id = (int) $_POST['id'];
+                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $_POST['id'], $matches)) {
+                    $player->id = (int) $matches[1];
+                }
+            }
+            $player->code = $_POST['code'];
+            $this->broadcast('deletePlayer', $player);
             return;
         }
         if (isset($_POST['retrieve']) && isset($_POST['code'])) {

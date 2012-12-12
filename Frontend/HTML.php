@@ -8,6 +8,7 @@ class HTML extends Messager implements Frontend
     protected $searchfor;
     protected $verifyphase = false;
     protected $confirmphase = false;
+    protected $deleted = false;
     function __construct(HTMLController $controller = null)
     {
         if (null === $controller) {
@@ -25,7 +26,7 @@ class HTML extends Messager implements Frontend
     function listMessages(array $newmessages)
     {
         return parent::listMessages(array('ready', 'searchResult', 'search', 'playerAdded', 'sellDetected',
-                                          'verify', 'confirm'));
+                                          'verify', 'confirm', 'playerRemoved'));
     }
 
     function receive($message, $content)
@@ -58,6 +59,9 @@ class HTML extends Messager implements Frontend
         } elseif ($message == 'verify') {
             $this->verifyphase = true;
             $this->confirmphase = false;
+        } elseif ($message == 'playerRemoved') {
+            $this->sellplayer = $content;
+            $this->deleted = true;
         } elseif ($message == 'confirm') {
             $this->confirmphase = true;
             $this->verifyphase = false;
@@ -75,6 +79,9 @@ class HTML extends Messager implements Frontend
             echo $this->template->render($this->sellplayer, 'SMGregsList/VerifySellPlayer.tpl.php');
         } elseif ($this->confirmphase) {
             echo $this->template->render($this->sellplayer, 'SMGregsList/PlayerListed.tpl.php');
+            echo $this->template->render($this->sellplayer);
+        } elseif ($this->deleted) {
+            echo $this->template->render($this->sellplayer, 'SMGregsList/PlayerDeleted.tpl.php');
             echo $this->template->render($this->sellplayer);
         } else {
             echo $this->template->render($this->sellplayer, 'SMGregsList/SellPlayer.tpl.php');
