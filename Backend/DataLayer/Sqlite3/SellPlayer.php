@@ -23,6 +23,9 @@ class SellPlayer extends Player implements WriteablePlayer
 
     function save()
     {
+        if (!$this->id) {
+            throw new \Exception('Player ID must be set, please try again');
+        }
         $this->db->exec('BEGIN');
         try {
             $db = $this->db;
