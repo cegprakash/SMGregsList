@@ -34,7 +34,7 @@ class SellPlayer extends Player implements WriteablePlayer
         if ($this->exists()) {
             $data = $this->db->query("SELECT * FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
             $row = $data->fetchArray(SQLITE3_ASSOC);
-            if ($this->code && $this->code !== $row['createstamp']) {
+            if ($this->code !== $row['createstamp']) {
                 throw new \Exception("Error: code does not match");
             }
             $this->db->exec("UPDATE player SET
