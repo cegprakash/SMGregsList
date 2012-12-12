@@ -48,7 +48,7 @@ class HTMLController extends Messager
             }
         }
         if (isset($_POST['average']) && $_POST['average']) {
-            $value = filter_var($_POST['average'], FILTER_SANITIZE_NUMBER_INT);
+            $value = filter_var($_POST['average'], FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_ALLOW_FRACTION);
             if ($value > 0 && $value < 100) {
                 $player->average = $value;
             }
@@ -69,7 +69,7 @@ class HTMLController extends Messager
             }
         }
         if (isset($_POST['experience']) && $_POST['experience']) {
-            $value = filter_var($_POST['experience'], FILTER_SANITIZE_NUMBER_FLOAT);
+            $value = filter_var($_POST['experience'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $player->experience = $value;
         }
         if (isset($_POST['skills'])) {

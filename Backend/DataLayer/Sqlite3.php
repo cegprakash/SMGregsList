@@ -18,12 +18,12 @@ class Sqlite3 extends DataLayer
     {
         return 'CREATE TABLE player (
   id TEXT NOT NULL PRIMARY KEY,
-  average NUMBER NOT NULL,
-  age NUMBER NOT NULL,
+  average REAL NOT NULL,
+  age INT NOT NULL,
   position TEXT NOT NULL,
-  experience NUMBER NOT NULL,
-  forecast NUMBER default 0,
-  progression NUMBER default 0,
+  experience REAL NOT NULL,
+  forecast INT default 0,
+  progression INT default 0,
   lastmodified DATE NOT NULL default CURRENT_TIMESTAMP,
   createstamp DATE NOT NULL default CURRENT_TIMESTAMP);
 CREATE TABLE skills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));
