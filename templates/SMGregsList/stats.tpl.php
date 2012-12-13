@@ -6,7 +6,7 @@ foreach ($context->listStats() as $position) {
     } else {
         $value = '';
     }?><?php
-    echo '<div class="control-group"><span class="span2">' . $position . '</span><input class="input-mini" placeholder="0&rarr;99" name="stats[' .
+    echo '<div class="control-group"><span class="span5">' . $position . '</span><input class="input-mini" placeholder="0&rarr;99" name="stats[' .
     $position . ']" size="3" value="' . $value . '"/></div>';
 }
 ?>

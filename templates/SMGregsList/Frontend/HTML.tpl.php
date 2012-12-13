@@ -13,6 +13,12 @@
     select {
      height: 25px;
     }
+    #adjust-label {
+     width: 50px;
+    }
+    #adjust-controls {
+     margin-left: 100px;
+    }
    </style>
  </head>
  <body>

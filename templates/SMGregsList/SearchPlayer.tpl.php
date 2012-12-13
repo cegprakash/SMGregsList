@@ -66,13 +66,17 @@ if ($context->getExperience()) echo $context->getExperience()
 <div class="control-group">
  <label class="control-label" for="stats">Stats</label>
  <div class="controls">
+ <span class="span3">
  <?php echo $savant->render($context, 'SMGregsList/stats.tpl.php') ?>
+ </span>
+ <span class="span8">
+ <div class="control-group">
+  <label id="adjust-label" class="control-label" for="skills">Skills</label>
+  <div class="controls" id="adjust-controls">
+  <?php echo $savant->render($context, 'SMGregsList/skills.tpl.php') ?>
+  </div>
  </div>
-</div>
-<div class="control-group">
- <label class="control-label" for="skills">Skills</label>
- <div class="controls">
- <?php echo $savant->render($context, 'SMGregsList/skills.tpl.php') ?>
+ </span>
  </div>
 </div>
 <input type="submit" value="Search" class="btn btn-primary"/>
