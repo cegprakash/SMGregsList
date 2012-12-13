@@ -79,6 +79,10 @@ if ($context->getExperience()) echo $context->getExperience()
  </span>
  </div>
 </div>
-<input type="submit" value="Search" class="btn btn-primary"/>
+<div class="control-group">
+ <div class="controls">
+  <input type="submit" value="Search" class="btn btn-primary"/>
+ </div>
+</div>
 </form>
 <p>Found a bug? <a href="https://github.com/cellog/SMGregsList/issues">Please report it</a>.</p>
