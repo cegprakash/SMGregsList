@@ -5,7 +5,8 @@ foreach ($context->listStats() as $position) {
         $value = $chosen->$position;
     } else {
         $value = '';
-    }
-    echo '<input name="stats[' . $position . ']" size="3" value="' . $value . '"/> ' . $position . '<br />';
+    }?><?php
+    echo '<div class="control-group"><span class="span2">' . $position . '</span><input class="input-mini" placeholder="0&rarr;99" name="stats[' .
+    $position . ']" size="3" value="' . $value . '"/></div>';
 }
 ?>

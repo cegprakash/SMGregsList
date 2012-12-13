@@ -5,8 +5,12 @@
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
  </head>
  <body>
-  <?php echo $savant->render($context->getBody()) ?>  
+  <div class="row-fluid">
+   <div class="span12">
+  <?php echo $savant->render($context->getBody()) ?>
+  </div>
+   </div>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
-  <script src="js/bootstrap.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
  </body>
 </html>

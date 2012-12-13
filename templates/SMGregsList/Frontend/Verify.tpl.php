@@ -3,15 +3,15 @@
  <?php
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
  ?>
-<form name="search" action="<?php echo $phpSelf ?>" method="post">
-<table>
+<form name="search" action="<?php echo $phpSelf ?>" method="post" class="form-horizontal">
 <?php if ($context->getCode()): ?>
-<tr style="background-color:#FFDDDD"><td>Edit Code</td><td><input type="hidden" name="code" value="<?php echo $context->getCode() ?>"/>
+<div class="control-group">
+<label class="control-label" for="code">Edit Code</label>
+<div class="controls"><input type="hidden" name="code" value="<?php echo $context->getCode() ?>"/>
 <?php
 echo $context->getCode()
 ?>
-</td></tr>
-<?php endif ?>
+</div></div><?php endif ?>
 <input type="hidden" name="verifytoken" value="verify"/>
 <tr style="background-color:#EEEEEE"><td>Player ID</td><td><input type="hidden" name="id" id="id" value="<?php
 echo $context->getUrl() . $context->getId()
