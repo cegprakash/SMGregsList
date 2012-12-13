@@ -62,12 +62,12 @@ class Player extends p implements DataPlayer
     function retrieve()
     {
         if (!$this->exists()) {
-            throw new \Exception("Error: player does not exist");
+            throw new \Exception("Error: player does not exist", -1);
         }
         $data = $this->db->query("SELECT * FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
         $row = $data->fetchArray(SQLITE3_ASSOC);
         if ($this->code !== $row['createstamp']) {
-            throw new \Exception("Error: code does not match");
+            throw new \Exception("Error: code does not match", -2);
         }
         $data->finalize();
         foreach ($row as $name => $value) {

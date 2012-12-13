@@ -65,8 +65,14 @@ class HTMLController extends Messager
                 }
             }
             $player->code = $_POST['code'];
-            $this->broadcast('retrieve', $player);
-            // if we get to here, the code matched
+            try {
+                $this->broadcast('retrieve', $player);
+                // if we get to here, the code matched
+            } catch (\Exception $e) {
+                if ($e->getCode() == -2) {
+                    throw $e; // code did not match
+                }
+            }
         } else {
             $player = new SellPlayer;
         }

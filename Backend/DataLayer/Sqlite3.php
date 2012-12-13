@@ -33,14 +33,14 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
     function getSearchSchema()
     {
         return 'CREATE TABLE playersearch (
-  email TEXT NOT NULL
-  minaverage NUMBER,
-  maxaverage NUMBER
-  minage NUMBER,
-  maxage NUMBER,
-  experience NUMBER,
-  forecast NUMBER,
-  progression NUMBER,
+  createstamp DATE NOT NULL default CURRENT_TIMESTAMP,
+  minaverage INT,
+  maxaverage INT
+  minage INT,
+  maxage INT,
+  experience REAL,
+  forecast INT,
+  progression INT,
   GK NUMBER NOT NULL default 0,
   LB NUMBER NOT NULL default 0,
   LDF NUMBER NOT NULL default 0,

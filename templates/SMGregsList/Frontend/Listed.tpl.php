@@ -7,3 +7,4 @@
      <td style="background-color:#FFDDDD"><?php echo $context->getCreatestamp() ?></td>
     </tr>
 </table>
+<?php echo $savant->render($context, 'SMGregsList/Frontend/Sell.tpl.php') ?>

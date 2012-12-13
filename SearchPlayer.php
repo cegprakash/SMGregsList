@@ -69,6 +69,14 @@ class SearchPlayer extends Player implements SearchablePlayer
         return $ret;
     }
 
+    function getHashedId()
+    {
+        if (!$this->createstamp) {
+            return 0;
+        }
+        return base_convert(strtotime($this->createstamp), 10, 25);
+    }
+
     function getMinage()
     {
         if (!$this->age) {

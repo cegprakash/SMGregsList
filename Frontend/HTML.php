@@ -9,6 +9,8 @@ class HTML extends Messager implements Frontend
     protected $verifyphase = false;
     protected $confirmphase = false;
     protected $deleted = false;
+    protected $body;
+
     function __construct(HTMLController $controller = null)
     {
         if (null === $controller) {
@@ -21,6 +23,11 @@ class HTML extends Messager implements Frontend
             'template_path' => realpath(__DIR__ . '/../templates'),
             'escape' => 'htmlentities',
         ));
+    }
+
+    function getBody()
+    {
+        return $this->body;
     }
 
     function listMessages(array $newmessages)
@@ -36,12 +43,14 @@ class HTML extends Messager implements Frontend
             $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
             if (strpos($phpSelf, 'sell.php')) {
                 $this->discoverSell();
-                $this->displaySellPage();
+                $this->setupSellPage();
+                $this->subtitle = 'List a Player for sale';
             } else {
                 $this->discoverSearch();
-                $this->displayMainPage();
-                $this->displaySearchResults($this->searchresults);
+                $this->body = new SearchResults($this->searchfor, $this->searchresults);
+                $this->subtitle = 'Search for Players for sale';
             }
+            echo $this->template->render($this);
         } elseif ($message == 'searchResult') {
             if (!is_array($content)) {
                 throw new \Exception('internal Error: results of search is not an array');
@@ -68,23 +77,16 @@ class HTML extends Messager implements Frontend
         }
     }
 
-    function displayMainPage()
-    {
-        echo $this->template->render($this->searchfor);
-    }
-
-    function displaySellPage()
+    function setupSellPage()
     {
         if ($this->verifyphase) {
-            echo $this->template->render($this->sellplayer, 'SMGregsList/VerifySellPlayer.tpl.php');
+            $this->body = new Verify($this->sellplayer);
         } elseif ($this->confirmphase) {
-            echo $this->template->render($this->sellplayer, 'SMGregsList/PlayerListed.tpl.php');
-            echo $this->template->render($this->sellplayer);
+            $this->body = new Listed($this->sellplayer);
         } elseif ($this->deleted) {
-            echo $this->template->render($this->sellplayer, 'SMGregsList/PlayerDeleted.tpl.php');
-            echo $this->template->render($this->sellplayer);
+            $this->body = new Deleted($this->sellplayer);
         } else {
-            echo $this->template->render($this->sellplayer, 'SMGregsList/SellPlayer.tpl.php');
+            $this->body = new Sell($this->sellplayer);
         }
     }
 
@@ -97,13 +99,5 @@ class HTML extends Messager implements Frontend
     function discoverSell()
     {
         $this->broadcast('detectSell');
-    }
-
-    function displaySearchResults(array $results)
-    {?><table border="1">
-    <tr><td>id</td><td>Position</td><td>Average</td><td>Age</td><td>Experience</td><td>Forecast</td><td>Progression</td></tr>
-<?php
-        echo $this->template->render($this->searchresults, 'SMGregsList/searchresults.tpl.php');
-        ?></table><?php
     }
 }

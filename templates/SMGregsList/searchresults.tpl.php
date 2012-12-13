@@ -1,1 +1,1 @@
-    <?php echo $savant->render($context); ?>
+    <?php echo $savant->render($context->getRawObject()->getArrayCopy()); ?>

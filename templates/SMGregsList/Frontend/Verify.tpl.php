@@ -6,7 +6,7 @@
 <form name="search" action="<?php echo $phpSelf ?>" method="post">
 <table>
 <?php if ($context->getCode()): ?>
-<tr style="background-color:#FFDDDD"><td>Edit Code</td><td><input type="hidden" name="code" value="<?php $context->getCode() ?>"/>
+<tr style="background-color:#FFDDDD"><td>Edit Code</td><td><input type="hidden" name="code" value="<?php echo $context->getCode() ?>"/>
 <?php
 echo $context->getCode()
 ?>
