@@ -5,6 +5,12 @@
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
  ?>
 <form name="search" action="<?php echo $phpSelf ?>" method="get" class="form-horizontal">
+<ul class="nav nav-tabs">
+ <li class="active"><a href="#basic" data-toggle="tab">Basic Information</a></li>
+ <li><a href="#stats" data-toggle="tab">Stats and Skills</a></li>
+</ul>
+<div class="tab-content">
+<div class="tab-pane active" id="basic">
 <div class="control-group">
  <label class="control-label" for="id">Player ID</label>
  <div class="controls">
@@ -63,6 +69,8 @@ if ($context->getExperience()) echo $context->getExperience()
   <?php echo $savant->render($context, 'SMGregsList/positions.tpl.php') ?>
  </div>
 </div>
+</div> <!-- basic tab pane -->
+<div class="tab-pane" id="stats">
 <div class="control-group">
  <label class="control-label" for="stats">Stats</label>
  <div class="controls">
@@ -79,6 +87,8 @@ if ($context->getExperience()) echo $context->getExperience()
  </span>
  </div>
 </div>
+</div> <!-- stats tab -->
+</div> <!-- tab content -->
 <div class="control-group">
  <div class="controls">
   <input type="submit" value="Search" class="btn btn-primary"/>
