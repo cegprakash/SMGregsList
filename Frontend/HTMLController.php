@@ -147,53 +147,53 @@ class HTMLController extends Messager
 
     function detectSearch()
     {
-        if (!isset($_POST) || !isset($_POST['id'])) {
+        if (!isset($_GET) || !isset($_GET['id'])) {
             $this->broadcast('searchResults', array());
             return;
         }
         $player = new SearchPlayer;
-        if (isset($_POST['minage']) || isset($_POST['maxage'])) {
-            if (!isset($_POST['minage']) || !$_POST['minage']) {
-                $player->age = $_POST['maxage'];
-            } elseif (!isset($_POST['maxage']) || !$_POST['maxage']) {
-                $player->age = $_POST['minage'] . '-99';
+        if (isset($_GET['minage']) || isset($_GET['maxage'])) {
+            if (!isset($_GET['minage']) || !$_GET['minage']) {
+                $player->age = $_GET['maxage'];
+            } elseif (!isset($_GET['maxage']) || !$_GET['maxage']) {
+                $player->age = $_GET['minage'] . '-99';
             } else {
-                $player->age = str_replace('-', '', $_POST['minage']) . '-' . str_replace('-', '', $_POST['maxage']);
+                $player->age = str_replace('-', '', $_GET['minage']) . '-' . str_replace('-', '', $_GET['maxage']);
             }
         }
-        if (isset($_POST['minaverage']) || isset($_POST['maxaverage'])) {
-            if (!isset($_POST['minaverage']) || !$_POST['minaverage']) {
-                $player->average = $_POST['maxaverage'];
-            } elseif (!isset($_POST['maxaverage']) || !$_POST['maxaverage']) {
-                $player->average = $_POST['minaverage'] . '-99';
+        if (isset($_GET['minaverage']) || isset($_GET['maxaverage'])) {
+            if (!isset($_GET['minaverage']) || !$_GET['minaverage']) {
+                $player->average = $_GET['maxaverage'];
+            } elseif (!isset($_GET['maxaverage']) || !$_GET['maxaverage']) {
+                $player->average = $_GET['minaverage'] . '-99';
             } else {
-                $player->average = str_replace('-', '', $_POST['minaverage']) . '-' . str_replace('-', '', $_POST['maxaverage']);
+                $player->average = str_replace('-', '', $_GET['minaverage']) . '-' . str_replace('-', '', $_GET['maxaverage']);
             }
         }
-        if (isset($_POST['position'])) {
-            if (is_array($_POST['position'])) {
-                $player->position = implode(',', $_POST['position']);
+        if (isset($_GET['position'])) {
+            if (is_array($_GET['position'])) {
+                $player->position = implode(',', $_GET['position']);
             }
         }
-        if (isset($_POST['forecast']) && $_POST['forecast']) {
-            $player->forecast = $_POST['forecast'];
+        if (isset($_GET['forecast']) && $_GET['forecast']) {
+            $player->forecast = $_GET['forecast'];
         }
-        if (isset($_POST['experience']) && $_POST['experience']) {
-            $player->forecast = $_POST['experience'];
+        if (isset($_GET['experience']) && $_GET['experience']) {
+            $player->forecast = $_GET['experience'];
         }
-        if (isset($_POST['progression']) && $_POST['progression']) {
-            $player->progression = $_POST['progression'];
+        if (isset($_GET['progression']) && $_GET['progression']) {
+            $player->progression = $_GET['progression'];
         }
-        if (isset($_POST['skills'])) {
-            if (is_array($_POST['skills'])) {
-                foreach ($_POST['skills'] as $name => $amount) {
+        if (isset($_GET['skills'])) {
+            if (is_array($_GET['skills'])) {
+                foreach ($_GET['skills'] as $name => $amount) {
                     $player->getSkills()->$name = $amount; 
                 }
             }
         }
-        if (isset($_POST['stats'])) {
-            if (is_array($_POST['stats'])) {
-                foreach ($_POST['stats'] as $name => $amount) {
+        if (isset($_GET['stats'])) {
+            if (is_array($_GET['stats'])) {
+                foreach ($_GET['stats'] as $name => $amount) {
                     $player->getStats()->$name = $amount; 
                 }
             }

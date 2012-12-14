@@ -29,5 +29,8 @@
    </div>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="bootstrap/js/bootstrap.min.js"></script>
+  <?php if ($context->getExtrarender()) {
+   echo $context->getRawObject()->getExtrarender();
+  } ?>
  </body>
 </html>

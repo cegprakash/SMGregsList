@@ -4,7 +4,7 @@
  <?php
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
  ?>
-<form name="search" action="<?php echo $phpSelf ?>" method="post" class="form-horizontal">
+<form name="search" action="<?php echo $phpSelf ?>" method="get" class="form-horizontal">
 <div class="control-group">
  <label class="control-label" for="id">Player ID</label>
  <div class="controls">
@@ -85,4 +85,5 @@ if ($context->getExperience()) echo $context->getExperience()
  </div>
 </div>
 </form>
+
 <p>Found a bug? <a href="https://github.com/cellog/SMGregsList/issues">Please report it</a>.</p>

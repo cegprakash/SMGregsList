@@ -10,6 +10,7 @@ class HTML extends Messager implements Frontend
     protected $confirmphase = false;
     protected $deleted = false;
     protected $body;
+    protected $extrarender;
 
     function __construct(HTMLController $controller = null)
     {
@@ -28,6 +29,11 @@ class HTML extends Messager implements Frontend
     function getBody()
     {
         return $this->body;
+    }
+
+    function getExtraRender()
+    {
+        return $this->extrarender;
     }
 
     function listMessages(array $newmessages)
@@ -49,6 +55,11 @@ class HTML extends Messager implements Frontend
                 $this->discoverSearch();
                 $this->body = new SearchResults($this->searchfor, $this->searchresults);
                 $this->subtitle = 'Search for Players for sale';
+                if (count($_GET)) {
+                    $this->extrarender = "<script type=\"text/javascript\">
+\$('#myModal').modal('toggle');    
+    </script>";
+                }
             }
             echo $this->template->render($this);
         } elseif ($message == 'searchResult') {
