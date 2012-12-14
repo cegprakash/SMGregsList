@@ -42,10 +42,10 @@ class HTMLController extends Messager
         if (isset($_POST['retrieve']) && isset($_POST['code'])) {
             // find the player
             $player = new SellPlayer;
-            if (isset($_POST['id']) && $_POST['id']) {
-                if (is_numeric($_POST['id']) && $_POST['id'] == (int) $_POST['id']) {
-                    $player->id = (int) $_POST['id'];
-                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $_POST['id'], $matches)) {
+            if (isset($_POST['pid']) && $_POST['pid']) {
+                if (is_numeric($_POST['pid']) && $_POST['pid'] == (int) $_POST['pid']) {
+                    $player->id = (int) $_POST['pid'];
+                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $_POST['pid'], $matches)) {
                     $player->id = (int) $matches[1];
                 }
             }
