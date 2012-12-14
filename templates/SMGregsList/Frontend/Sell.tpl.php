@@ -1,6 +1,5 @@
- <h1>Greg's List: Sell a Player</h1>
+ <h1>Greg's List: Sell Your Player</h1>
  <p>List a Striker Manager player as being available for transfer agreement</p>
- <p>To search for a player <a href="index.php">Click here</a>.</p>
  <?php
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
  ?>
@@ -9,6 +8,7 @@
  <li class="active"><a href="#basic" data-toggle="tab">Basic Information</a></li>
  <li><a href="#stats" data-toggle="tab">Stats and Skills</a></li>
  <li><a href="#update" data-toggle="tab">Update a listing</a></li>
+ <li><a href="index.php">Search for players</a></li>
 </ul>
 <div class="tab-content">
 <div class="tab-pane active" id="basic">
