@@ -2,3 +2,7 @@
 MyProject.komodoproject
 
 .DS_Store
+
+chromeext/SMGregsListChrome.komodoproject
+
+*.komodoproject
