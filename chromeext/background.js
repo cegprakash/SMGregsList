@@ -28,3 +28,7 @@ chrome.extension.onMessage.addListener(
       chrome.pageAction.show(sender.tab.id);
     }
   });
+
+chrome.tabs.onUpdated.addListener(function (tabId, blah, blah2) {
+  chrome.pageAction.hide(tabId);
+});
