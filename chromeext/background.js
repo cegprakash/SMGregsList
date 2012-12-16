@@ -1,5 +1,9 @@
 var info;
+var playerhtml;
 var received = [];
+var sendthis = false;
+var parenthtml = false;
+var currentTab = null;
 chrome.extension.onMessage.addListener(
   function(player, sender, sendResponse) {
     switch (player[0]) {
@@ -23,6 +27,19 @@ chrome.extension.onMessage.addListener(
         info.skills = player[1];
         received[3] = 1;
         break;
+      case 5 :
+        parenthtml = player[1];
+        if (sendthis) {
+          sendthis(parenthtml);
+        }
+        break;
+      case 6 :
+        if (parenthtml) {
+          sendResponse(parenthtml);
+        } else {
+          sendthis = sendResponse;
+        }
+        break;
     }
     if (received.length == 4) {
       chrome.pageAction.show(sender.tab.id);
@@ -30,5 +47,6 @@ chrome.extension.onMessage.addListener(
   });
 
 chrome.tabs.onUpdated.addListener(function (tabId, blah, blah2) {
+  currentTab = tabId;
   chrome.pageAction.hide(tabId);
 });

@@ -36,11 +36,16 @@ function scrapeforecast(xml) {
   return forecast;
 }
 
-function scrapepage () {
+function scrapepage (parenthtml) {
   var ret = {};
+  var html = document.body.innerHTML;
+  var team = html.match(/<a href="equipo.php\?id=([0-9]+)/);
+  var parentteam = parenthtml.match(/<a class="color_skin" target="marco" href="equipo.php\?id=([0-9]+)/);
+  if (team[1] != parentteam[1]) {
+    return false; // we can only sell players on our own team
+  }
   var id = location.search.match(/id_jugador=([0-9]+)/);
   ret.id = id[1];
-  var html = document.body.innerHTML;
   var pos = html.match(/<td>Position<\/td>\s+<td>([^<]+)<\/td>/);
   var stats = html.match(/<td>([a-zA-Z ]+)<\/td>\s+<td>\s+<span style="display: none;">(\d\d\d)<\/span>\s+<div class="jugbarra" style="width: 99px">\s+<div class="jugbarracar" style="border: 1px outset #[a-f0-9]+; width: \d+px; background: #[a-f0-9]+;"><\/div>\s+<div class="jugbarranum">\d+%/g);
   var summaries = html.match(/<td>([A-Za-z]+ (?:points|average))<\/td>\s+<td class="numerico">\s+(\d+)<span style="font-size: 0.7em;">\.(\d+)<\/span>/g);

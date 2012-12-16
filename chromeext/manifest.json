@@ -11,6 +11,10 @@
   },
   "content_scripts": [
     {
+      "matches" : ["http://en3.strikermanager.com/inicio.php*"],
+      "js":["parent.js"]
+    },
+    {
       "matches" : ["http://en3.strikermanager.com/jugador.php*"],
       "all_frames": true,
       "js":["code.js","popup.js"]
