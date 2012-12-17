@@ -61,7 +61,7 @@ if ($context->getExperience()) echo $context->getExperience()
  </div>
 </div>
 <div class="control-group">
- <label class="control-label" for="position">Positions</label>
+ <label class="control-label" for="position">Position</label>
  <div class="controls">
   <?php echo $savant->render($context, 'SMGregsList/sellpositions.tpl.php') ?>
  </div>
@@ -84,6 +84,7 @@ if ($context->getExperience()) echo $context->getExperience()
  </span>
  </div>
 </div>
+<input type="submit" class="btn btn-primary" value="<?php if ($context->getRetrieved()) echo 'Update'; else echo 'Sell' ?>" name="verify" ?>
 </div> <!-- stats tab -->
 <div class="tab-pane" id="update">
 <div class="control-group">
