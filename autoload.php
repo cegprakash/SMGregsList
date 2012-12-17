@@ -7,15 +7,3 @@ function __autoload($class)
     }
     include(__DIR__ . '/' . str_replace(array('SMGregsList\\', '\\'), array('', '/'), $class) . '.php');
 }
-set_exception_handler(function ($e) {
-    ?><h1>Error</h1>
-<p><?php echo $e->getMessage() ?></p>
-<a href="javascript:history.go(-1)"><< Return</a>
-<p><?php if ($_SERVER['HTTP_HOST'] == 'localhost'): ?>
-<pre>
-    <?php throw $e; ?>
-</pre>
-<?php endif ?></p>
-
-<?php
-});

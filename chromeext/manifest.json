@@ -18,11 +18,17 @@
       "matches" : ["http://en3.strikermanager.com/jugador.php*"],
       "all_frames": true,
       "js":["code.js","popup.js"]
+    },
+    {
+      "matches" : ["http://en3.strikermanager.com/jugador.php*"],
+      "all_frames": true,
+      "js":["remote.js"]
     }
   ],
   "permissions": [
     "http://www.chiaraquartet.net/gregslistbeta/",
     "http://en3.strikermanager.com/",
+    "http://localhost",
     "tabs"
   ]
 }

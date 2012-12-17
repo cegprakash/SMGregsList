@@ -4,9 +4,63 @@ use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsL
 class HTMLController extends Messager
 {
     protected $retrieved;
+    function __construct()
+    {
+        set_exception_handler(function ($e) {
+            ?><h1>Error</h1>
+        <p><?php echo $e->getMessage() ?></p>
+        <a href="javascript:history.go(-1)"><< Return</a>
+        <p><?php if ($_SERVER['HTTP_HOST'] == 'localhost'): ?>
+        <pre>
+            <?php throw $e; ?>
+        </pre>
+        <?php endif ?></p>
+        
+        <?php
+        });
+    }
+
     function listMessages(array $newmessages)
     {
         return parent::listMessages(array('detectSearch', 'detectSell', 'retrieved'));
+    }
+
+    function getParams($type)
+    {
+        if ($type == 'sell') {
+            if (!isset($_POST) || !isset($_POST['id'])) {
+                return false;
+            }
+            return $_POST;
+        } else {
+            return $_GET;
+        }
+    }
+
+    function getMessage($type)
+    {
+        $params = $this->getParams($type);
+        if (!$params) {
+            return 'sellform';
+        }
+        if (isset($params['delete'])) {
+            return 'delete';
+        }
+        if (isset($params['retrieve'])) {
+            return 'retrieve';
+        }
+        if (!isset($params['verifytoken'])) {
+            if (!isset($params['cancel'])) {
+                return 'verify';
+            }
+        }
+        if (isset($params['cancel'])) {
+            unset($_POST['verifytoken']);
+            return 'cancel';
+        }
+        if (isset($params['sellfinal'])) {
+            return 'confirm';
+        }
     }
 
     function receive($message, $content)
@@ -19,52 +73,51 @@ class HTMLController extends Messager
             $this->retrieved = $content;
         }
     }
-    
+
+
     function detectSell()
     {
-        if (!isset($_POST) || !isset($_POST['id'])) {
-            return;
-        }
-        if (isset($_POST['delete']) && isset($_POST['code'])) {
+        $params = $this->getParams('sell');
+        if ($this->getMessage('sell') == 'delete' && isset($params['code'])) {
             // find the player
             $player = new SellPlayer;
-            if (isset($_POST['id']) && $_POST['id']) {
-                if (is_numeric($_POST['id']) && $_POST['id'] == (int) $_POST['id']) {
-                    $player->id = (int) $_POST['id'];
-                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $_POST['id'], $matches)) {
+            if (isset($params['id']) && $params['id']) {
+                if (is_numeric($params['id']) && $params['id'] == (int) $params['id']) {
+                    $player->id = (int) $params['id'];
+                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $params['id'], $matches)) {
                     $player->id = (int) $matches[1];
                 }
             }
-            $player->code = $_POST['code'];
+            $player->code = $params['code'];
             $this->broadcast('deletePlayer', $player);
             return;
         }
-        if (isset($_POST['retrieve']) && isset($_POST['code'])) {
+        if ($this->getMessage('sell') == 'retrieve' && isset($params['code'])) {
             // find the player
             $player = new SellPlayer;
-            if (isset($_POST['pid']) && $_POST['pid']) {
-                if (is_numeric($_POST['pid']) && $_POST['pid'] == (int) $_POST['pid']) {
-                    $player->id = (int) $_POST['pid'];
-                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $_POST['pid'], $matches)) {
+            if (isset($params['id']) && $params['id']) {
+                if (is_numeric($params['id']) && $params['id'] == (int) $params['id']) {
+                    $player->id = (int) $params['id'];
+                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $params['id'], $matches)) {
                     $player->id = (int) $matches[1];
                 }
             }
-            $player->code = $_POST['code'];
+            $player->code = $params['code'];
             $this->broadcast('retrieve', $player);
             $this->broadcast('sellDetected', $this->retrieved);
             return;
         }
-        if (isset($_POST['code'])) {
+        if (isset($params['code'])) {
             // find the player and verify the edit code before continuing
             $player = new SellPlayer;
-            if (isset($_POST['id']) && $_POST['id']) {
-                if (is_numeric($_POST['id']) && $_POST['id'] == (int) $_POST['id']) {
-                    $player->id = (int) $_POST['id'];
-                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $_POST['id'], $matches)) {
+            if (isset($params['id']) && $params['id']) {
+                if (is_numeric($params['id']) && $params['id'] == (int) $params['id']) {
+                    $player->id = (int) $params['id'];
+                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $params['id'], $matches)) {
                     $player->id = (int) $matches[1];
                 }
             }
-            $player->code = $_POST['code'];
+            $player->code = $params['code'];
             try {
                 $this->broadcast('retrieve', $player);
                 // if we get to here, the code matched
@@ -76,124 +129,119 @@ class HTMLController extends Messager
         } else {
             $player = new SellPlayer;
         }
-        if (!isset($_POST['verifytoken'])) {
-            if (!isset($_POST['cancel'])) {
-                $this->broadcast('verify');
-            }
-        } else {
-            if (isset($_POST['cancel'])) {
-                unset($_POST['verifytoken']);
-            } elseif (isset($_POST['sellfinal'])) {
-                $this->broadcast('confirm');
-            }
+        if ($this->getMessage('sell') == 'verify') {
+            $this->broadcast('verify');
+        } elseif ($this->getMessage('sell') == 'confirm') {
+            $this->broadcast('confirm');
         }
-        if (isset($_POST['id']) && $_POST['id']) {
-            if (is_numeric($_POST['id']) && $_POST['id'] == (int) $_POST['id']) {
-                $player->id = (int) $_POST['id'];
-            } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $_POST['id'], $matches)) {
+        if (isset($params['id']) && $params['id']) {
+            if (is_numeric($params['id']) && $params['id'] == (int) $params['id']) {
+                $player->id = (int) $params['id'];
+            } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $params['id'], $matches)) {
                 $player->id = (int) $matches[1];
             }
         }
-        if (isset($_POST['age']) && $_POST['age']) {
-            $value = filter_var($_POST['age'], FILTER_SANITIZE_NUMBER_INT);
+        if (isset($params['age']) && $params['age']) {
+            $value = filter_var($params['age'], FILTER_SANITIZE_NUMBER_INT);
             if ($value > 13 && $value < 40) {
                 $player->age = $value;
             }
         }
-        if (isset($_POST['average']) && $_POST['average']) {
-            $value = filter_var($_POST['average'], FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_ALLOW_FRACTION);
+        if (isset($params['average']) && $params['average']) {
+            $value = filter_var($params['average'], FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_ALLOW_FRACTION);
             if ($value > 0 && $value < 100) {
                 $player->average = $value;
             }
         }
-        if (isset($_POST['position']) && $_POST['position']) {
-            $player->position = $_POST['position'];
+        if (isset($params['position']) && $params['position']) {
+            $player->position = $params['position'];
         }
-        if (isset($_POST['forecast']) && $_POST['forecast']) {
-            $value = filter_var($_POST['forecast'], FILTER_SANITIZE_NUMBER_INT);
+        if (isset($params['forecast']) && $params['forecast']) {
+            $value = filter_var($params['forecast'], FILTER_SANITIZE_NUMBER_INT);
             if ($value > 0 && $value < 100) {
                 $player->forecast = $value;
             }
         }
-        if (isset($_POST['progression']) && $_POST['progression']) {
-            $value = filter_var($_POST['progression'], FILTER_SANITIZE_NUMBER_INT);
+        if (isset($params['progression']) && $params['progression']) {
+            $value = filter_var($params['progression'], FILTER_SANITIZE_NUMBER_INT);
             if ($value > 0 && $value < 100) {
                 $player->progression = $value;
             }
         }
-        if (isset($_POST['experience']) && $_POST['experience']) {
-            $value = filter_var($_POST['experience'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        if (isset($params['experience']) && $params['experience']) {
+            $value = filter_var($params['experience'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $player->experience = $value;
         }
-        if (isset($_POST['skills'])) {
-            if (is_array($_POST['skills'])) {
-                foreach ($_POST['skills'] as $name => $amount) {
+        if (isset($params['skills'])) {
+            if (is_array($params['skills'])) {
+                foreach ($params['skills'] as $name => $amount) {
                     $player->getSkills()->$name = $amount; 
                 }
             }
         }
-        if (isset($_POST['stats'])) {
-            if (is_array($_POST['stats'])) {
-                foreach ($_POST['stats'] as $name => $amount) {
+        if (isset($params['stats'])) {
+            if (is_array($params['stats'])) {
+                foreach ($params['stats'] as $name => $amount) {
                     $player->getStats()->$name = $amount; 
                 }
             }
         }
         $this->broadcast('sellDetected', $player);
-        if (isset($_POST['sellfinal'])) {
+        if ($this->getMessage('sell') == 'confirm') {
             $this->broadcast('addPlayer', $player);
         }
     }
 
     function detectSearch()
     {
-        if (!isset($_GET) || !isset($_GET['id'])) {
+        $params = $this->getParams('search');
+        if (!isset($params) || !isset($params['id'])) {
             $this->broadcast('searchResults', array());
             return;
         }
         $player = new SearchPlayer;
-        if (isset($_GET['minage']) || isset($_GET['maxage'])) {
-            if (!isset($_GET['minage']) || !$_GET['minage']) {
-                $player->age = $_GET['maxage'];
-            } elseif (!isset($_GET['maxage']) || !$_GET['maxage']) {
-                $player->age = $_GET['minage'] . '-99';
+        if (isset($params['minage']) || isset($params['maxage'])) {
+            if (!isset($params['minage']) || !$params['minage']) {
+                $player->age = $params['maxage'];
+            } elseif (!isset($params['maxage']) || !$params['maxage']) {
+                $player->age = $params['minage'] . '-99';
             } else {
-                $player->age = str_replace('-', '', $_GET['minage']) . '-' . str_replace('-', '', $_GET['maxage']);
+                $player->age = str_replace('-', '', $params['minage']) . '-' . str_replace('-', '', $params['maxage']);
             }
         }
-        if (isset($_GET['minaverage']) || isset($_GET['maxaverage'])) {
-            if (!isset($_GET['minaverage']) || !$_GET['minaverage']) {
-                $player->average = $_GET['maxaverage'];
-            } elseif (!isset($_GET['maxaverage']) || !$_GET['maxaverage']) {
-                $player->average = $_GET['minaverage'] . '-99';
+        if (isset($params['minaverage']) || isset($params['maxaverage'])) {
+            if (!isset($params['minaverage']) || !$params['minaverage']) {
+                $player->average = $params['maxaverage'];
+            } elseif (!isset($params['maxaverage']) || !$params['maxaverage']) {
+                $player->average = $params['minaverage'] . '-99';
             } else {
-                $player->average = str_replace('-', '', $_GET['minaverage']) . '-' . str_replace('-', '', $_GET['maxaverage']);
+                $player->average = str_replace('-', '', $params['minaverage']) . '-' . str_replace('-', '', $params['maxaverage']);
             }
         }
-        if (isset($_GET['position'])) {
-            if (is_array($_GET['position'])) {
-                $player->position = implode(',', $_GET['position']);
+        if (isset($params['position'])) {
+            if (is_array($params['position'])) {
+                $player->position = implode(',', $params['position']);
             }
         }
-        if (isset($_GET['forecast']) && $_GET['forecast']) {
-            $player->forecast = $_GET['forecast'];
+        if (isset($params['forecast']) && $params['forecast']) {
+            $player->forecast = $params['forecast'];
         }
-        if (isset($_GET['experience']) && $_GET['experience']) {
-            $player->forecast = $_GET['experience'];
+        if (isset($params['experience']) && $params['experience']) {
+            $player->forecast = $params['experience'];
         }
-        if (isset($_GET['progression']) && $_GET['progression']) {
-            $player->progression = $_GET['progression'];
+        if (isset($params['progression']) && $params['progression']) {
+            $player->progression = $params['progression'];
         }
-        if (isset($_GET['skills'])) {
-            if (is_array($_GET['skills'])) {
-                foreach ($_GET['skills'] as $name => $amount) {
+        if (isset($params['skills'])) {
+            if (is_array($params['skills'])) {
+                foreach ($params['skills'] as $name => $amount) {
                     $player->getSkills()->$name = $amount; 
                 }
             }
         }
-        if (isset($_GET['stats'])) {
-            if (is_array($_GET['stats'])) {
-                foreach ($_GET['stats'] as $name => $amount) {
+        if (isset($params['stats'])) {
+            if (is_array($params['stats'])) {
+                foreach ($params['stats'] as $name => $amount) {
                     $player->getStats()->$name = $amount; 
                 }
             }
