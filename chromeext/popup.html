@@ -7,10 +7,12 @@
     </style>
 
     <!-- JavaScript and HTML must be in separate files for security. -->
+    <script type="text/javascript" src="manageplayer.js"></script>
   </head>
   <body>
     <h1>Sell this player?</h1>
     <p>To list this player for sale on the transfer market, click the button below</p>
-    <p><input type="submit" value="Sell"></p>
+    <p><input type="button" value="Sell" onclick="sellplayer();"></p>
+    <p>To update player, enter the code<input type="text" placeholder="code" id="code"></p>
   </body>
 </html>

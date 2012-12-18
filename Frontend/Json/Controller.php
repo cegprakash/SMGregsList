@@ -43,8 +43,8 @@ function __error($level, $err, $file, $line)
     ));
     exit;
 }
-set_exception_handler('__handler');
-set_error_handler('__error');
+set_exception_handler(__NAMESPACE__ . '\\__handler');
+set_error_handler(__NAMESPACE__ . '\\__error');
 class Controller extends HTMLController
 {
     public static $id = 0;
@@ -84,6 +84,32 @@ class Controller extends HTMLController
         } else {
             throw new \Exception("This JSON-RPC server should only be accessed via programmatic API");
         }
+    }
+
+    function listMessages(array $newmessages)
+    {
+        return parent::listMessages(array('reply'));
+    }
+
+    function receive($message, $content)
+    {
+        if ($message == 'reply') {
+            return $this->jsonReply($content['message'], $content['params'], self::$id);
+        }
+        return parent::receive($message, $content);
+    }
+
+    function jsonReply($message, $params, $id)
+    {
+        $info = json_encode(array(
+            'id' => $id,
+            'message' => $message,
+            'params' => $params
+        ));
+        header('Content-type: application/json');
+        header('Content-length: ' . strlen($info));
+        echo $info;
+        return true;
     }
 
     function getParams($type)

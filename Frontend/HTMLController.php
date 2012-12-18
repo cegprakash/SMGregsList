@@ -77,6 +77,9 @@ class HTMLController extends Messager
 
     function detectSell()
     {
+        if ($this->getMessage('search') == 'search') {
+            return;
+        }
         $params = $this->getParams('sell');
         if ($this->getMessage('sell') == 'delete' && isset($params['code'])) {
             // find the player
@@ -194,6 +197,9 @@ class HTMLController extends Messager
 
     function detectSearch()
     {
+        if ($this->getMessage('search') !== 'search') {
+            return;
+        }
         $params = $this->getParams('search');
         if (!isset($params) || !isset($params['id'])) {
             $this->broadcast('searchResults', array());

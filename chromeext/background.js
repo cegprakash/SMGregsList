@@ -40,6 +40,19 @@ chrome.extension.onMessage.addListener(
           sendthis = sendResponse;
         }
         break;
+      case 7:
+        if (player[1]) {
+          info.code = player[1];
+        }
+        remote("addPlayer", info, sendResponse);
+        break;
+      case 8:
+        remote("search", player[1], sendResponse);
+        break;
+      case 9:
+        info.code = player[1];
+        remote("deletePlayer", info, sendResponse);
+        break;
     }
     if (received.length == 4) {
       chrome.pageAction.show(sender.tab.id);
