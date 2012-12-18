@@ -31,7 +31,7 @@ class SellPlayer extends Player implements WriteablePlayer
 
     function save()
     {
-        throw new \Exception(json_encode(get_object_vars($this)));
+        //$this->showme();
         if (!$this->id) {
             throw new \Exception('Player ID must be set, please try again');
         }

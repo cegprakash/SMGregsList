@@ -165,8 +165,6 @@ class HTMLController extends Messager
                 $player->forecast = $value;
             }
         }
-        throw new \Exception($params['forecast']);
-        $player->showme();
         if (isset($params['progression']) && $params['progression']) {
             $value = filter_var($params['progression'], FILTER_SANITIZE_NUMBER_INT);
             if ($value > 0 && $value < 100) {
@@ -191,6 +189,8 @@ class HTMLController extends Messager
                 }
             }
         }
+        //throw new \Exception($params['forecast']);
+        //$player->showme();
         $this->broadcast('sellDetected', $player);
         if ($this->getMessage('sell') == 'confirm') {
             $this->broadcast('addPlayer', $player);

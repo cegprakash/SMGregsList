@@ -81,7 +81,7 @@ class Controller extends HTMLController
                                            'Invalid service, method or id');
             }
             self::$id = $this->input['id'];
-        throw new \Exception(json_encode($this->input['params']));
+//          throw new \Exception(json_encode($this->input['params']));
         } else {
             throw new \Exception("This JSON-RPC server should only be accessed via programmatic API");
         }
