@@ -1,6 +1,6 @@
 <?php
 namespace SMGregsList\Frontend;
-use SMGregsList\Player;
+use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsList\SellPlayer;
 
 class Json extends HTML
 {
@@ -9,20 +9,13 @@ class Json extends HTML
         if (null === $controller) {
             $controller = new Json\Controller;
         }
-        $this->searchfor = new SearchPlayer;
-        $this->sellplayer = new SellPlayer;
-        $this->addDependency($controller);
-        $this->template = new \PEAR2\Templates\Savant\Main(array(
-            'template_path' => realpath(__DIR__ . '/../templates'),
-            'escape' => 'htmlentities',
-        ));
+        parent::__construct($controller);
     }
 
     function receive($message, $content)
     {
         if ($message == 'ready') {
-            $this->discoverSell();
-            $this->discoverSearch();
+            $this->broadcast('parseJson');
         } elseif ($message == 'searchResult') {
             if (!is_array($content)) {
                 throw new \Exception('internal Error: results of search is not an array');
@@ -37,12 +30,12 @@ class Json extends HTML
                                             'params' => array('players' => $this->toJsonContent($content))));
         } elseif ($message == 'search') {
             $this->searchfor = $content;
-        } elseif ($message == 'playerAdded' || $message == 'sellDetected') {
+        } elseif ($message == 'playerAdded') {
             $this->broadcast('reply', array('message' => 'playerAdded',
-                                            'params' => array('id' => $content->id, 'code' => $content->code)));
+                                            'params' => array('id' => $content->getId(), 'code' => $content->getCode())));
         } elseif ($message == 'playerRemoved') {
             $this->broadcast('reply', array('message' => 'playerRemoved',
-                                            'params' => array('id' => $content->id)));
+                                            'params' => array('id' => $content->getId())));
         }
     }
 
@@ -50,11 +43,11 @@ class Json extends HTML
         $ret = array();
         foreach ($players as $player) {
             $ret[] = array(
-                'id' => $player->id,
-                'average' => $player->average,
-                'experience' => $player->experience,
-                'age' => $player->age,
-                'position' => $player->position
+                'id' => $player->getId(),
+                'average' => $player->getAverage(),
+                'experience' => $player->getExperience(),
+                'age' => $player->getAge(),
+                'position' => $player->getPosition()
             );
         }
         return $ret;

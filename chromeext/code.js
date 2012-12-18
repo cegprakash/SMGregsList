@@ -1,6 +1,9 @@
 function scrapeskills (html) {
   var ret = {};
   var skills = html.match(/<tr><th colspan="2">([a-z-A-Z ]+)<\/th><\/tr>\s+<tr>\s+<td style="padding: 0;"><img style="width: 68px;" src="\/img\/powerups\/[^\.]+\.jpg" ?\/?><\/td>\s+<td style="padding: 0; padding-left: 5px;">\s+<div style="width: 90px;">\s+<div style="font-size: 9px; line-height: 10px; font-weight: normal; height: 20px; overflow: hidden;">[^<]+<\/div>\s+<div class="balones"><img src="\/img\/new\/sport_soccer.png" title="([0-9]+)%/g);
+  if (!skills) {
+    return ret;
+  }
   for (var i=0; i < skills.length; i++) {
     var skill = skills[i].match(/<tr><th colspan="2">([a-z-A-Z ]+)<\/th><\/tr>\s+<tr>\s+<td style="padding: 0;"><img style="width: 68px;" src="\/img\/powerups\/[a-z_A-Z]+\.jpg" ?\/?><\/td>\s+<td style="padding: 0; padding-left: 5px;">\s+<div style="width: 90px;">\s+<div style="font-size: 9px; line-height: 10px; font-weight: normal; height: 20px; overflow: hidden;">[^<]+<\/div>\s+<div class="balones"><img src="\/img\/new\/sport_soccer.png" title="([0-9]+)%/);
     calc = Number(skill[2]);
@@ -121,6 +124,8 @@ function scrapepage (parenthtml) {
   }
   var exp = html.match(/<td>Experience<\/td>\s+<td>([0-9\.,]+)/);
   ret["experience"] = Number(exp[1]);
+  var age = html.match(/<td>([0-9]+) years/);
+  ret["age"] = Number(age[1]);
   var inf = html.match(/<td>Total average<\/td>\s+<td class="numerico">\s+(\d+)<span style="font-size: 0.7em;">\.(\d+)<\/span>/);
   if (inf[2] == "100") {
     ret["average"] = Number(inf[1] + 1);
@@ -129,3 +134,25 @@ function scrapepage (parenthtml) {
   }
   return ret;
 }
+
+var player;
+function sellPlayer()
+{
+  remote("confirm", player, function(result) {
+    if (result.error) {
+      alert(result.error.message);
+    }
+  });
+}
+var menu = document.getElementsByClassName("jugadormenuflotante")[0];
+var el = document.createElement("a");
+el.className = "boton";
+el.href="#";
+el.addEventListener("click", sellPlayer);
+el.id = "gregslist";
+el.appendChild(document.createTextNode("Add to Greg's List"));
+menu.insertBefore(el, menu.firstChild);
+
+chrome.extension.sendMessage([7], function(response) {
+  player = response;
+});

@@ -155,4 +155,17 @@ abstract class Player
     {
         return $this->skills;
     }
+
+    function showme()
+    {
+        $info = get_object_vars($this);
+        $info['skills'] = $info['stats'] = array();
+        foreach ($this->stats as $stat => $value) {
+            $info['stats'][$stat] = $value;
+        }
+        foreach ($this->skills as $stat => $value) {
+            $info['stats'][$stat] = $value;
+        }
+        throw new \Exception(json_encode($info));
+    }
 }

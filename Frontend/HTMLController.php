@@ -22,7 +22,7 @@ class HTMLController extends Messager
 
     function listMessages(array $newmessages)
     {
-        return parent::listMessages(array('detectSearch', 'detectSell', 'retrieved'));
+        return parent::listMessages(array_merge($newmessages, array('detectSearch', 'detectSell', 'retrieved')));
     }
 
     function getParams($type)
@@ -151,7 +151,7 @@ class HTMLController extends Messager
             }
         }
         if (isset($params['average']) && $params['average']) {
-            $value = filter_var($params['average'], FILTER_SANITIZE_NUMBER_INT, FILTER_FLAG_ALLOW_FRACTION);
+            $value = filter_var($params['average'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             if ($value > 0 && $value < 100) {
                 $player->average = $value;
             }
@@ -165,6 +165,8 @@ class HTMLController extends Messager
                 $player->forecast = $value;
             }
         }
+        throw new \Exception($params['forecast']);
+        $player->showme();
         if (isset($params['progression']) && $params['progression']) {
             $value = filter_var($params['progression'], FILTER_SANITIZE_NUMBER_INT);
             if ($value > 0 && $value < 100) {

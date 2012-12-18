@@ -4,11 +4,6 @@
   "manifest_version": 2,
   "description": "Striker Manager transfer market",
   "background": { "scripts": ["background.js"] },
-  "page_action": {
-    "default_icon": "icon.png",
-    "default_title": "Sell a Striker Manager Player on Greg's List",
-    "default_popup": "popup.html" 
-  },
   "content_scripts": [
     {
       "matches" : ["http://en3.strikermanager.com/inicio.php*"],
@@ -17,18 +12,13 @@
     {
       "matches" : ["http://en3.strikermanager.com/jugador.php*"],
       "all_frames": true,
-      "js":["code.js","popup.js"]
-    },
-    {
-      "matches" : ["http://en3.strikermanager.com/jugador.php*"],
-      "all_frames": true,
-      "js":["remote.js"]
+      "js":["remote.js","code.js","popup.js"]
     }
   ],
   "permissions": [
     "http://www.chiaraquartet.net/gregslistbeta/",
     "http://en3.strikermanager.com/",
-    "http://localhost",
+    "http://localhost/sm/",
     "tabs"
   ]
 }

@@ -81,6 +81,7 @@ class Controller extends HTMLController
                                            'Invalid service, method or id');
             }
             self::$id = $this->input['id'];
+        throw new \Exception(json_encode($this->input['params']));
         } else {
             throw new \Exception("This JSON-RPC server should only be accessed via programmatic API");
         }
@@ -88,13 +89,19 @@ class Controller extends HTMLController
 
     function listMessages(array $newmessages)
     {
-        return parent::listMessages(array('reply'));
+        return parent::listMessages(array('reply', 'parseJson'));
     }
 
     function receive($message, $content)
     {
         if ($message == 'reply') {
             return $this->jsonReply($content['message'], $content['params'], self::$id);
+        } elseif ($message == 'parseJson') {
+            if ($this->getMessage('search') == 'search') {
+                return $this->detectSearch();
+            } else {
+                return $this->detectSell();
+            }
         }
         return parent::receive($message, $content);
     }

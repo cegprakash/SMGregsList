@@ -12,7 +12,14 @@ function remote(message, params, callback)
   xhr.onreadystatechange = function()
   {
     if (xhr.readyState == 4 && xhr.status == 200) {
-     var ret = JSON.parse(xhr.responseText);
+     if (!xhr.responseText) {
+      alert("internal error: empty response");
+     }
+     try {
+      var ret = JSON.parse(xhr.responseText);
+     } catch (e) {
+      alert("internal JSON parsing error, text returned was: " + xhr.responseText);
+     }
      if (status == ret.id) {
        if (callback) callback(ret);
      }

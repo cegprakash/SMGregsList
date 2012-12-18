@@ -72,6 +72,9 @@ class Messager
             var_dump("message sending: $message");
         }
         foreach ($this->receivers as $receiver) {
+            if (self::$DEBUG) {
+                var_dump("receiver is a " . get_class($receiver));
+            }
             if (!in_array($message, $receiver->listMessages(array()))) {
                 continue;
             }

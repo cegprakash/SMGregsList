@@ -8,10 +8,9 @@ chrome.extension.sendMessage([6], function(response) {
     xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function()
     {
-      var skills = {};
       if (xhr.readyState == 4 && xhr.status == 200) {
        var skills = scrapeskills(xhr.responseText);
-       chrome.extension.sendMessage([4, info], function(response) {
+       chrome.extension.sendMessage([4, skills], function(response) {
         
        });
       } // ignore all failures
