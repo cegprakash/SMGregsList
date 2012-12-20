@@ -11,10 +11,6 @@ var player = {
       return "List For Sale [ML]";
     }
   },
-  setupElement: function(self)
-  {
-    
-  },
   checkExists: function()
   {
     var self = this;
@@ -59,17 +55,11 @@ var player = {
       if (!self.isours) return;
       var musthavecode = false;
       if (self.exists) {
-        musthavecode = true;
-      }
-      chrome.storage.sync.get(['SMGregsList.codes'], function(a) {
-        self.codes = a['SMGregsList.codes'];
-      });
-      if (!self.codes) {
-        self.codes = {};
-      }
-      if (self.codes[self.player.id]) {
-        self.player.code = self.codes[self.player.id];
-        musthavecode = false;
+        if (self.codes[self.player.id]) {
+          self.player.code = self.codes[self.player.id];
+        } else {
+          musthavecode = true;
+        }
       }
       if (musthavecode) {
         self.player.code = prompt("Please enter the player update code", self.player.code);
@@ -247,6 +237,12 @@ var player = {
     return ret;
   }
 }
+chrome.storage.sync.get(['SMGregsList.codes'], function(a) {
+  player.codes = a['SMGregsList.codes'];
+  if (!player.codes) {
+    player.codes = {};
+  }
+});
 
 var menu = document.getElementsByClassName("jugadormenuflotante")[0].parentNode.firstChild.nextSibling;
 menu.addEventListener("mouseover", player.createElement());
