@@ -99,11 +99,21 @@ class Controller extends HTMLController
         } elseif ($message == 'parseJson') {
             if ($this->getMessage('search') == 'search') {
                 return $this->detectSearch();
+            } elseif ($this->getMessage('search') == 'exists') {
+                return $this->detectPlayer();
             } else {
                 return $this->detectSell();
             }
         }
         return parent::receive($message, $content);
+    }
+
+    function detectPlayer()
+    {
+        $params = $this->getParams('search');
+        $player = new SellPlayer;
+        $player->id = $params['id'];
+        $this->broadcast('exists', $player);
     }
 
     function jsonReply($message, $params, $id)

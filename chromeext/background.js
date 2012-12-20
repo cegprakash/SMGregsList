@@ -32,6 +32,7 @@ chrome.extension.onMessage.addListener(
         parenthtml = player[1];
         if (sendthis) {
           sendthis(parenthtml);
+          sendthis = null;
         }
         break;
       case 6 :

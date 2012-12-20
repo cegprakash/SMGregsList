@@ -1,5 +1,5 @@
 chrome.extension.sendMessage([6], function(response) {
-  var info = scrapepage(response);
+  var info = player.scrapepage(response);
   if (info) {
     chrome.extension.sendMessage([1, info], function(response) {
       
@@ -9,7 +9,7 @@ chrome.extension.sendMessage([6], function(response) {
     xhr.onreadystatechange = function()
     {
       if (xhr.readyState == 4 && xhr.status == 200) {
-       var skills = scrapeskills(xhr.responseText);
+       var skills = player.scrapeskills(xhr.responseText);
        chrome.extension.sendMessage([4, skills], function(response) {
         
        });
@@ -21,7 +21,7 @@ chrome.extension.sendMessage([6], function(response) {
     xhr2 = new XMLHttpRequest();
     xhr2.onreadystatechange = function() {
       if (xhr2.readyState == 4 && xhr.status == 200) {
-        var progression = scrapeprogression(xhr2.responseText);
+        var progression = player.scrapeprogression(xhr2.responseText);
         if (progression) {
          chrome.extension.sendMessage([2, progression], function(response) {
          
@@ -38,7 +38,7 @@ chrome.extension.sendMessage([6], function(response) {
     
     xhr3 = new XMLHttpRequest();
     xhr3.onreadystatechange = function() {
-      var forecast = scrapeforecast(xhr3.responseXML);
+      var forecast = player.scrapeforecast(xhr3.responseXML);
       if (forecast) {
        chrome.extension.sendMessage([3, forecast], function(response) {
       

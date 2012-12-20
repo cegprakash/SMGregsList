@@ -38,8 +38,8 @@ class HTML extends Messager implements Frontend
 
     function listMessages(array $newmessages)
     {
-        return parent::listMessages(array('ready', 'searchResult', 'search', 'playerAdded', 'sellDetected',
-                                          'verify', 'confirm', 'playerRemoved'));
+        return parent::listMessages(array_merge($newmessages, array('ready', 'searchResult', 'search', 'playerAdded', 'sellDetected',
+                                          'verify', 'confirm', 'playerRemoved')));
     }
 
     function receive($message, $content)

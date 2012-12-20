@@ -12,6 +12,11 @@ class Json extends HTML
         parent::__construct($controller);
     }
 
+    function listMessages(array $newmessages)
+    {
+        return parent::listMessages(array_merge($newmessages, array('existsResult')));
+    }
+
     function receive($message, $content)
     {
         if ($message == 'ready') {
@@ -28,8 +33,9 @@ class Json extends HTML
             $this->searchresults = $content;
             $this->broadcast('reply', array('message' => 'searchResult',
                                             'params' => array('players' => $this->toJsonContent($content))));
-        } elseif ($message == 'search') {
-            $this->searchfor = $content;
+        } elseif ($message == 'existsResult') {
+            $this->broadcast('reply', array('message' => 'existsResult',
+                                            'params' => array('exists' => $content)));
         } elseif ($message == 'playerAdded') {
             $this->broadcast('reply', array('message' => 'playerAdded',
                                             'params' => array('id' => $content->getId(), 'code' => $content->getCode())));
