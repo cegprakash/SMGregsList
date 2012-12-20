@@ -129,9 +129,19 @@ class Controller extends HTMLController
     function detectPlayer()
     {
         $params = $this->getParams('search');
-        $player = new SellPlayer;
-        $player->id = $params['id'];
-        $this->broadcast('exists', $player);
+        if (isset($params['ids'])) {
+            $players = array();
+            foreach ($params['ids'] as $id) {
+                $player = new SellPlayer;
+                $player->id = $id;
+                $players[] = $sell;
+            }
+            $this->broadcast('existsmultiple', $players);
+        } else {
+            $player = new SellPlayer;
+            $player->id = $params['id'];
+            $this->broadcast('exists', $player);
+        }
     }
 
     function jsonReply($message, $params, $id)

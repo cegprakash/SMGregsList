@@ -11,7 +11,8 @@ abstract class DataLayer extends Messager
 
     function listMessages(array $newmessages)
     {
-        return parent::listMessages(array_merge($newmessages, array('addPlayer', 'deletePlayer', 'search', 'retrieve', 'exists')));
+        return parent::listMessages(array_merge($newmessages, array('addPlayer', 'deletePlayer', 'search', 'retrieve', 'exists',
+                                                                    'existsmultiple')));
     }
 
     function receive($message, $content)
@@ -51,6 +52,15 @@ abstract class DataLayer extends Messager
                 throw new \Exception('Internal error: retrieve message received, but content was not a Player object');
             }
             $this->broadcast('existsResult', $this->exists($content) ? true : false);
+        } elseif ($message == 'existsmultiple') {
+            $result = array();
+            foreach ($content as $player) {
+                if (!($player instanceof Player)) {
+                    throw new \Exception('Internal error: retrieve message received, but content was not a Player object');
+                }
+                $result[$player->id] = $this->exists($player) ? true : false;
+            }
+            $this->broadcast('existsResult', $result);
         }
     }
 }
