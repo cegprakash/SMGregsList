@@ -1,9 +1,16 @@
 {
-  "name": "SM Greg's List",
-  "version": "1.0",
+  "name": "Striker Manager Transfer Agreement Market",
+  "version": "0.1.0",
   "manifest_version": 2,
   "description": "Striker Manager transfer market",
   "background": { "scripts": ["background.js"] },
+  "browser_action": {
+    "default_icon": {
+        "38": "icon48.png"
+    },
+    "default_title": "Search Striker Manager Transfer Market",
+    "default_popup": "popup.html"
+  },
   "content_scripts": [
     {
       "matches" : ["http://en3.strikermanager.com/inicio.php*"],
@@ -15,10 +22,12 @@
       "js":["remote.js","code.js","popup.js"]
     }
   ],
+  "icons": { "16": "icon16.png",
+             "48": "icon48.png",
+            "128": "icon128.png" },
   "permissions": [
-    "http://www.chiaraquartet.net/gregslistbeta/",
+    "http://www.chiaraquartet.net/sm/",
     "http://en3.strikermanager.com/",
-    "http://localhost/sm/",
     "tabs",
     "storage"
   ]

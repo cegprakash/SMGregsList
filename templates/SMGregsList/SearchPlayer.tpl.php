@@ -1,4 +1,4 @@
- <h1>Greg's List: Search for Players to Buy</h1>
+ <h1>Merc's List: Search for Players to Buy</h1>
  <p>Search for Striker Manager players that are for sale by transfer agreement</p>
  <?php
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);

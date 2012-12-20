@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
  <head>
-  <title>Greg's List - Striker Manager transfer market <?php echo $context->subtitle ?></title>
+  <title>Merc's List - Striker Manager transfer market <?php echo $context->subtitle ?></title>
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
    <style media="screen" type="text/css">
     .form-horizontal .control-group {
