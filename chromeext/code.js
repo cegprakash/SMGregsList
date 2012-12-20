@@ -26,14 +26,6 @@ var player = {
       if (result.params.exists) {
         self.exists = true; // ensure we get an "update this" menu item
       }
-      if (!self.isours) return;
-      var codes = chrome.storage.sync.get('SMGregsList.codes', function() {});
-      if (!codes) {
-        codes = {};
-      }
-      if (codes[self.player.id]) {
-        self.player.code = codes[self.player.id];
-      }
     });
   },
   createElement: function()
