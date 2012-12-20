@@ -28,7 +28,7 @@ function remote(message, params, callback)
      alert("Error: returned status code " + xhr.status + " " + xhr.statusText);
     }
   }
-  xhr.open("POST", "http://chiaraquartet.net/sm/jsonrpc.php", true);
+  xhr.open("POST", "http://localhost/sm/jsonrpc.php", true);
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.send(json);
 }

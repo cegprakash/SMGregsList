@@ -4,13 +4,6 @@
   "manifest_version": 2,
   "description": "Striker Manager transfer market",
   "background": { "scripts": ["background.js"] },
-  "browser_action": {
-    "default_icon": {
-        "38": "icon48.png"
-    },
-    "default_title": "Search Striker Manager Transfer Market",
-    "default_popup": "popup.html"
-  },
   "content_scripts": [
     {
       "matches" : ["http://en3.strikermanager.com/inicio.php*"],
@@ -27,6 +20,7 @@
             "128": "icon128.png" },
   "permissions": [
     "http://www.chiaraquartet.net/sm/",
+    "http://localhost/sm/",
     "http://en3.strikermanager.com/",
     "tabs",
     "storage"
