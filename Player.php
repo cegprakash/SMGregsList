@@ -108,7 +108,7 @@ abstract class Player
             'Shot',
             'Dribbling',
             'Speed',
-            'Ball Steal',
+            'Ball steal',
             'Saves',
             'Strength',
             'Technique',
