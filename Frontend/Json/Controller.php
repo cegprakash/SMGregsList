@@ -134,7 +134,7 @@ class Controller extends HTMLController
             foreach ($params['ids'] as $id) {
                 $player = new SellPlayer;
                 $player->id = $id;
-                $players[] = $sell;
+                $players[] = $player;
             }
             $this->broadcast('existsmultiple', $players);
         } else {
