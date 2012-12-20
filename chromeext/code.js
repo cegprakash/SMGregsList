@@ -78,6 +78,12 @@ var player = {
           return;
         }
       }
+      if (!self.player.forecast) {
+        self.player.forecast = prompt("Do you know the forecast of your player?", 0);
+      }
+      if (!self.player.progression) {
+        self.player.progression = prompt("Do you know the progression of your player?", 0);
+      }
       remote("confirm", self.player, function(result) {
         if (result.error) {
           alert(result.error.message);
