@@ -43,6 +43,9 @@ class HTMLController extends Messager
         if (!$params) {
             return 'sellform';
         }
+        if (isset($params['searchbutton'])) {
+            return 'search';
+        }
         if (isset($params['delete'])) {
             return 'delete';
         }

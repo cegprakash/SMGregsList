@@ -91,7 +91,7 @@ if ($context->getExperience()) echo $context->getExperience()
 </div> <!-- tab content -->
 <div class="control-group">
  <div class="controls">
-  <input type="submit" value="Search" class="btn btn-primary"/>
+  <input type="submit" value="Search" class="btn btn-primary" name="searchbutton"/>
  </div>
 </div>
 </form>
