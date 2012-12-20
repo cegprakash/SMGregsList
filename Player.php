@@ -121,18 +121,18 @@ abstract class Player
     function listSkills()
     {
         return array(
-            'Penalty Expert',
-            'Change of Pace',
-            'Running with the Ball',
+            'Penalty expert',
+            'Change of pace',
+            'Running with the ball',
             'Steel Lung',
-            'Net Breaker',
+            'Net-breaker',
             'Panther Save',
-            'Aerial Play',
+            'Aerial play',
             'Sliding Tackle',
             'Precise Pass',
             'Slalom Ace',
             'Celebrity',
-            'Defensive Wall'
+            'Defensive wall'
         );
     }
 

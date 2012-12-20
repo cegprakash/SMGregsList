@@ -1,6 +1,6 @@
 {
-  "name": "Striker Manager Transfer Agreement Market",
-  "version": "0.1.0",
+  "name": "Striker Manager Transfer Market",
+  "version": "0.1.1",
   "manifest_version": 2,
   "description": "Striker Manager transfer market",
   "background": { "scripts": ["background.js"] },
@@ -18,6 +18,11 @@
       "matches" : ["http://en3.strikermanager.com/plantilla.php*"],
       "all_frames": true,
       "js":["remote.js","parsesquad.js"]
+    },
+    {
+      "matches" : ["http://en3.strikermanager.com/ojeador.php*"],
+      "all_frames": true,
+      "js":["remote.js","parsescout.js"]
     }
   ],
   "icons": { "16": "icon16.png",
@@ -25,7 +30,6 @@
             "128": "icon128.png" },
   "permissions": [
     "http://www.chiaraquartet.net/sm/",
-    "http://localhost/sm/",
     "http://en3.strikermanager.com/",
     "tabs",
     "storage"
