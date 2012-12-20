@@ -58,7 +58,7 @@ abstract class DataLayer extends Messager
                 if (!($player instanceof Player)) {
                     throw new \Exception('Internal error: retrieve message received, but content was not a Player object');
                 }
-                $result[$player->id] = $this->exists($player) ? true : false;
+                $result[$player->getId()] = $this->exists($player) ? true : false;
             }
             $this->broadcast('existsResult', $result);
         }
