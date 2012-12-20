@@ -14,16 +14,21 @@ function scrapepage() {
       alert(result.error.message);
       return;
     }
-    var kiddos = document.getElementsByClassName('fl verde');
-    for (var i = 0; i < kiddos.length; i++) {
-      var kiddo = kiddos[i];
-      var href = kiddo.parentElement.parentElement.firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.firstChild.href;
-      var idcheck = href.match(/jugador.php\?id_jugador=([0-9]+)/);
-      if (result.params.exists[idcheck]) {
-        // player is for sale
-        var forsale = document.createElement('img');
-        forsale.src = 'http://chiaraquartet.net/sm/chromeext/icon16.png';
-        kiddo.appendChild(this.forsale);
+    for (var b = 0; b < ['1','2'].length; b++) {
+      var j = ['1', '2'][b];
+      var kiddos = document.getElementsByClassName('tipo' + j);
+      for (var i = 0; i < kiddos.length; i++) {
+        // I love DOM...
+        var kiddo = kiddos[i].firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling
+          .nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling;
+        var href = kiddos[i].firstChild.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.firstChild.href;
+        var idcheck = href.match(/jugador.php\?id_jugador=([0-9]+)/);
+        if (result.params.exists[Number(idcheck[1])]) {
+          // player is for sale
+          var forsale = document.createElement('img');
+          forsale.src = 'http://chiaraquartet.net/sm/chromeext/icon16.png';
+          kiddo.appendChild(forsale);
+        }
       }
     }
   });
