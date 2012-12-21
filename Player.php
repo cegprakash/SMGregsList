@@ -126,7 +126,7 @@ abstract class Player
             'Running with the ball',
             'Steel lung',
             'Net-breaker',
-            'Panther Save',
+            'Panther save',
             'Aerial play',
             'Sliding tackle',
             'Precise Pass',
