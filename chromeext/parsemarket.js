@@ -6,6 +6,7 @@
       menuitem.className = 'botoncorto';
       menuitem.href = 'http://chiaraquartet.net/sm/index.php';
       menuitem.appendChild(document.createTextNode("Transfer Market"));
+      menuitem.target = "_blank";
       market[i].insertBefore(menuitem, market[i].firstChild.nextSibling);
       return;
     }
