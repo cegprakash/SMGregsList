@@ -28,6 +28,11 @@
       "matches" : ["http://en3.strikermanager.com/ojeador.php*"],
       "all_frames": true,
       "js":["remote.js","parsescout.js"]
+    },
+    {
+      "matches" : ["http://en3.strikermanager.com/cartera.php*"],
+      "all_frames": true,
+      "js":["remote.js","parsescout.js"]
     }
   ],
   "icons": { "16": "icon16.png",
