@@ -53,10 +53,10 @@ var player = {
   },
   updateLink: function()
   {
-    this.el.firstChild.innerHTML = this.getSaleMessage();
+    this.el.firstChild.nodeValue = this.getSaleMessage();
     if (this.exists) {
       if (this.removeel) {
-        this.removeel.visibility = "show";
+        this.removeel.style.display = "inherit";
         return;
       }
       this.removeel = document.createElement("a");
@@ -69,22 +69,23 @@ var player = {
       menu.insertBefore(this.removeel, menu.firstChild.nextSibling);
     } else {
       if (this.removeel) {
-        this.removeel.visibility = "hidden";
+        this.removeel.style.display = "none";
       }
     }
+    this.updateIcon();
   },
   updateIcon: function()
   {
     if (this.exists) {
       if (this.forsale) {
-        this.forsale.style.visibility = 'show';
+        this.forsale.style.display = 'inherit';
       } else {
         this.forsale = document.createElement('img');
         this.forsale.src = 'http://chiaraquartet.net/sm/chromeext/icon16.png';
         document.getElementsByClassName('estadojugador')[0].appendChild(this.forsale);
       }
     } else if (this.forsale) {
-      this.forsale.style.visibility = 'hidden';
+      this.forsale.style.display = 'none';
     }
   },
   codes: {},
@@ -182,6 +183,7 @@ var player = {
           self.codes[result.params.id] = result.params.code;
           self.player.code = result.params.code;
           chrome.storage.sync.set({'SMGregsList.codes': self.codes});
+          self.exists = true;
           self.updateLink();
         }
       });
