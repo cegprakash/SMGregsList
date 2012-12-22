@@ -1,5 +1,6 @@
 var player = {
   el: null,
+  removeel: null,
   player: {},
   isours: false,
   exists: false,
@@ -46,12 +47,31 @@ var player = {
       self.el.addEventListener("click", self.sellPlayer());
       self.el.id = "gregslist";
       self.el.appendChild(document.createTextNode(self.getSaleMessage()));
+      self.updateLink();
       menu.insertBefore(self.el, menu.firstChild);
     };
   },
   updateLink: function()
   {
     this.el.firstChild.innerHTML = this.getSaleMessage();
+    if (this.exists) {
+      if (this.removeel) {
+        this.removeel.visibility = "show";
+        return;
+      }
+      this.removeel = document.createElement("a");
+      var menu = document.getElementsByClassName("jugadormenuflotante")[0];
+      this.removeel.className = "boton";
+      this.removeel.href="#";
+      this.removeel.id="removegregslist";
+      this.removeel.appendChild(document.createTextNode("Delete Listing [ML]"));
+      this.removeel.addEventListener("click", this.deletePlayer());
+      menu.insertBefore(this.removeel, menu.firstChild.nextSibling);
+    } else {
+      if (this.removeel) {
+        this.removeel.visibility = "hidden";
+      }
+    }
   },
   updateIcon: function()
   {
@@ -68,6 +88,44 @@ var player = {
     }
   },
   codes: {},
+  deletePlayer: function()
+  {
+    var self = this;
+    return function() {
+      if (!self.isours) return;
+      var musthavecode = false;
+      if (self.exists) {
+        if (self.codes[self.player.id]) {
+          self.player.code = self.codes[self.player.id];
+        } else {
+          musthavecode = true;
+        }
+      }
+      if (musthavecode) {
+        self.player.code = prompt("Please enter the player update code", self.player.code);
+        if (!self.player.code) {
+          alert("Cannot update the listing without a player code");
+          return;
+        }
+      }
+      remote("delete", self.player, function(result) {
+        if (result.error) {
+          if (sm_debug) {
+            alert(result.error.message);
+          } else {
+            console.log(result.error.message);
+          }
+        } else {
+          alert("Successfully removed player from transfer list");
+          delete self.codes[result.params.id];
+          delete self.player.code;
+          self.exists = false;
+          chrome.storage.sync.set({'SMGregsList.codes': self.codes});
+          self.updateLink();
+        }
+      });
+    }
+  },
   sellPlayer: function()
   {
     var self = this;
@@ -90,6 +148,9 @@ var player = {
       }
       if (!self.player.forecast) {
         self.player.forecast = prompt("Do you know the forecast of your player?", 0);
+        if (self.player.forecast === null) {
+          self.player.forecast = "0";
+        }
         if (!self.player.forecast.match(/^[0-9]+$/)) {
           self.player.forecast = 0;
         }
@@ -99,6 +160,9 @@ var player = {
       }
       if (!self.player.progression) {
         self.player.progression = prompt("Do you know the progression of your player?", 0);
+        if (self.player.progression === null) {
+          self.player.progression = "0";
+        }
         if (!self.player.progression.match(/^[0-9]+$/)) {
           self.player.progression = 0;
         }
