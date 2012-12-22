@@ -4,6 +4,7 @@ var player = {
   player: {},
   isours: false,
   exists: false,
+  onauction: false,
   forsale: null,
   getSaleMessage: function()
   {
@@ -52,6 +53,9 @@ var player = {
       forsale.style.verticalAlign="text-bottom";
       self.el.appendChild(forsale);
       self.updateLink();
+      if (self.onauction && !self.exists) {
+        self.el.style.display = "none";
+      }
       menu.insertBefore(self.el, menu.firstChild);
     };
   },
@@ -256,6 +260,9 @@ var player = {
     }
     this.isours = true;
     this.checkExists();
+    if (html.match(/\/img\/new\/ioferta.png/)) {
+      this.onauction = true;
+    }
     var pos = html.match(/<td>Position<\/td>\s+<td>([^<]+)<\/td>/);
     var stats = html.match(/<td>([a-zA-Z ]+)<\/td>\s+<td>\s+<span style="display: none;">(\d\d\d)<\/span>\s+<div class="jugbarra" style="width: 99px">\s+<div class="jugbarracar" style="border: 1px outset #[a-f0-9]+; width: \d+px; background: #[a-f0-9]+;"><\/div>\s+<div class="jugbarranum">\d+%/g);
     var summaries = html.match(/<td>([A-Za-z]+ (?:points|average))<\/td>\s+<td class="numerico">\s+(\d+)<span style="font-size: 0.7em;">\.(\d+)<\/span>/g);
