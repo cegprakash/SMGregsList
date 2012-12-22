@@ -1,46 +1,68 @@
 {
   "name": "Striker Manager Transfer Market",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "manifest_version": 2,
   "description": "Striker Manager transfer agreement market application, augments the auction and loan markets at en3.strikermanager.com",
   "background": { "scripts": ["background.js"] },
   "content_scripts": [
     {
-      "matches" : ["http://en3.strikermanager.com/inicio.php*"],
+      "matches" : ["http://en3.strikermanager.com/inicio.php*",
+                   "http://en1.strikermanager.com/inicio.php*",
+                   "http://en2.strikermanager.com/inicio.php*",
+                   "http://en.strikermanager.com/inicio.php*"],
       "js":["parent.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/jugador.php*"],
+      "matches" : ["http://en3.strikermanager.com/jugador.php*",
+                   "http://en1.strikermanager.com/jugador.php*",
+                   "http://en2.strikermanager.com/jugador.php*",
+                   "http://en.strikermanager.com/jugador.php*"],
       "all_frames": true,
       "js":["remote.js","code.js","popup.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/plantilla.php*"],
+      "matches" : ["http://en3.strikermanager.com/plantilla.php*",
+                   "http://en1.strikermanager.com/plantilla.php*",
+                   "http://en2.strikermanager.com/plantilla.php*",
+                   "http://en.strikermanager.com/plantilla.php*"],
       "all_frames": true,
       "js":["remote.js","parsesquad.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/mercado.php*"],
+      "matches" : ["http://en3.strikermanager.com/mercado.php*",
+                   "http://en1.strikermanager.com/mercado.php*",
+                   "http://en2.strikermanager.com/mercado.php*",
+                   "http://en.strikermanager.com/mercado.php*"],
       "all_frames": true,
       "js":["remote.js","parsemarket.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/ojeador.php*"],
+      "matches" : ["http://en3.strikermanager.com/ojeador.php*",
+                   "http://en1.strikermanager.com/ojeador.php*",
+                   "http://en2.strikermanager.com/ojeador.php*",
+                   "http://en.strikermanager.com/ojeador.php*"],
       "all_frames": true,
       "js":["remote.js","parsescout.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/cartera.php*"],
+      "matches" : ["http://en3.strikermanager.com/cartera.php*",
+                   "http://en1.strikermanager.com/cartera.php*",
+                   "http://en2.strikermanager.com/cartera.php*",
+                   "http://en.strikermanager.com/cartera.php*"],
       "all_frames": true,
       "js":["remote.js","parsescout.js"]
     }
   ],
+  "options_page": "options.html",
   "icons": { "16": "icon16.png",
              "48": "icon48.png",
             "128": "icon128.png" },
   "permissions": [
     "http://www.chiaraquartet.net/sm/",
     "http://en3.strikermanager.com/",
+    "http://en2.strikermanager.com/",
+    "http://en1.strikermanager.com/",
+    "http://en.strikermanager.com/",
     "tabs",
     "storage"
   ]
