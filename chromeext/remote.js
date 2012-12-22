@@ -36,7 +36,7 @@ function remote(message, params, callback)
     } else if (xhr.readyState == 4) {
      if (sm_debug) {
       alert("Error: returned status code " + xhr.status + " " + xhr.statusText);
-     } else {
+     } else if (xhr.status) {
       console.log("Error: returned status code " + xhr.status + " " + xhr.statusText);
      }
     }
