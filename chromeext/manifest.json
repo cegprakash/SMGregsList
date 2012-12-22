@@ -59,6 +59,14 @@
                    "http://en.strikermanager.com/ver_subasta.php?accion=ventas"],
       "all_frames": true,
       "js":["debugsetting.js","remote.js","sale.js"]
+    },
+    {
+      "matches" : ["http://en3.strikermanager.com/subastar.php*",
+                   "http://en2.strikermanager.com/subastar.php*",
+                   "http://en1.strikermanager.com/subastar.php*",
+                   "http://en.strikermanager.com/subastar.php*"],
+      "all_frames": true,
+      "js":["debugsetting.js","remote.js","auction.js"]
     }
   ],
   "options_page": "options.html",
