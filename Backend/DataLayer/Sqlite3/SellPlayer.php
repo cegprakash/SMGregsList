@@ -83,7 +83,7 @@ class SellPlayer extends Player implements WriteablePlayer
             )");
         }
         $this->db->exec('COMMIT');
-        $this->createstamp = $this->db->querySingle("SELECT createstamp FROM player WHERE id='" . $t($this->getId()) . "'");
+        $this->code = $this->createstamp = $this->db->querySingle("SELECT createstamp FROM player WHERE id='" . $t($this->getId()) . "'");
         return $this;
     }
 }
