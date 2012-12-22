@@ -23,12 +23,13 @@ var player = {
     kiddos[0]
     .firstChild // #textnode
     .nextSibling // send button
-    .addEventListener("click", this.deletePlayer());
+    .addEventListener("click", this.deletePlayer(id));
   },
   codes: {},
-  deletePlayer: function(id)
+  deletePlayer: function(idtouse)
   {
     var self = this;
+    var id = Number(idtouse);
     return function() {
       var musthavecode = false;
       var code = false;
@@ -38,7 +39,7 @@ var player = {
         musthavecode = true;
       }
       if (musthavecode) {
-        code = prompt("Player is listed for sale, but is now being sold.  Please enter the player update code to remove the listing",
+        code = prompt("Player is listed for sale, but is now being sold on auction.  Please enter the player update code to remove the listing",
                                   code);
         if (!code) {
           alert("Cannot delete the listing without a player code, please do this manually");
@@ -53,11 +54,11 @@ var player = {
             console.log(result.error.message);
           }
         } else {
-          alert("Successfully removed player from transfer list");
+          alert("Successfully removed player from transfer list, auctioned players cannot be listed");
           delete self.codes[result.params.id];
           chrome.storage.sync.set({'SMGregsList.codes': self.codes});
         }
-      });
+      }, true);
     }
   },
   scrapepage: function() {

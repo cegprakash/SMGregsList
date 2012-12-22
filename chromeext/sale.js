@@ -47,9 +47,10 @@ var player = {
     }
   },
   codes: {},
-  deletePlayer: function(id)
+  deletePlayer: function(idtouse)
   {
     var self = this;
+    var id = Number(idtouse);
     return function() {
       var musthavecode = false;
       var code = false;
@@ -78,7 +79,7 @@ var player = {
           delete self.codes[result.params.id];
           chrome.storage.sync.set({'SMGregsList.codes': self.codes});
         }
-      });
+      }, true);
     }
   },
   scrapepage: function() {
