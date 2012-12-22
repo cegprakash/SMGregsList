@@ -32,6 +32,7 @@ function scrapepage() {
           // player is for sale
           var forsale = document.createElement('img');
           forsale.src = 'http://chiaraquartet.net/sm/chromeext/icon16.png';
+          forsale.style.height = "15px;";
           kiddo.appendChild(forsale);
         }
       }
