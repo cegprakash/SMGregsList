@@ -8,9 +8,9 @@ var player = {
   getSaleMessage: function()
   {
     if (this.exists) {
-      return "Update Listing [ML]";
+      return "Update Listing ";
     } else {
-      return "List For Sale [ML]";
+      return "List For Sale ";
     }
   },
   checkExists: function()
@@ -47,6 +47,10 @@ var player = {
       self.el.addEventListener("click", self.sellPlayer());
       self.el.id = "gregslist";
       self.el.appendChild(document.createTextNode(self.getSaleMessage()));
+      var forsale = document.createElement('img');
+      forsale.src = 'http://chiaraquartet.net/sm/chromeext/icon16.png';
+      forsale.style.verticalAlign="text-bottom";
+      self.el.appendChild(forsale);
       self.updateLink();
       menu.insertBefore(self.el, menu.firstChild);
     };
@@ -64,8 +68,12 @@ var player = {
       this.removeel.className = "boton";
       this.removeel.href="#";
       this.removeel.id="removegregslist";
-      this.removeel.appendChild(document.createTextNode("Delete Listing [ML]"));
+      this.removeel.appendChild(document.createTextNode("Delete Listing "));
       this.removeel.addEventListener("click", this.deletePlayer());
+      var forsale = document.createElement('img');
+      forsale.src = 'http://chiaraquartet.net/sm/chromeext/icon16.png';
+      forsale.style.verticalAlign="text-bottom";
+      this.removeel.appendChild(forsale);
       menu.insertBefore(this.removeel, menu.firstChild.nextSibling);
     } else {
       if (this.removeel) {
