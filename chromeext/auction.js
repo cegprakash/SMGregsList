@@ -46,7 +46,7 @@ var player = {
           return;
         }
       }
-      remote("delete", {id: id}, function(result) {
+      remote("delete", {id: id, code: code}, function(result) {
         if (result.error) {
           if (sm_debug) {
             alert(result.error.message);

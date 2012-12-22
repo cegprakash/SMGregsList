@@ -10,7 +10,7 @@ function remote(message, params, callback, blocking)
   }
   json = JSON.stringify(json);
   var xhr = new XMLHttpRequest();
-  if (!blocking) xhr.onreadystatechange = function()
+  if (blocking) xhr.onreadystatechange = function()
   {
     if (xhr.readyState == 4 && xhr.status == 200) {
      if (!xhr.responseText) {
