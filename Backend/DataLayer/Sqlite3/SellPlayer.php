@@ -18,14 +18,10 @@ class SellPlayer extends Player implements WriteablePlayer
             throw new \Exception("Error: code does not match");
         }
         $this->db->exec('BEGIN');
-        try {
-            $this->db->exec("DELETE FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
-            $this->db->exec("DELETE FROM skills WHERE id='" . $this->db->escapeString($this->id) . "'");
-            $this->db->exec("DELETE FROM stats WHERE id='" . $this->db->escapeString($this->id) . "'");
-            $this->db->exec('COMMIT');
-        } catch (\Exception $e) {
-            $this->db->exec('ROLLBACK');
-        }
+        $this->db->exec("DELETE FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
+        $this->db->exec("DELETE FROM skills WHERE id='" . $this->db->escapeString($this->id) . "'");
+        $this->db->exec("DELETE FROM stats WHERE id='" . $this->db->escapeString($this->id) . "'");
+        $this->db->exec('COMMIT');
         return $this;
     }
 
