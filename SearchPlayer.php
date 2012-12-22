@@ -30,10 +30,7 @@ class SearchPlayer extends Player implements SearchablePlayer
                 $ret['minaverage'] = $start;
                 $ret['maxaverage'] = $end;
             } else {
-                $ret['minaverage'] = $this->average;
-                if ($this->maxaverage) {
-                    $ret['maxaverage'] = $this->average;
-                }
+                $ret['maxaverage'] = $this->average;
             }
         }
         if ($this->position) {
