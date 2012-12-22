@@ -17,7 +17,11 @@ var player = {
     var self = this;
     remote("exists", {'id': this.player.id}, function(result) {
       if (result.error) {
-        alert(result.error.message);
+        if (sm_debug) {
+          alert(result.error.message);
+        } else {
+          console.log(result.error.message);
+        }
         return;
       }
       if (result.params.exists) {
@@ -86,13 +90,29 @@ var player = {
       }
       if (!self.player.forecast) {
         self.player.forecast = prompt("Do you know the forecast of your player?", 0);
+        if (!self.player.forecast.match(/^[0-9]+$/)) {
+          self.player.forecast = 0;
+        }
+        if (Number(self.player.forecast) > 100) {
+          self.player.forecast = 0;
+        }
       }
       if (!self.player.progression) {
         self.player.progression = prompt("Do you know the progression of your player?", 0);
+        if (!self.player.progression.match(/^[0-9]+$/)) {
+          self.player.progression = 0;
+        }
+        if (Number(self.player.progression) > 100) {
+          self.player.progression = 0;
+        }
       }
       remote("confirm", self.player, function(result) {
         if (result.error) {
-          alert(result.error.message);
+          if (sm_debug) {
+            alert(result.error.message);
+          } else {
+            console.log(result.error.message);
+          }
         } else {
           alert("Successfully listed player for sale.  Update code needed to make changes is: " + result.params.code);
           self.codes[result.params.id] = result.params.code;

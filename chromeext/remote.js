@@ -13,7 +13,11 @@ function remote(message, params, callback)
   {
     if (xhr.readyState == 4 && xhr.status == 200) {
      if (!xhr.responseText) {
-      alert("internal error: empty response");
+      if (sm_debug) {
+       alert("internal error: empty response");
+      } else {
+       console.log("internal error: empty response");
+      }
       return;
      }
      try {
@@ -22,10 +26,19 @@ function remote(message, params, callback)
         if (callback) callback(ret);
       }
      } catch (e) {
-      alert("internal JSON parsing error, text returned was: " + xhr.responseText);
+      if (sm_debug) {
+        alert("internal JSON parsing error, text returned was: " + xhr.responseText);
+      } else {
+        console.log("internal JSON parsing error, text returned was: " + xhr.responseText);
+      }
+      throw e;
      }
     } else if (xhr.readyState == 4) {
-     alert("Error: returned status code " + xhr.status + " " + xhr.statusText);
+     if (sm_debug) {
+      alert("Error: returned status code " + xhr.status + " " + xhr.statusText);
+     } else {
+      console.log("Error: returned status code " + xhr.status + " " + xhr.statusText);
+     }
     }
   }
   xhr.open("POST", "http://chiaraquartet.net/sm/jsonrpc.php", true);

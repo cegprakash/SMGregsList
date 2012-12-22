@@ -11,7 +11,11 @@ function scrapepage() {
   }
   remote("exists", {'ids': ids}, function(result) {
     if (result.error) {
-      alert(result.error.message);
+      if (sm_debug) {
+        alert(result.error.message);
+      } else {
+        console.log(result.error.message);
+      }
       return;
     }
     for (var b = 0; b < ['1','2'].length; b++) {

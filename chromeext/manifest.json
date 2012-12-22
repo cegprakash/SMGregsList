@@ -18,7 +18,7 @@
                    "http://en2.strikermanager.com/jugador.php*",
                    "http://en.strikermanager.com/jugador.php*"],
       "all_frames": true,
-      "js":["remote.js","code.js","popup.js"]
+      "js":["debugsetting.js","remote.js","code.js","popup.js"]
     },
     {
       "matches" : ["http://en3.strikermanager.com/plantilla.php*",
@@ -26,7 +26,7 @@
                    "http://en2.strikermanager.com/plantilla.php*",
                    "http://en.strikermanager.com/plantilla.php*"],
       "all_frames": true,
-      "js":["remote.js","parsesquad.js"]
+      "js":["debugsetting.js","remote.js","parsesquad.js"]
     },
     {
       "matches" : ["http://en3.strikermanager.com/mercado.php*",
@@ -34,7 +34,7 @@
                    "http://en2.strikermanager.com/mercado.php*",
                    "http://en.strikermanager.com/mercado.php*"],
       "all_frames": true,
-      "js":["remote.js","parsemarket.js"]
+      "js":["debugsetting.js","remote.js","parsemarket.js"]
     },
     {
       "matches" : ["http://en3.strikermanager.com/ojeador.php*",
@@ -42,7 +42,7 @@
                    "http://en2.strikermanager.com/ojeador.php*",
                    "http://en.strikermanager.com/ojeador.php*"],
       "all_frames": true,
-      "js":["remote.js","parsescout.js"]
+      "js":["debugsetting.js","remote.js","parsescout.js"]
     },
     {
       "matches" : ["http://en3.strikermanager.com/cartera.php*",
@@ -50,7 +50,7 @@
                    "http://en2.strikermanager.com/cartera.php*",
                    "http://en.strikermanager.com/cartera.php*"],
       "all_frames": true,
-      "js":["remote.js","parsescout.js"]
+      "js":["debugsetting.js","remote.js","parsescout.js"]
     }
   ],
   "options_page": "options.html",
