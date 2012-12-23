@@ -20,6 +20,14 @@ class HTMLController extends Messager
         });
     }
 
+    static function showSell()
+    {
+        if (strpos($_SERVER['PHP_SELF'], '/nosell')) {
+            return false;
+        }
+        return true;
+    }
+
     function listMessages(array $newmessages)
     {
         return parent::listMessages(array_merge($newmessages, array('detectSearch', 'detectSell', 'retrieved', 'managerRetrieved')));

@@ -1,8 +1,17 @@
- <h1>Merc's List: Sell Your Player</h1>
- <p>List a Striker Manager player as being available for transfer agreement</p>
  <?php
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
  ?>
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Merc's List: Striker Manager Transfer Market</a>
+    <ul class="nav">
+      <li><a href="/sm/index.php">Search for Players</a></li>
+      <li class="active"><a href="<?php echo $phpSelf ?>">Sell a Player</a></li>
+    </ul>
+  </div>
+</div>
+ <h1>Merc's List: Sell Your Player</h1>
+ <p>List a Striker Manager player as being available for transfer agreement</p>
 <form name="sell" action="<?php echo $phpSelf ?>" method="post" class="form-horizontal">
 <ul class="nav nav-tabs">
  <li class="active"><a href="#basic" data-toggle="tab">Basic Information</a></li>

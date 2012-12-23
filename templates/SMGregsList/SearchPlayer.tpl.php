@@ -1,16 +1,35 @@
- <h1>Merc's List: Striker Manager Transfer Market</h1>
- <p>Search for Striker Manager players that are for sale by transfer agreement</p>
  <?php
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
  ?>
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Merc's List: Striker Manager Transfer Market</a>
+    <ul class="nav">
+      <li class="active"><a href="<?php echo $phpSelf ?>">Search for Players</a></li>
+<?php if (SMGregsList\Frontend\HTMLController::showSell()): ?>
+      <li><a href="sell.php">Sell a Player</a></li>
+<?php endif; ?>
+      <li class="dropdown">
+       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>Found a bug?</strong><b class="caret"></b></a>
+       <ul class="dropdown-menu">
+        <li><a href="https://github.com/cellog/SMGregsList/issues">Please report it</a>.</li>
+       </ul>
+</li>
+    </ul>
+  </div>
+</div>
+ <p>Search for Striker Manager players that are for sale by transfer agreement</p>
+<p></p>
 <form name="search" action="<?php echo $phpSelf ?>" method="get" class="form-horizontal">
-<ul class="nav nav-tabs">
- <li class="active"><a href="#basic" data-toggle="tab">Basic Information</a></li>
- <li><a href="#stats" data-toggle="tab">Stats and Skills</a></li>
- <li><a href="sell.php">Sell a Player</a></li>
-</ul>
-<div class="tab-content">
-<div class="tab-pane active" id="basic">
+<div class="accordion" id="accordion2">
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#basic">
+        Basic Information
+      </a>
+    </div>
+    <div id="basic" class="accordion-body collapse in">
+      <div class="accordion-inner">
 <div class="control-group">
  <label class="control-label" for="id">Player ID</label>
  <div class="controls">
@@ -85,8 +104,17 @@ if ($context->getName()) echo $context->getName()
   <?php echo $savant->render($context, 'SMGregsList/positions.tpl.php') ?>
  </div>
 </div>
-</div> <!-- basic tab pane -->
-<div class="tab-pane" id="stats">
+</div>
+</div>
+</div> <!-- basic accordion -->
+ <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#stats">
+        Advanced (stats and skills)
+      </a> 
+    </div>
+    <div id="stats" class="accordion-body collapse">
+      <div class="accordion-inner">
 <div class="control-group">
  <label class="control-label" for="stats">Stats</label>
  <div class="controls">
@@ -103,13 +131,18 @@ if ($context->getName()) echo $context->getName()
  </span>
  </div>
 </div>
+</div>
+</div>
 </div> <!-- stats tab -->
 </div> <!-- tab content -->
 <div class="control-group">
  <div class="controls">
-  <input type="submit" value="Search" class="btn btn-primary" name="searchbutton"/>
+  <?php if (count($parent->context->searchresults)): ?>
+<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-info">Show Search Results</button>
+<input type="submit" value="&larr; Modify Search" class="btn btn-primary" name="searchbutton"/>
+ <?php else: ?>
+<input type="submit" value="Search" class="btn btn-primary" name="searchbutton"/>
+ <?php endif; ?>
  </div>
 </div>
 </form>
-
-<p>Found a bug? <a href="https://github.com/cellog/SMGregsList/issues">Please report it</a>.</p>

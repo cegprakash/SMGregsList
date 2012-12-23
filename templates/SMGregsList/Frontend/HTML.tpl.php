@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <title>Merc's List - Striker Manager transfer market <?php echo $context->subtitle ?></title>
-  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="/sm/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
    <style media="screen" type="text/css">
     .form-horizontal .control-group {
       margin-bottom: 1px;
@@ -28,7 +28,7 @@
   </div>
    </div>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
-  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="/sm/bootstrap/js/bootstrap.min.js"></script>
   <?php if ($context->getExtrarender()) {
    echo $context->getRawObject()->getExtrarender();
   } ?>

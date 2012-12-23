@@ -1,7 +1,6 @@
 <?php
 echo $savant->render($context->searchform->getRawObject()) ?>
 <!-- Modal -->
-<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-info">Show Search Results</button>
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
