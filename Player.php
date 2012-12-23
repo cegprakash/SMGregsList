@@ -15,6 +15,9 @@ abstract class Player
         $skills,
         $code,
         $retrieved = false,
+        $country,
+        $manager,
+        $name,
         $createstamp;
 
     function __construct()
@@ -50,6 +53,21 @@ abstract class Player
         if ($this->createstamp) {
             return $this->createstamp;
         }
+    }
+
+    function getCountry()
+    {
+        return $this->country;
+    }
+
+    function getManager()
+    {
+        return $this->manager;
+    }
+
+    function getName()
+    {
+        return $this->name;
     }
 
     function getAverage()

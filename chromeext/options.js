@@ -14,6 +14,18 @@ function save_options() {
 
 // Restores select box state to saved value from localStorage.
 function restore_options() {
+  chrome.storage.sync.get(["SMGregsList.codes"], function(ret) {
+    var allcodes = ret["SMGregsList.codes"];
+    if (!allcodes) {
+      return;
+    }
+    var el = document.getElementById("codes");
+    var txt = "";
+    for (var i in allcodes) {
+      txt += "Manager: <b>" + i + "</b>, code: <b>" + allcodes[i] + "</b><br>";
+    }
+    el.innerHTML = txt;
+  });
   chrome.storage.local.get(["debug_setting_SM"], function(ret) {
     var favorite = ret["debug_setting_SM"];
     if (!favorite) {

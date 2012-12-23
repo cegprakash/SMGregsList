@@ -162,6 +162,15 @@ class HTMLController extends Messager
         if (isset($params['position']) && $params['position']) {
             $player->position = $params['position'];
         }
+        if (isset($params['country']) && $params['country']) {
+            $player->country = $params['country'];
+        }
+        if (isset($params['manager']) && $params['manager']) {
+            $player->manager = $params['manager'];
+        }
+        if (isset($params['name']) && $params['name']) {
+            $player->name = $params['name'];
+        }
         if (isset($params['forecast']) && $params['forecast']) {
             $value = filter_var($params['forecast'], FILTER_SANITIZE_NUMBER_INT);
             if ($value > 0 && $value < 100) {

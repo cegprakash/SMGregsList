@@ -14,6 +14,15 @@ class Sqlite3 extends DataLayer
         $this->db->enableExceptions(true);
     }
 
+    function getManagerSchema()
+    {
+        return 'CREATE TABLE manager (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    code TEXT NOT NULL
+        )';
+    }
+
     function getPlayerSchema()
     {
         return 'CREATE TABLE player (
@@ -24,6 +33,9 @@ class Sqlite3 extends DataLayer
   experience REAL NOT NULL,
   forecast INT default 0,
   progression INT default 0,
+  country TEXT,
+  manager TEXT,
+  name TEXT,
   lastmodified DATE NOT NULL default CURRENT_TIMESTAMP,
   createstamp DATE NOT NULL default CURRENT_TIMESTAMP);
 CREATE TABLE skills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));

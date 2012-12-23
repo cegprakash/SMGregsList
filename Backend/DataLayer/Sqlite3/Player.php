@@ -25,6 +25,9 @@ class Player extends p implements DataPlayer
         $this->skills = clone $player->getSkills();
         $this->stats = clone $player->getStats();
         $this->retrieved = $player->getRetrieved();
+        $this->country = $player->getCountry();
+        $this->name = $player->getName();
+        $this->manager = $player->getManager();
     }
 
     function fromResult(array $result)

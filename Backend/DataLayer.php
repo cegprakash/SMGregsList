@@ -61,6 +61,8 @@ abstract class DataLayer extends Messager
                 $result[$player->getId()] = $this->exists($player) ? true : false;
             }
             $this->broadcast('existsResult', $result);
+        } elseif ($message == 'generateCode') {
+            if ()
         }
     }
 }

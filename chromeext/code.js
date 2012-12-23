@@ -108,8 +108,8 @@ var player = {
       if (!self.isours) return;
       var musthavecode = false;
       if (self.exists) {
-        if (self.codes[self.player.id]) {
-          self.player.code = self.codes[self.player.id];
+        if (self.codes[self.player.manager]) {
+          self.player.code = self.codes[self.player.manager];
         } else {
           musthavecode = true;
         }
@@ -146,8 +146,8 @@ var player = {
       if (!self.isours) return;
       var musthavecode = false;
       if (self.exists) {
-        if (self.codes[self.player.id]) {
-          self.player.code = self.codes[self.player.id];
+        if (self.codes[self.player.manager]) {
+          self.player.code = self.codes[self.player.manager];
         } else {
           musthavecode = true;
         }
@@ -192,7 +192,7 @@ var player = {
           }
         } else {
           alert("Successfully listed player for sale.  Update code needed to make changes is: " + result.params.code);
-          self.codes[result.params.id] = result.params.code;
+          self.codes[result.params.manager] = result.params.code;
           self.player.code = result.params.code;
           chrome.storage.sync.set({'SMGregsList.codes': self.codes});
           self.exists = true;
@@ -258,11 +258,20 @@ var player = {
       this.checkExists(); // we will use this to display the for sale icon on other team's players
       return false; // we can only sell players on our own team
     }
+    var parentuser = parenthtml.match(/<a class="color_skin" target="marco" href="usuario.php">([^<]+)<\/a/);
+    this.player.user = parentuser[1];
+    ret.user = parentuser[1];
     this.isours = true;
     this.checkExists();
     if (html.match(/\/img\/new\/ioferta.png/)) {
       this.onauction = true;
     }
+    var name = html.match(/<img class="bandera" src="\/img\/paises\/[^\.]+.gif">\s+(\S[\S\s]+\S)\s+</);
+    ret.name = name[1];
+    this.player.name = name[1];
+    var country = html.match(/<td>Country<\/td>\s+<td>([^<]+)</);
+    this.player.country = country[1];
+    ret.country = country[1];
     var pos = html.match(/<td>Position<\/td>\s+<td>([^<]+)<\/td>/);
     var stats = html.match(/<td>([a-zA-Z ]+)<\/td>\s+<td>\s+<span style="display: none;">(\d\d\d)<\/span>\s+<div class="jugbarra" style="width: 99px">\s+<div class="jugbarracar" style="border: 1px outset #[a-f0-9]+; width: \d+px; background: #[a-f0-9]+;"><\/div>\s+<div class="jugbarranum">\d+%/g);
     var summaries = html.match(/<td>([A-Za-z]+ (?:points|average))<\/td>\s+<td class="numerico">\s+(\d+)<span style="font-size: 0.7em;">\.(\d+)<\/span>/g);

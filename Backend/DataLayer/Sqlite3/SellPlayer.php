@@ -44,6 +44,9 @@ class SellPlayer extends Player implements WriteablePlayer
             }
             $this->db->exec("UPDATE player SET
                             age = '" . $t($this->getAge()) . "',
+                            country = '" . $t($this->getCountry()) . "',
+                            manager = '" . $t($this->getManager()) . "',
+                            name = '" . $t($this->getName()) . "',
                             average = '" . $t($this->getAverage()) . "',
                             experience = '" . $t($this->getExperience()) . "',
                             forecast = '" . $t($this->getForecast()) . "',
@@ -52,7 +55,7 @@ class SellPlayer extends Player implements WriteablePlayer
                             lastmodified = CURRENT_TIMESTAMP
                         WHERE id = '" . $t($this->getId()) . "'");
         } else {
-            $this->db->exec("INSERT INTO player (id, age, average, experience, forecast, position, progression)
+            $this->db->exec("INSERT INTO player (id, age, average, experience, forecast, position, progression, name, country, manager)
                             VALUES (
                                 '" . $t($this->getId()) . "',
                                 '" . $t($this->getAge()) . "',
@@ -60,7 +63,11 @@ class SellPlayer extends Player implements WriteablePlayer
                                 '" . $t($this->getExperience()) . "',
                                 '" . $t($this->getForecast()) . "',
                                 '" . $t($this->getPosition()) . "',
-                                '" . $t($this->getProgression()) . "')");
+                                '" . $t($this->getProgression()) . "',
+                                '" . $t($this->getName()) . "',
+                                '" . $t($this->getCountry()) . "',
+                                '" . $t($this->getManager()) . "'
+                                )");
         }
         $this->db->exec("DELETE FROM skills WHERE id='" . $t($this->getId()) . "'");
         $this->db->exec("DELETE FROM stats WHERE id='" . $t($this->getId()) . "'");
