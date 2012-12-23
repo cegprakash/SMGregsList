@@ -11,7 +11,7 @@ echo $savant->render($context->searchform->getRawObject()) ?>
     <div class="span6">
     <table class="table table-striped table-condensed">
     <thead>
-        <tr><th>id</th><th>Position</th><th>Average</th><th>Age</th><th>Experience</th><th>Forecast</th><th>Progression</th></tr>
+        <tr><th>Name</th><th>Position</th><th>Average</th><th>Age</th><th>Country</th><th>Forecast</th><th>Progression</th></tr>
     </thead>
     <tbody>
     <?php
