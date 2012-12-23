@@ -64,10 +64,18 @@ if ($context->getCountry()) echo $context->getCountry()
  </div>
 </div>
 <div class="control-group">
- <label class="control-label" for="country">Manager</label>
+ <label class="control-label" for="manager">Manager</label>
  <div class="controls">
   <input placeholder="Manager selling this player" type="text" class="input" name="manager" id="manager" value="<?php
 if ($context->getManager()) echo $context->getManager()
+?>"/>
+ </div>
+</div>
+<div class="control-group">
+ <label class="control-label" for="name">Player Name</label>
+ <div class="controls">
+  <input placeholder="Player's name" type="text" class="input" name="name" id="name" value="<?php
+if ($context->getName()) echo $context->getName()
 ?>"/>
  </div>
 </div>

@@ -19,6 +19,7 @@ class SearchPlayer extends s implements SearchablePlayer
         $this->position = $player->getPosition();
         $this->progression = $player->getProgression();
         $this->country = $player->getCountry();
+        $this->name = $player->getName();
         $this->manager = $player->getManager();
         $this->skills = clone $player->getSkills();
         $this->stats = clone $player->getStats();
@@ -61,6 +62,9 @@ class SearchPlayer extends s implements SearchablePlayer
                     break;
                 case 'manager':
                     $playersql .= " AND like('%" . $t(strtolower($value), false) . "%', lower(manager))";
+                    break;
+                case 'name':
+                    $playersql .= " AND like('%" . $t(strtolower($value), false) . "%', lower(name))";
                     break;
                 case 'experience':
                     $playersql .= " AND experience >= " . $t($value);
