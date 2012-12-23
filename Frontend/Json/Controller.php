@@ -47,6 +47,8 @@ set_exception_handler(__NAMESPACE__ . '\\__handler');
 set_error_handler(__NAMESPACE__ . '\\__error');
 class Controller extends HTMLController
 {
+    const APIVERSION = 2;
+    const minExtVersion = '0.5.0';
     public static $id = 0;
     protected $retrieved;
     protected $input;
@@ -92,6 +94,11 @@ class Controller extends HTMLController
                 || !isset($this->input['id'])) {
                 throw new JsonRpcException(1, JsonRpcException::ILLEGALSERVICE,
                                            'Missing message, params or id');
+            }
+            if (!isset($this->input['apiversion'])
+                || $this->input['apiversion'] != self::APIVERSION) {
+                throw new JsonRpcException('Your Chrome extension is out of date, you need version ' .
+                                           self::minExtVersion . ' minimum to use this service');
             }
             if (!is_string($this->input['message'])
                 || !is_int($this->input['id'])) {

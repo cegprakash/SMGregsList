@@ -6,7 +6,8 @@ function remote(message, params, callback, blocking)
   var json = {
     id: session++,
     message: message,
-    params: params
+    params: params,
+    apiversion: 2
   }
   json = JSON.stringify(json);
   var xhr = new XMLHttpRequest();
