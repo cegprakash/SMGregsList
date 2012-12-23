@@ -93,6 +93,7 @@ var player = {
         this.forsale.style.display = 'inherit';
       } else {
         this.forsale = document.createElement('img');
+        this.forsale.title = 'Player is for sale by Transfer Agreement';
         this.forsale.src = 'http://chiaraquartet.net/sm/chromeext/icon16.png';
         document.getElementsByClassName('estadojugador')[0].appendChild(this.forsale);
       }
@@ -263,7 +264,7 @@ var player = {
     ret.manager = parentuser[1];
     this.isours = true;
     this.checkExists();
-    if (html.match(/\/img\/new\/ioferta.png/)) {
+    if (html.match(/\/img\/new\/ioferta.png/) || html.match(/\/img\/as\/lock/)) {
       this.onauction = true;
     }
     var name = html.match(/<img class="bandera" src="\/img\/paises\/[^\.]+.gif">\s+(.+)\s+<span/);
