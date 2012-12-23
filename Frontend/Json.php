@@ -38,7 +38,8 @@ class Json extends HTML
                                             'params' => array('exists' => $content)));
         } elseif ($message == 'playerAdded') {
             $this->broadcast('reply', array('message' => 'playerAdded',
-                                            'params' => array('id' => $content->getId(), 'code' => $content->getCode())));
+                                            'params' => array('id' => $content->getId(), 'code' => $content->getCode(),
+                                                              'manager' => $content->getManager()->getName())));
         } elseif ($message == 'playerRemoved') {
             $this->broadcast('reply', array('message' => 'playerRemoved',
                                             'params' => array('id' => $content->getId())));

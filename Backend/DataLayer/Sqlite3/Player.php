@@ -69,7 +69,7 @@ class Player extends p implements DataPlayer
         }
         $data = $this->db->query("SELECT * FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
         $row = $data->fetchArray(SQLITE3_ASSOC);
-        if ($this->code !== $manager->getCode()) {
+        if ($this->code !== $this->manager->getCode()) {
             throw new \Exception("Error: code does not match", -2);
         }
         $data->finalize();

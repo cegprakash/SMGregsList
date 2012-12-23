@@ -8,7 +8,6 @@ class Manager extends m
     {
         $this->name = '';
         $this->db = $database;
-        parent::__construct();
     }
 
     function fromPlayer(Player $player)
@@ -27,6 +26,7 @@ class Manager extends m
             // create on the fly
             $this->generateCode();
             $this->save();
+            return $this;
         }
         $data = $this->db->query("SELECT * FROM manager WHERE name='" . $this->db->escapeString($this->name) . "'");
         $row = $data->fetchArray(SQLITE3_ASSOC);
@@ -50,7 +50,7 @@ class Manager extends m
         $this->db->exec("INSERT INTO manager (name, code)
                         VALUES (
                             '" . $t($this->getName()) . "',
-                            '" . $t($this->getCode()) . "',
+                            '" . $t($this->getCode()) . "'
                             )");
         return $this;
     }

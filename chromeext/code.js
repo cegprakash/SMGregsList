@@ -259,8 +259,8 @@ var player = {
       return false; // we can only sell players on our own team
     }
     var parentuser = parenthtml.match(/<a target="marco" href="usuario.php" class="color_skin" ?>([^<]+)<\/a/);
-    this.player.user = parentuser[1];
-    ret.user = parentuser[1];
+    this.player.manager = parentuser[1];
+    ret.manager = parentuser[1];
     this.isours = true;
     this.checkExists();
     if (html.match(/\/img\/new\/ioferta.png/)) {

@@ -7,9 +7,6 @@ class Manager
 
     function __set($name, $value)
     {
-        if ($name == 'id') {
-            $this->id = $value;
-        }
         if ($name == 'code') {
             $this->code = $value;
         }
@@ -31,6 +28,7 @@ class Manager
 
     function generateCode()
     {
-        $this->code = dechex($this->id) . '-' . bin2hex(openssl_random_pseudo_bytes(5));
+        $this->code = base_convert(strtoupper($this->name), 36, 35) . '-' .
+            base_convert(bin2hex(openssl_random_pseudo_bytes(5)), 16, 36);
     }
 }
