@@ -169,7 +169,7 @@ class HTMLController extends Messager
             $player->manager = $params['manager'];
         }
         if (isset($params['name']) && $params['name']) {
-            $player->name = $params['name'];
+            $player->name = trim($params['name']);
         }
         if (isset($params['forecast']) && $params['forecast']) {
             $value = filter_var($params['forecast'], FILTER_SANITIZE_NUMBER_INT);

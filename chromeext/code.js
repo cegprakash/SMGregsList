@@ -258,7 +258,7 @@ var player = {
       this.checkExists(); // we will use this to display the for sale icon on other team's players
       return false; // we can only sell players on our own team
     }
-    var parentuser = parenthtml.match(/<a class="color_skin" target="marco" href="usuario.php">([^<]+)<\/a/);
+    var parentuser = parenthtml.match(/<a target="marco" href="usuario.php" class="color_skin" ?>([^<]+)<\/a/);
     this.player.user = parentuser[1];
     ret.user = parentuser[1];
     this.isours = true;
@@ -266,7 +266,7 @@ var player = {
     if (html.match(/\/img\/new\/ioferta.png/)) {
       this.onauction = true;
     }
-    var name = html.match(/<img class="bandera" src="\/img\/paises\/[^\.]+.gif">\s+(\S[\S\s]+\S)\s+</);
+    var name = html.match(/<img class="bandera" src="\/img\/paises\/[^\.]+.gif">\s+(.+)\s+<span/);
     ret.name = name[1];
     this.player.name = name[1];
     var country = html.match(/<td>Country<\/td>\s+<td>([^<]+)</);
