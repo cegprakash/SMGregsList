@@ -17,8 +17,7 @@ class Sqlite3 extends DataLayer
     function getManagerSchema()
     {
         return 'CREATE TABLE manager (
-    id TEXT NOT NULL PRIMARY KEY,
-    name TEXT NOT NULL,
+    name TEXT NOT NULL PRIMARY KEY,
     code TEXT NOT NULL
         )';
     }
@@ -99,6 +98,13 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
     function retrieve(Player $player)
     {
         $new = new Sqlite3\Player($this->db);
+        $new->fromPlayer($player);
+        return $new->retrieve();
+    }
+
+    function retrieveManager(Player $player)
+    {
+        $new = new Sqlite3\Manager($this->db);
         $new->fromPlayer($player);
         return $new->retrieve();
     }

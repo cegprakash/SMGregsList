@@ -14,7 +14,7 @@ class SellPlayer extends Player implements WriteablePlayer
         }
         $data = $this->db->query("SELECT * FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
         $row = $data->fetchArray(SQLITE3_ASSOC);
-        if ($this->code !== $row['createstamp']) {
+        if ($this->code !== $this->manager->getCode()) {
             throw new \Exception("Error: code does not match");
         }
         $this->db->exec('BEGIN');
@@ -37,15 +37,13 @@ class SellPlayer extends Player implements WriteablePlayer
             return $db->escapeString($a);
         };
         if ($this->exists()) {
-            $data = $this->db->query("SELECT * FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
-            $row = $data->fetchArray(SQLITE3_ASSOC);
-            if ($this->code !== $row['createstamp']) {
+            if ($this->code !== $this->manager->getCode()) {
                 throw new \Exception("Error: code does not match");
             }
             $this->db->exec("UPDATE player SET
                             age = '" . $t($this->getAge()) . "',
                             country = '" . $t($this->getCountry()) . "',
-                            manager = '" . $t($this->getManager()) . "',
+                            manager = '" . $t($this->getManager()->getName()) . "',
                             name = '" . $t($this->getName()) . "',
                             average = '" . $t($this->getAverage()) . "',
                             experience = '" . $t($this->getExperience()) . "',
@@ -86,7 +84,7 @@ class SellPlayer extends Player implements WriteablePlayer
             )");
         }
         $this->db->exec('COMMIT');
-        $this->code = $this->createstamp = $this->db->querySingle("SELECT createstamp FROM player WHERE id='" . $t($this->getId()) . "'");
+        $this->createstamp = $this->db->querySingle("SELECT createstamp FROM player WHERE id='" . $t($this->getId()) . "'");
         return $this;
     }
 }

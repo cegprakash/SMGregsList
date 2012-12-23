@@ -2,7 +2,6 @@
 namespace SMGregsList;
 class Manager
 {
-    protected $id;
     protected $code;
     protected $name;
 
@@ -18,11 +17,6 @@ class Manager
             $this->name = $value;
         }
         throw new \Exception('Internal error: unknown manager variable: ' . $name);
-    }
-
-    function getId()
-    {
-        return $this->id;
     }
 
     function getName()

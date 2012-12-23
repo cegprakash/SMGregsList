@@ -61,6 +61,12 @@ abstract class DataLayer extends Messager
                 $result[$player->getId()] = $this->exists($player) ? true : false;
             }
             $this->broadcast('existsResult', $result);
+        } elseif ($message == 'retrieveManager') {
+            if (!($content instanceof Player)) {
+                throw new \Exception('Internal error: retrieveManager message received, but content was not a Player object');
+            }
+            $result = $this->retrieveManager($content);
+            $this->broadcast('retrievedManager', $result);
         } elseif ($message == 'generateCode') {
         }
     }

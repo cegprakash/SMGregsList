@@ -22,7 +22,7 @@ class HTMLController extends Messager
 
     function listMessages(array $newmessages)
     {
-        return parent::listMessages(array_merge($newmessages, array('detectSearch', 'detectSell', 'retrieved')));
+        return parent::listMessages(array_merge($newmessages, array('detectSearch', 'detectSell', 'retrieved', 'managerRetrieved')));
     }
 
     function getParams($type)
@@ -74,9 +74,10 @@ class HTMLController extends Messager
             return $this->detectSell();
         } elseif ($message == 'retrieved') {
             $this->retrieved = $content;
+        } elseif ($message == 'managerRetrieved') {
+            $this->retrieved->manager = $content;
         }
     }
-
 
     function detectSell()
     {
@@ -84,45 +85,32 @@ class HTMLController extends Messager
             return;
         }
         $params = $this->getParams('sell');
-        if ($this->getMessage('sell') == 'delete' && isset($params['code'])) {
-            // find the player
-            $player = new SellPlayer;
-            if (isset($params['id']) && $params['id']) {
-                if (is_numeric($params['id']) && $params['id'] == (int) $params['id']) {
-                    $player->id = (int) $params['id'];
-                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $params['id'], $matches)) {
-                    $player->id = (int) $matches[1];
-                }
+        $player = new SellPlayer;
+        // find the player
+        if (isset($params['id']) && $params['id']) {
+            if (is_numeric($params['id']) && $params['id'] == (int) $params['id']) {
+                $player->id = (int) $params['id'];
+            } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $params['id'], $matches)) {
+                $player->id = (int) $matches[1];
             }
+        }
+        if (isset($params['manager']) && $params['manager']) {
+            $player->manager = $params['manager'];
+        }
+        $this->retrieved = $player;
+        $this->broadcast('retrieveManager', $player);
+        if ($this->getMessage('sell') == 'delete' && isset($params['code'])) {
             $player->code = $params['code'];
             $this->broadcast('deletePlayer', $player);
             return;
         }
         if ($this->getMessage('sell') == 'retrieve' && isset($params['code'])) {
-            // find the player
-            $player = new SellPlayer;
-            if (isset($params['id']) && $params['id']) {
-                if (is_numeric($params['id']) && $params['id'] == (int) $params['id']) {
-                    $player->id = (int) $params['id'];
-                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $params['id'], $matches)) {
-                    $player->id = (int) $matches[1];
-                }
-            }
             $player->code = $params['code'];
             $this->broadcast('retrieve', $player);
             $this->broadcast('sellDetected', $this->retrieved);
             return;
         }
         if (isset($params['code'])) {
-            // find the player and verify the edit code before continuing
-            $player = new SellPlayer;
-            if (isset($params['id']) && $params['id']) {
-                if (is_numeric($params['id']) && $params['id'] == (int) $params['id']) {
-                    $player->id = (int) $params['id'];
-                } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $params['id'], $matches)) {
-                    $player->id = (int) $matches[1];
-                }
-            }
             $player->code = $params['code'];
             try {
                 $this->broadcast('retrieve', $player);
@@ -132,20 +120,11 @@ class HTMLController extends Messager
                     throw $e; // code did not match
                 }
             }
-        } else {
-            $player = new SellPlayer;
         }
         if ($this->getMessage('sell') == 'verify') {
             $this->broadcast('verify');
         } elseif ($this->getMessage('sell') == 'confirm') {
             $this->broadcast('confirm');
-        }
-        if (isset($params['id']) && $params['id']) {
-            if (is_numeric($params['id']) && $params['id'] == (int) $params['id']) {
-                $player->id = (int) $params['id'];
-            } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $params['id'], $matches)) {
-                $player->id = (int) $matches[1];
-            }
         }
         if (isset($params['age']) && $params['age']) {
             $value = filter_var($params['age'], FILTER_SANITIZE_NUMBER_INT);
@@ -164,9 +143,6 @@ class HTMLController extends Messager
         }
         if (isset($params['country']) && $params['country']) {
             $player->country = $params['country'];
-        }
-        if (isset($params['manager']) && $params['manager']) {
-            $player->manager = $params['manager'];
         }
         if (isset($params['name']) && $params['name']) {
             $player->name = trim($params['name']);
@@ -245,6 +221,15 @@ class HTMLController extends Messager
         }
         if (isset($params['forecast']) && $params['forecast']) {
             $player->forecast = $params['forecast'];
+        }
+        if (isset($params['manager']) && $params['manager']) {
+            $player->manager = $params['manager'];
+        }
+        if (isset($params['country']) && $params['country']) {
+            $player->country = $params['country'];
+        }
+        if (isset($params['name']) && $params['name']) {
+            $player->name = $params['name'];
         }
         if (isset($params['experience']) && $params['experience']) {
             $player->forecast = $params['experience'];
