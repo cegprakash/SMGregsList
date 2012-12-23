@@ -56,10 +56,10 @@ if ($context->getProgression()) echo $context->getProgression()
  </div>
 </div>
 <div class="control-group">
- <label class="control-label" for="experience">Experience (Minimum)</label>
+ <label class="control-label" for="country">Country</label>
  <div class="controls">
-  <input placeholder="Experience" type="text" class="input-mini" name="experience" id="experience" value="<?php
-if ($context->getExperience()) echo $context->getExperience()
+  <input placeholder="Country name or fragment" type="text" class="input" name="country" id="country" value="<?php
+if ($context->getCountry()) echo $context->getCountry()
 ?>"/>
  </div>
 </div>

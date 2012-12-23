@@ -18,6 +18,8 @@ class SearchPlayer extends s implements SearchablePlayer
         $this->forecast = $player->getForecast();
         $this->position = $player->getPosition();
         $this->progression = $player->getProgression();
+        $this->country = $player->getCountry();
+        $this->manager = $player->getManager();
         $this->skills = clone $player->getSkills();
         $this->stats = clone $player->getStats();
     }
@@ -31,6 +33,7 @@ class SearchPlayer extends s implements SearchablePlayer
         $db = $this->db;
         $t = function($a, $quote = true) use ($db) {
             $r = $db->escapeString($a);
+            if (!$quote) return $r;
             return "'" . $r ."'";
         };
         foreach ($components as $component => $value) {
@@ -52,6 +55,9 @@ class SearchPlayer extends s implements SearchablePlayer
                         $value[$i] = "'" . $db->escapeString($val) . "'";
                     }
                     $playersql .= " AND position IN (" . implode(',', $value) . ")";
+                    break;
+                case 'country':
+                    $playersql .= " AND like('%" . $t(strtolower($value), false) . "%', lower(country))";
                     break;
                 case 'experience':
                     $playersql .= " AND experience >= " . $t($value);
