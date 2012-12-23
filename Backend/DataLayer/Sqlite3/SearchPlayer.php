@@ -59,6 +59,9 @@ class SearchPlayer extends s implements SearchablePlayer
                 case 'country':
                     $playersql .= " AND like('%" . $t(strtolower($value), false) . "%', lower(country))";
                     break;
+                case 'manager':
+                    $playersql .= " AND like('%" . $t(strtolower($value), false) . "%', lower(manager))";
+                    break;
                 case 'experience':
                     $playersql .= " AND experience >= " . $t($value);
                     break;

@@ -48,6 +48,9 @@ class SearchPlayer extends Player implements SearchablePlayer
         if ($this->country) {
             $ret['country'] = $this->country;
         }
+        if ($this->manager) {
+            $ret['manager'] = $this->manager;
+        }
         if ($this->forecast) {
             $ret['forecast'] = $this->forecast;
         }

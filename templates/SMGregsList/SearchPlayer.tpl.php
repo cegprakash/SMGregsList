@@ -64,6 +64,14 @@ if ($context->getCountry()) echo $context->getCountry()
  </div>
 </div>
 <div class="control-group">
+ <label class="control-label" for="country">Manager</label>
+ <div class="controls">
+  <input placeholder="Manager selling this player" type="text" class="input" name="manager" id="manager" value="<?php
+if ($context->getManager()) echo $context->getManager()
+?>"/>
+ </div>
+</div>
+<div class="control-group">
  <label class="control-label" for="position">Positions</label>
  <div class="controls">
   <?php echo $savant->render($context, 'SMGregsList/positions.tpl.php') ?>
