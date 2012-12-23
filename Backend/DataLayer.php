@@ -62,7 +62,6 @@ abstract class DataLayer extends Messager
             }
             $this->broadcast('existsResult', $result);
         } elseif ($message == 'generateCode') {
-            if ()
         }
     }
 }
