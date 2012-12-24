@@ -10,7 +10,6 @@
     </ul>
   </div>
 </div>
- <h1>Merc's List: Sell Your Player</h1>
  <p>List a Striker Manager player as being available for transfer agreement</p>
 <form name="sell" action="<?php echo $phpSelf ?>" method="post" class="form-horizontal">
 <div class="accordion" id="accordion2">
