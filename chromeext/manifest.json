@@ -1,70 +1,54 @@
 {
   "name": "Striker Manager Transfer Market",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "manifest_version": 2,
   "description": "Striker Manager transfer agreement market application, augments the auction and loan markets at en3.strikermanager.com",
   "background": { "scripts": ["background.js"] },
   "content_scripts": [
     {
-      "matches" : ["http://en3.strikermanager.com/inicio.php*",
-                   "http://en1.strikermanager.com/inicio.php*",
-                   "http://en2.strikermanager.com/inicio.php*",
-                   "http://en.strikermanager.com/inicio.php*"],
+      "matches" : ["http://*.strikermanager.com/inicio.php*"],
+      "include_globs" : ["http://en*.strikermanager.com*"],
       "js":["parent.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/jugador.php*",
-                   "http://en1.strikermanager.com/jugador.php*",
-                   "http://en2.strikermanager.com/jugador.php*",
-                   "http://en.strikermanager.com/jugador.php*"],
+      "matches" : ["http://*.strikermanager.com/jugador.php*"],
+      "include_globs" : ["http://en*.strikermanager.com*"],
       "all_frames": true,
       "js":["debugsetting.js","remote.js","code.js","popup.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/plantilla.php*",
-                   "http://en1.strikermanager.com/plantilla.php*",
-                   "http://en2.strikermanager.com/plantilla.php*",
-                   "http://en.strikermanager.com/plantilla.php*"],
+      "matches" : ["http://*.strikermanager.com/plantilla.php*"],
+      "include_globs" : ["http://en*.strikermanager.com*"],
       "all_frames": true,
       "js":["debugsetting.js","remote.js","parsesquad.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/mercado.php*",
-                   "http://en1.strikermanager.com/mercado.php*",
-                   "http://en2.strikermanager.com/mercado.php*",
-                   "http://en.strikermanager.com/mercado.php*"],
+      "matches" : ["http://*.strikermanager.com/mercado.php*"],
+      "include_globs" : ["http://en*.strikermanager.com*"],
       "all_frames": true,
       "js":["debugsetting.js","remote.js","parsemarket.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/ojeador.php*",
-                   "http://en1.strikermanager.com/ojeador.php*",
-                   "http://en2.strikermanager.com/ojeador.php*",
-                   "http://en.strikermanager.com/ojeador.php*"],
+      "matches" : ["http://*.strikermanager.com/ojeador.php*"],
+      "include_globs" : ["http://en*.strikermanager.com*"],
       "all_frames": true,
       "js":["debugsetting.js","remote.js","parsescout.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/cartera.php*",
-                   "http://en1.strikermanager.com/cartera.php*",
-                   "http://en2.strikermanager.com/cartera.php*",
-                   "http://en.strikermanager.com/cartera.php*"],
+      "matches" : ["http://*.strikermanager.com/cartera.php*"],
+      "include_globs" : ["http://en*.strikermanager.com*"],
       "all_frames": true,
       "js":["debugsetting.js","remote.js","parsescout.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/ver_subasta.php?accion=ventas",
-                   "http://en2.strikermanager.com/ver_subasta.php?accion=ventas",
-                   "http://en1.strikermanager.com/ver_subasta.php?accion=ventas",
-                   "http://en.strikermanager.com/ver_subasta.php?accion=ventas"],
+      "matches" : ["http://*.strikermanager.com/ver_subasta.php?accion=ventas"],
+      "include_globs" : ["http://en*.strikermanager.com*"],
       "all_frames": true,
       "js":["debugsetting.js","remote.js","sale.js"]
     },
     {
-      "matches" : ["http://en3.strikermanager.com/subastar.php*",
-                   "http://en2.strikermanager.com/subastar.php*",
-                   "http://en1.strikermanager.com/subastar.php*",
-                   "http://en.strikermanager.com/subastar.php*"],
+      "matches" : ["http://*.strikermanager.com/subastar.php*"],
+      "include_globs" : ["http://en*.strikermanager.com*"],
       "all_frames": true,
       "js":["debugsetting.js","remote.js","auction.js"]
     }

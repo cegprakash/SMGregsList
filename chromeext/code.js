@@ -49,7 +49,7 @@ var player = {
       self.el.id = "gregslist";
       self.el.appendChild(document.createTextNode(self.getSaleMessage()));
       var forsale = document.createElement('img');
-      forsale.src = 'http://chiaraquartet.net/sm/chromeext/icon16.png';
+      forsale.src = 'chrome://__MSG_@@extension_id__/chromeext/icon16.png';
       forsale.style.verticalAlign="text-bottom";
       self.el.appendChild(forsale);
       self.updateLink();
@@ -75,7 +75,7 @@ var player = {
       this.removeel.appendChild(document.createTextNode("Delete Listing "));
       this.removeel.addEventListener("click", this.deletePlayer());
       var forsale = document.createElement('img');
-      forsale.src = 'http://chiaraquartet.net/sm/chromeext/icon16.png';
+      forsale.src = 'chrome://__MSG_@@extension_id__/chromeext/icon16.png';
       forsale.style.verticalAlign="text-bottom";
       this.removeel.appendChild(forsale);
       menu.insertBefore(this.removeel, menu.firstChild.nextSibling);
@@ -94,7 +94,7 @@ var player = {
       } else {
         this.forsale = document.createElement('img');
         this.forsale.title = 'Player is for sale by Transfer Agreement';
-        this.forsale.src = 'http://chiaraquartet.net/sm/chromeext/icon16.png';
+        this.forsale.src = 'chrome://__MSG_@@extension_id__/chromeext/icon16.png';
         document.getElementsByClassName('estadojugador')[0].appendChild(this.forsale);
       }
     } else if (this.forsale) {

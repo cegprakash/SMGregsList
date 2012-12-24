@@ -31,7 +31,7 @@ function scrapepage() {
         if (result.params.exists[Number(idcheck[1])]) {
           // player is for sale
           var forsale = document.createElement('img');
-          forsale.src = 'http://chiaraquartet.net/sm/chromeext/icon16.png';
+          forsale.src = 'chrome://__MSG_@@extension_id__/chromeext/icon16.png';
           forsale.title = 'Player is for sale by Transfer Agreement';
           forsale.style.height = "15px;";
           kiddo.appendChild(forsale);
