@@ -31,7 +31,10 @@ function scrapepage() {
         if (result.params.exists[Number(idcheck[1])]) {
           // player is for sale
           var forsale = document.createElement('img');
-          forsale.src = 'chrome://__MSG_@@extension_id__/chromeext/icon16.png';
+          var loc = chrome.i18n.getMessage("@@extension_id");
+          forsale.src = 'chrome-extension://' + loc + '/icon16.png';
+          forsale.style.width = "16px";
+          forsale.style.height = "15px";
           forsale.title = 'Player is for sale by Transfer Agreement';
           forsale.style.height = "15px;";
           kiddo.appendChild(forsale);

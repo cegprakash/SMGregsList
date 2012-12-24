@@ -49,7 +49,10 @@ var player = {
       self.el.id = "gregslist";
       self.el.appendChild(document.createTextNode(self.getSaleMessage()));
       var forsale = document.createElement('img');
-      forsale.src = 'chrome://__MSG_@@extension_id__/chromeext/icon16.png';
+      var loc = chrome.i18n.getMessage("@@extension_id");
+      forsale.src = 'chrome-extension://' + loc + '/icon16.png';
+      forsale.style.width = "16px";
+      forsale.style.height = "15px";
       forsale.style.verticalAlign="text-bottom";
       self.el.appendChild(forsale);
       self.updateLink();
@@ -75,7 +78,10 @@ var player = {
       this.removeel.appendChild(document.createTextNode("Delete Listing "));
       this.removeel.addEventListener("click", this.deletePlayer());
       var forsale = document.createElement('img');
-      forsale.src = 'chrome://__MSG_@@extension_id__/chromeext/icon16.png';
+      var loc = chrome.i18n.getMessage("@@extension_id");
+      forsale.style.width = "16px";
+      forsale.style.height = "15px";
+      forsale.src = 'chrome-extension://' + loc + '/icon16.png';
       forsale.style.verticalAlign="text-bottom";
       this.removeel.appendChild(forsale);
       menu.insertBefore(this.removeel, menu.firstChild.nextSibling);
@@ -93,8 +99,11 @@ var player = {
         this.forsale.style.display = 'inherit';
       } else {
         this.forsale = document.createElement('img');
+        forsale.style.width = "16px";
+        forsale.style.height = "15px";
         this.forsale.title = 'Player is for sale by Transfer Agreement';
-        this.forsale.src = 'chrome://__MSG_@@extension_id__/chromeext/icon16.png';
+        var loc = chrome.i18n.getMessage("@@extension_id");
+        this.forsale.src = 'chrome-extension://' + loc + '/icon16.png';
         document.getElementsByClassName('estadojugador')[0].appendChild(this.forsale);
       }
     } else if (this.forsale) {
