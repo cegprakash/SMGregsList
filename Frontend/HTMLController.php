@@ -1,6 +1,6 @@
 <?php
 namespace SMGregsList\Frontend;
-use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsList\SellPlayer;
+use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsList\SellPlayer, SMGregsList\Manager;
 class HTMLController extends Messager
 {
     protected $retrieved;
@@ -106,7 +106,15 @@ class HTMLController extends Messager
             $player->manager = $params['manager'];
         }
         $this->retrieved = $player;
-        $this->broadcast('retrieveManager', $player);
+        try {
+            $this->broadcast('retrieveManager', $player);
+        } catch (\Exception $e) {
+            if ($this->getMessage('sell') == 'confirm' || $this->getMessage('sell') == 'verify') {
+                throw $e;
+            } else {
+                $player->manager = new Manager;
+            }
+        }
         if ($this->getMessage('sell') == 'delete' && isset($params['code'])) {
             $player->code = $params['code'];
             $this->broadcast('deletePlayer', $player);

@@ -13,19 +13,58 @@
  <h1>Merc's List: Sell Your Player</h1>
  <p>List a Striker Manager player as being available for transfer agreement</p>
 <form name="sell" action="<?php echo $phpSelf ?>" method="post" class="form-horizontal">
-<ul class="nav nav-tabs">
- <li class="active"><a href="#basic" data-toggle="tab">Basic Information</a></li>
- <li><a href="#stats" data-toggle="tab">Stats and Skills</a></li>
- <li><a href="#update" data-toggle="tab">Update a listing</a></li>
- <li><a href="index.php">Search for players</a></li>
-</ul>
-<div class="tab-content">
-<div class="tab-pane active" id="basic">
+<div class="accordion" id="accordion2">
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+        Click Here to update or delete an existing listing
+      </a>
+    </div>
+    <div id="collapseOne" class="accordion-body collapse">
+      <div class="accordion-inner">
+<div class="control-group">
+ <label class="control-label" for="id">Player ID</label>
+ <div class="controls">
+  <input placeholder="Enter the ID or the full URL" class="span5" type="text" name="pid" id="pid" value="<?php
+if ($context->getId()) echo $context->getUrl() . $context->getId()
+?>"/>
+ </div>
+</div>
+<div class="control-group">
+ <label class="control-label" for="id">Edit Code</label>
+ <div class="controls">
+  <input placeholder="To retrieve player details, enter a code" type="text" name="code" id="code" value="<?php
+ if ($context->getCode()) echo $context->getCode()
+ ?>"/> <input type="submit" value="Retrieve Player" class="btn btn-primary" name="retrieve"/><br>
+ <p><small>Note: You must click the "Retrieve Player" button in order to update your player or delete the listing</small></p>
+ <p><small>The update code was given when you added the player</small></p>
+ 
+ </div>
+</div>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#basic">
+        Basic Information
+      </a>
+    </div>
+    <div id="basic" class="accordion-body collapse in">
+      <div class="accordion-inner">
 <div class="control-group">
  <label class="control-label" for="id">Player ID</label>
  <div class="controls">
   <input placeholder="Enter the ID or the full URL" type="text" class="span5" name="id" id="id" value="<?php
 if ($context->getId()) echo $context->getUrl() . $context->getId()
+?>"/>
+ </div>
+</div>
+<div class="control-group">
+ <label class="control-label" for="manager">Your Manager name<br><small>(such as <a href="http://en3.strikermanager.com/usuario.php?id=10460314">CelloG</a>)</small></label>
+ <div class="controls">
+  <input placeholder="Manager name" type="text" class="span5" name="manager" id="manager" value="<?php
+if ($context->getManager()) echo $context->getManager()->getName()
 ?>"/>
  </div>
 </div>
@@ -75,8 +114,17 @@ if ($context->getExperience()) echo $context->getExperience()
   <?php echo $savant->render($context, 'SMGregsList/sellpositions.tpl.php') ?>
  </div>
 </div>
-</div> <!-- basic tab pane -->
-<div class="tab-pane" id="stats">
+</div>
+</div>
+</div> <!-- basic accordion -->
+ <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#stats">
+        Advanced (stats and skills)
+      </a> 
+    </div>
+    <div id="stats" class="accordion-body collapse">
+      <div class="accordion-inner">
 <div class="control-group">
  <label class="control-label" for="stats">Stats</label>
  <div class="controls">
@@ -95,26 +143,10 @@ if ($context->getExperience()) echo $context->getExperience()
 </div>
 <input type="submit" class="btn btn-primary" value="<?php if ($context->getRetrieved()) echo 'Update'; else echo 'Sell' ?>" name="verify" ?>
 </div> <!-- stats tab -->
-<div class="tab-pane" id="update">
-<div class="control-group">
- <label class="control-label" for="id">Player ID</label>
- <div class="controls">
-  <input placeholder="Enter the ID or the full URL" class="span5" type="text" name="pid" id="pid" value="<?php
-if ($context->getId()) echo $context->getUrl() . $context->getId()
-?>"/>
- </div>
 </div>
-<div class="control-group">
- <label class="control-label" for="id">Edit Code</label>
- <div class="controls">
-  <input placeholder="To retrieve player details, enter a code" type="text" name="code" id="code" value="<?php
- if ($context->getCode()) echo $context->getCode()
- ?>"/> <input type="submit" value="Retrieve Player" class="btn btn-primary" name="retrieve"/>
- 
- </div>
 </div>
-</div> <!-- update tab -->
-</div> <!-- tab content -->
+</div> <!-- stats accordion -->
+</div> <!-- accordion content -->
 <input type="submit" class="btn btn-primary" value="<?php if ($context->getRetrieved()) echo 'Update'; else echo 'Sell' ?>" name="verify" ?>
 <input type="submit" class="btn btn-warning" value="Cancel<?php if ($context->getRetrieved()) echo ' Update' ?>" name="cancel"/>
 <?php

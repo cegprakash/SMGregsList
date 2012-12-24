@@ -19,7 +19,6 @@
   </div>
 </div>
  <p>Search for Striker Manager players that are for sale by transfer agreement</p>
-<p></p>
 <form name="search" action="<?php echo $phpSelf ?>" method="get" class="form-horizontal">
 <div class="accordion" id="accordion2">
   <div class="accordion-group">
@@ -133,8 +132,8 @@ if ($context->getName()) echo $context->getName()
 </div>
 </div>
 </div>
-</div> <!-- stats tab -->
-</div> <!-- tab content -->
+</div> <!-- stats accordion -->
+</div> <!-- accordion content -->
 <div class="control-group">
  <div class="controls">
   <?php if (count($parent->context->searchresults)): ?>
