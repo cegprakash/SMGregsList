@@ -234,12 +234,10 @@ var player = {
       this.player.progression = Number(progr[1]);
       return Number(progr[1]);
     }
-    this.player.progression = 0;
     return false;
   },
   scrapeforecast: function (xml) {
     if (!xml) {
-      this.player.forecast = 0;
       return 0;
     }
     var forecast = 0;
@@ -253,7 +251,6 @@ var player = {
         forecast = val;
       }
     }
-    this.player.forecast = forecast;
     return forecast;
   },
   scrapepage: function (parenthtml) {
