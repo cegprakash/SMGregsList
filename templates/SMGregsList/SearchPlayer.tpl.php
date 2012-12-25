@@ -136,12 +136,7 @@ if ($context->getName()) echo $context->getName()
 </div> <!-- accordion content -->
 <div class="control-group">
  <div class="controls">
-  <?php if (count($parent->context->searchresults)): ?>
-<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-info">Show Search Results</button>
-<input type="submit" value="&larr; Modify Search" class="btn btn-primary" name="searchbutton"/>
- <?php else: ?>
-<input type="submit" value="Search" class="btn btn-primary" name="searchbutton"/>
- <?php endif; ?>
+  <input type="submit" value="Search" class="btn btn-primary" name="searchbutton"/>
  </div>
 </div>
 </form>
