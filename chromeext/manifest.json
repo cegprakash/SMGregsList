@@ -1,6 +1,6 @@
 {
   "name": "Striker Manager Transfer Market",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "manifest_version": 2,
   "description": "Striker Manager transfer agreement market application, augments the auction and loan markets at en3.strikermanager.com",
   "background": { "scripts": ["background.js"] },
@@ -19,6 +19,7 @@
     {
       "matches" : ["http://*.strikermanager.com/plantilla.php*"],
       "include_globs" : ["http://en*.strikermanager.com*"],
+      "exclude_globs" : ["*&*"],
       "all_frames": true,
       "js":["debugsetting.js","remote.js","parsesquad.js"]
     },
