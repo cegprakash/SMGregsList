@@ -99,8 +99,8 @@ var player = {
         this.forsale.style.display = 'inherit';
       } else {
         this.forsale = document.createElement('img');
-        forsale.style.width = "16px";
-        forsale.style.height = "15px";
+        this.forsale.style.width = "16px";
+        this.forsale.style.height = "15px";
         this.forsale.title = 'Player is for sale by Transfer Agreement';
         var loc = chrome.i18n.getMessage("@@extension_id");
         this.forsale.src = 'chrome-extension://' + loc + '/icon16.png';
