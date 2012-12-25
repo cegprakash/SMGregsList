@@ -147,7 +147,7 @@ class HTMLController extends Messager
             if ($value > 15 && $value < 40) {
                 $player->age = $value;
             }
-            if ($value > 13) {
+            if ($value > 13 && $value < 16) {
                 throw new \Exception("Juniors younger than 16 cannot be sold on the transfer market");
             }
         }
