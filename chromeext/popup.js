@@ -1,18 +1,13 @@
 chrome.extension.sendMessage([6], function(response) {
   var info = player.scrapepage(response);
+  info.progression = info.forecast = 0;
   if (info) {
-    chrome.extension.sendMessage([1, info], function(response) {
-      
-    });
     
     xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function()
     {
       if (xhr.readyState == 4 && xhr.status == 200) {
-       var skills = player.scrapeskills(xhr.responseText);
-       chrome.extension.sendMessage([4, skills], function(response) {
-        
-       });
+       info.skills = player.scrapeskills(xhr.responseText);
       } // ignore all failures
     };
     xhr.open("GET", "http://en3.strikermanager.com/powerups.php?id_jugador=" + info.id, true);
@@ -21,16 +16,7 @@ chrome.extension.sendMessage([6], function(response) {
     xhr2 = new XMLHttpRequest();
     xhr2.onreadystatechange = function() {
       if (xhr2.readyState == 4 && xhr.status == 200) {
-        var progression = player.scrapeprogression(xhr2.responseText);
-        if (progression) {
-         chrome.extension.sendMessage([2, progression], function(response) {
-         
-         });
-        } else {
-         chrome.extension.sendMessage([2, false], function(response) {
-         
-         });
-        }
+        info.progression = player.scrapeprogression(xhr2.responseText);
       }
     };
     xhr2.open("GET", "http://en3.strikermanager.com/jugador_entrenamiento.php?id_jugador=" + info.id, true);
@@ -38,16 +24,7 @@ chrome.extension.sendMessage([6], function(response) {
     
     xhr3 = new XMLHttpRequest();
     xhr3.onreadystatechange = function() {
-      var forecast = player.scrapeforecast(xhr3.responseXML);
-      if (forecast) {
-       chrome.extension.sendMessage([3, forecast], function(response) {
-      
-       });
-      } else {
-       chrome.extension.sendMessage([3, false], function(response) {
-      
-       });
-      }
+      info.forecast = player.scrapeforecast(xhr3.responseXML);
     }
     xhr3.open("GET", "http://en3.strikermanager.com/jugador_graf.php?id=" + info.id + "&car=media", true);
     xhr3.send();

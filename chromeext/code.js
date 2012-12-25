@@ -152,6 +152,7 @@ var player = {
   sellPlayer: function()
   {
     var self = this;
+    var player = this.player;
     return function() {
       if (!self.isours) return;
       var musthavecode = false;
@@ -370,7 +371,7 @@ var player = {
       ret.average = Number(inf[1] + "." + inf[2]);
     }
     this.player.average = ret.average;
-    return ret;
+    return this.player;
   }
 }
 chrome.storage.sync.get(['SMGregsList.codes'], function(a) {
