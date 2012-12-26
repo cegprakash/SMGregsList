@@ -140,10 +140,7 @@ var player = {
           }
         } else {
           alert("Successfully removed player from transfer list");
-          delete self.codes[result.params.id];
-          delete self.player.code;
           self.exists = false;
-          chrome.storage.sync.set({'SMGregsList.codes': self.codes});
           self.updateLink();
         }
       });
