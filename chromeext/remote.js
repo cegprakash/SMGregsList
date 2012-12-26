@@ -23,6 +23,7 @@ function remote(message, params, callback, blocking)
       return;
      }
      try {
+      if (sm_debug) console.log("received: " + xhr.responseText);
       var ret = JSON.parse(xhr.responseText);
       if (status == ret.id) {
         if (callback) callback(ret);
@@ -44,8 +45,10 @@ function remote(message, params, callback, blocking)
     }
   }
   if (extreme_sm_debug) {
+   if (sm_debug) console.log("extreme: message " + message + ", params " + JSON.stringify(params));
    xhr.open("POST", "http://localhost/sm/jsonrpc.php", blocking);
   } else {
+   if (sm_debug) console.log("normal: message " + message + ", params " + JSON.stringify(params));
    xhr.open("POST", "http://chiaraquartet.net/sm/jsonrpc.php", blocking);
   }
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -61,6 +64,7 @@ function remote(message, params, callback, blocking)
     return;
    }
    try {
+    if (sm_debug) console.log("received: " + xhr.responseText);
     var ret = JSON.parse(xhr.responseText);
     if (status == ret.id) {
       if (callback) callback(ret);
