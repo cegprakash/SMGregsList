@@ -131,6 +131,7 @@ class Controller extends HTMLController
                     $player->id = $params['id'];
                     $player->code = $params['code'];
                     $player->manager = $params['manager'];
+                    $this->retrieved = $player;
                     try {
                         $this->broadcast('retrieveManager', $player);
                     } catch (\Exception $e) {
