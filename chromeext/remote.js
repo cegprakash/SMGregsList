@@ -43,7 +43,11 @@ function remote(message, params, callback, blocking)
      }
     }
   }
-  xhr.open("POST", "http://chiaraquartet.net/sm/jsonrpc.php", blocking);
+  if (extreme_sm_debug) {
+   xhr.open("POST", "http://localhost/sm/jsonrpc.php", blocking);
+  } else {
+   xhr.open("POST", "http://chiaraquartet.net/sm/jsonrpc.php", blocking);
+  }
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.send(json);
   if (blocking) return;
