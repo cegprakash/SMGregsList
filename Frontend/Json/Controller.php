@@ -125,6 +125,19 @@ class Controller extends HTMLController
             if ($this->getMessage('search') == 'search') {
                 return $this->detectSearch();
             } elseif ($this->getMessage('search') == 'exists') {
+                $params = $this->getParams('search');
+                if (isset($params['code']) && isset($params['manager'])) {
+                    $player = new SellPlayer;
+                    $player->id = $params['id'];
+                    $player->code = $params['code'];
+                    $player->manager = $params['manager'];
+                    try {
+                        $this->broadcast('retrieveManager', $player);
+                    } catch (\Exception $e) {
+                        return $this->detectPlayer();
+                    }
+                    return $this->detectPlayer($player);
+                }
                 return $this->detectPlayer();
             } else {
                 return $this->detectSell();
@@ -133,7 +146,7 @@ class Controller extends HTMLController
         return parent::receive($message, $content);
     }
 
-    function detectPlayer()
+    function detectPlayer(SellPlayer $player = null)
     {
         $params = $this->getParams('search');
         if (isset($params['ids'])) {
@@ -145,8 +158,10 @@ class Controller extends HTMLController
             }
             $this->broadcast('existsmultiple', $players);
         } else {
-            $player = new SellPlayer;
-            $player->id = $params['id'];
+            if (null === $player) {
+                $player = new SellPlayer;
+                $player->id = $params['id'];
+            }
             $this->broadcast('exists', $player);
         }
     }

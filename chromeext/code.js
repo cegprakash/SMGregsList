@@ -14,10 +14,15 @@ var player = {
       return "List For Sale ";
     }
   },
-  checkExists: function()
+  checkExists: function(manager)
   {
-    var self = this;
-    remote("exists", {'id': this.player.id}, function(result) {
+    var self = this, params = {'id': this.player.id};
+    if (self.codes[manager] && !this.isours) {
+      // ensure that if we have sold this player and it does not belong to us, that it is removed
+      params.code = self.codes[manager];
+      params.manager = manager;
+    }
+    remote("exists", params, function(result) {
       if (result.error) {
         if (sm_debug) {
           alert(result.error.message);
@@ -258,12 +263,12 @@ var player = {
     var id = location.search.match(/id_jugador=([0-9]+)/);
     ret.id = id[1];
     this.player.id = ret.id;
+    var parentuser = parenthtml.match(/<a target="marco" href="usuario.php" class="color_skin" ?>([^<]+)<\/a/);
     if (team[1] != parentteam[1]) {
       this.isours = false;
-      this.checkExists(); // we will use this to display the for sale icon on other team's players
+      this.checkExists(parentuser[1]); // we will use this to display the for sale icon on other team's players
       return false; // we can only sell players on our own team
     }
-    var parentuser = parenthtml.match(/<a target="marco" href="usuario.php" class="color_skin" ?>([^<]+)<\/a/);
     this.player.manager = parentuser[1];
     ret.manager = parentuser[1];
     this.isours = true;
