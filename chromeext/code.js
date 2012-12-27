@@ -25,7 +25,7 @@ var player = {
     remote("exists", params, function(result) {
       if (result.error) {
         if (sm_debug) {
-          alert(result.error.message);
+          self.alert(result.error.message);
         } else {
           console.log(result.error.message);
         }
@@ -132,19 +132,19 @@ var player = {
       if (musthavecode) {
         self.player.code = prompt("Please enter the player update code", self.player.code);
         if (!self.player.code) {
-          alert("Cannot update the listing without a player code");
+          self.alert("Cannot update the listing without a player code");
           return;
         }
       }
       remote("delete", self.player, function(result) {
         if (result.error) {
           if (sm_debug) {
-            alert(result.error.message);
+            self.alert(result.error.message);
           } else {
             console.log(result.error.message);
           }
         } else {
-          alert("Successfully removed player from transfer list");
+          self.alert("Successfully removed player from transfer list");
           self.exists = false;
           self.updateLink();
         }
@@ -168,7 +168,7 @@ var player = {
       if (musthavecode) {
         self.player.code = prompt("Please enter the player update code", self.player.code);
         if (!self.player.code) {
-          alert("Cannot update the listing without a player code");
+          self.alert("Cannot update the listing without a player code");
           return;
         }
       }
@@ -199,12 +199,12 @@ var player = {
       remote("confirm", self.player, function(result) {
         if (result.error) {
           if (sm_debug) {
-            alert(result.error.message);
+            self.alert(result.error.message);
           } else {
             console.log(result.error.message);
           }
         } else {
-          alert("Successfully listed player for sale.  Update code needed to make changes is: " + result.params.code);
+          self.alert("Successfully listed player for sale.  Update code needed to make changes is: " + result.params.code);
           self.codes[result.params.manager] = result.params.code;
           self.player.code = result.params.code;
           chrome.storage.sync.set({'SMGregsList.codes': self.codes});
@@ -254,6 +254,13 @@ var player = {
       }
     }
     return forecast;
+  },
+  alert: function(text)
+  {
+    var alerty = document.getElementById('textoalerta');
+    var parentthingy = document.getElementById('mensajealerta');
+    alerty.innerHTML = text;
+    parentthingy.style.display = "inherit";
   },
   scrapepage: function (parenthtml) {
     var ret = {};
