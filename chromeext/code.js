@@ -196,6 +196,10 @@ var player = {
           self.player.progression = 0;
         }
       }
+      if (self.player.isyouth && Number(self.player.age) < 16) {
+        self.alert("Cannot sell youth players younger than 16");
+        return;
+      }
       remote("confirm", self.player, function(result) {
         if (result.error) {
           if (sm_debug) {
@@ -280,7 +284,7 @@ var player = {
     ret.manager = parentuser[1];
     this.isours = true;
     this.checkExists();
-    if (html.match(/\/img\/new\/ioferta.png/) || html.match(/\/img\/as\/lock/)) {
+    if (/*html.match(/\/img\/new\/ioferta.png/) || */html.match(/\/img\/as\/lock/)) {
       this.onauction = true;
     }
     var name = html.match(/<img class="bandera" src="\/img\/paises\/[^\.]+.gif">\s+(.+)\s+<span/);
@@ -290,6 +294,7 @@ var player = {
     this.player.country = country[1];
     ret.country = country[1];
     var pos = html.match(/<td>Position<\/td>\s+<td>([^<]+)<\/td>/);
+    this.player.isyouth = html.match(/\(Youth\)/);
     var stats = html.match(/<td>([a-zA-Z ]+)<\/td>\s+<td>\s+<span style="display: none;">(\d\d\d)<\/span>\s+<div class="jugbarra" style="width: 99px">\s+<div class="jugbarracar" style="border: 1px outset #[a-f0-9]+; width: \d+px; background: #[a-f0-9]+;"><\/div>\s+<div class="jugbarranum">\d+%/g);
     var summaries = html.match(/<td>([A-Za-z]+ (?:points|average))<\/td>\s+<td class="numerico">\s+(\d+)<span style="font-size: 0.7em;">\.(\d+)<\/span>/g);
     var i;
