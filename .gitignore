@@ -6,3 +6,5 @@ MyProject.komodoproject
 chromeext/SMGregsListChrome.komodoproject
 
 *.komodoproject
+
+data/gregslist.db
