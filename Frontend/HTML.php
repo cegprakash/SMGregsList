@@ -57,7 +57,12 @@ class HTML extends Messager implements Frontend
                 $this->subtitle = 'Search for Players for sale';
                 if (count($_GET)) {
                     $this->extrarender = "<script type=\"text/javascript\">
-\$('#myModal').modal('toggle');    
+\$(document).ready(function() 
+    { 
+        \$('#searchresultstable').tablesorter(); 
+    } 
+);
+\$('#myModal').modal('toggle');
     </script>";
                 }
             }

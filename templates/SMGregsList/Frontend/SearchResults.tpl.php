@@ -7,10 +7,13 @@ echo $savant->render($context->searchform->getRawObject()) ?>
     <h3 id="myModalLabel">Search Results</h3>
   </div>
   <div class="modal-body">
-    <div class="span6">
-    <table class="table table-striped table-condensed">
+    <div class="alert fade in">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>Sorting Tip:</strong> Click the column headers.  Hold Shift and click to sort by more than 1 header at a time.
+    </div>
+    <table class="tablesorter" id="searchresultstable">
     <thead>
-        <tr><th>Name</th><th>Position</th><th>Average</th><th>Age</th><th>Country</th><th>Forecast</th><th>Progression</th></tr>
+        <tr><th>Name</th><th>Pos.</th><th>Av.</th><th>Age</th><th>Country</th><th>FC</th><th>Prog.</th></tr>
     </thead>
     <tbody>
     <?php
@@ -18,7 +21,6 @@ echo $savant->render($context->searchform->getRawObject()) ?>
             ?>
     </tbody>
     </table>
-    </div>
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
