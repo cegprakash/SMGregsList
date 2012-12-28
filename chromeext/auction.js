@@ -28,6 +28,8 @@ var player = {
   codes: {},
   deletePlayer: function(idtouse)
   {
+    alert("Your player is listed for sale on the transfer market.  Generally, players on auction should not be listed as available for transfer, please delete the listing manually");
+    return;
     var self = this;
     var id = Number(idtouse);
     return function() {
