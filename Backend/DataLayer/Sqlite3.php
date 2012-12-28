@@ -83,6 +83,9 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
 
     function checkManager(\SMGregsList\Player $player, \SMGregsList\Manager $manager)
     {
+        if (!$this->exists($player)) {
+            return false;
+        }
         $new = new Sqlite3\SellPlayer($this->db);
         $new->fromPlayer($player);
         // get the manager and other data
