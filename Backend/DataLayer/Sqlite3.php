@@ -81,14 +81,18 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
         return $this->db->querySingle("SELECT id FROM player WHERE id ='" . $this->db->escapeString($player->getId()) . "'");
     }
 
-    function checkManager(Player $player, Manager $manager)
+    function checkManager(\SMGregsList\Player $player, \SMGregsList\Manager $manager)
     {
+        $new = new Sqlite3\SellPlayer($this->db);
+        $new->fromPlayer($player);
         // get the manager and other data
+        $player = $new;
         $player->privateRetrieve();
-        if ($player->manager->getName() == $manager->getName() && $player->manager->getCode() == $manager->getCode()) {
+        if ($player->getManager()->getName() == $manager->getName() && $player->getManager()->getCode() == $manager->getCode()) {
             // this player was put up for sale, and then sold.  we must remove it
             $this->remove($player);
         }
+        return $this->exists($player);
     }
 
     function remove(Player $player)

@@ -69,7 +69,7 @@ abstract class DataLayer extends Messager
                 throw new \Exception('Internal error: checkDeleteAndExists message received, but content was not an array(Player, Manager)');
             }
             $result = $this->checkManager($content['player'], $content['manager']);
-            $this->broadcast('existsResult', $result);
+            $this->broadcast('existsResult', $result ? true : false);
         } elseif ($message == 'retrieveManager') {
             if (!($content instanceof Player)) {
                 throw new \Exception('Internal error: retrieveManager message received, but content was not a Player object');
