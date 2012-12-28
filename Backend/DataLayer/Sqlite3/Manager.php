@@ -13,6 +13,9 @@ class Manager extends m
     function fromPlayer(Player $player)
     {
         $this->name = $player->getManager();
+        if ($this->name instanceof $this) {
+            $this->name = $this->name->getName();
+        }
     }
 
     function exists()

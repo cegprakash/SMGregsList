@@ -1,9 +1,10 @@
 <?php
 namespace SMGregsList\Backend;
-use SMGregsList\Player,SMGregsList\WriteablePlayer,SMGregsList\SearchablePlayer,SMGregsList\Messager;
+use SMGregsList\Player,SMGregsList\WriteablePlayer,SMGregsList\SearchablePlayer,SMGregsList\Messager,SMGregsList\Manager;
 abstract class DataLayer extends Messager
 {
     abstract function exists(Player $player);
+    abstract function checkManager(Player $player, Manager $manager);
     abstract function retrieve(Player $player);
     abstract function remove(Player $player);
     abstract function save(WriteablePlayer $player);
@@ -12,7 +13,7 @@ abstract class DataLayer extends Messager
     function listMessages(array $newmessages)
     {
         return parent::listMessages(array_merge($newmessages, array('addPlayer', 'deletePlayer', 'search', 'retrieve', 'exists',
-                                                                    'existsmultiple', 'retrieveManager')));
+                                                                    'existsmultiple', 'retrieveManager', 'checkDeleteAndExists')));
     }
 
     function receive($message, $content)
@@ -60,6 +61,14 @@ abstract class DataLayer extends Messager
                 }
                 $result[$player->getId()] = $this->exists($player) ? true : false;
             }
+            $this->broadcast('existsResult', $result);
+        } elseif ($message == 'checkDeleteAndExists') {
+            // we reach here if viewing someone else's player.  Just make sure it isn't one of ours we listed and then sold
+            if (!is_array($content) || !isset($content['player']) || !isset($content['manager'])
+                || !($content['player'] instanceof Player) || !($content['manager'] instanceof Manager)) {
+                throw new \Exception('Internal error: checkDeleteAndExists message received, but content was not an array(Player, Manager)');
+            }
+            $result = $this->checkManager($content['player'], $content['manager']);
             $this->broadcast('existsResult', $result);
         } elseif ($message == 'retrieveManager') {
             if (!($content instanceof Player)) {

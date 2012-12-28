@@ -1,6 +1,7 @@
 <?php
 namespace SMGregsList\Frontend\Json;
-use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsList\SellPlayer, SMGregsList\Frontend\HTMLController;
+use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsList\SellPlayer, SMGregsList\Frontend\HTMLController,
+    SMGregsList\Manager;
 function __handler($exception)
 {
     if ($exception instanceof JsonRpcException) {
@@ -163,7 +164,11 @@ class Controller extends HTMLController
                 $player = new SellPlayer;
                 $player->id = $params['id'];
             }
-            $this->broadcast('exists', $player);
+            try {
+                $this->broadcast('checkDeleteAndExists', array('player' => $player, 'manager' => $player->getManager()));
+            } catch (\Exception $e) {
+                $this->broadcast('exists', $player);
+            }
         }
     }
 

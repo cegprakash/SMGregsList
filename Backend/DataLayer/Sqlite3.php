@@ -78,17 +78,17 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
 
     function exists(Player $player)
     {
-        if ($player->getCode() && $this->db->querySingle("SELECT id FROM player WHERE id ='" .
-                                                         $this->db->escapeString($player->getId()) . "'")) {
-            // this only happens if the player was sold, but somehow was not removed from being for sale
-            // in which case we have to see if the code matches and remove the player
-            try {
-                $this->remove($player);
-            } catch (\Exception $e) {
-                // fail silently if the code does not match
-            }
-        }
         return $this->db->querySingle("SELECT id FROM player WHERE id ='" . $this->db->escapeString($player->getId()) . "'");
+    }
+
+    function checkManager(Player $player, Manager $manager)
+    {
+        // get the manager and other data
+        $player->privateRetrieve();
+        if ($player->manager->getName() == $manager->getName() && $player->manager->getCode() == $manager->getCode()) {
+            // this player was put up for sale, and then sold.  we must remove it
+            $this->remove($player);
+        }
     }
 
     function remove(Player $player)

@@ -62,6 +62,20 @@ class Player extends p implements DataPlayer
         return $this->db->querySingle("SELECT id FROM player WHERE id ='" . $this->db->escapeString($this->getId()) . "'");
     }
 
+    function privateRetrieve()
+    {
+        $data = $this->db->query("SELECT * FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
+        $row = $data->fetchArray(SQLITE3_ASSOC);
+        $data->finalize();
+        foreach ($row as $name => $value) {
+            $this->$name = $value;
+        }
+        $manager = new Manager($this->db);
+        $manager->fromPlayer($this);
+        $manager->retrieve();
+        $this->manager = $manager;
+    }
+
     function retrieve()
     {
         if (!$this->exists()) {
