@@ -78,7 +78,8 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
 
     function exists(Player $player)
     {
-        if ($player->getCode()) {
+        if ($player->getCode() && $this->db->querySingle("SELECT id FROM player WHERE id ='" .
+                                                         $this->db->escapeString($player->getId()) . "'")) {
             // this only happens if the player was sold, but somehow was not removed from being for sale
             // in which case we have to see if the code matches and remove the player
             try {
