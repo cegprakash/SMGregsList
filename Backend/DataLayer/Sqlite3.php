@@ -119,6 +119,16 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
         return $new->retrieve();
     }
 
+    function removeOldListings(namespace\Manager $manager, $player)
+    {
+        if ($this->exists($player)) {
+            $player = $this->retrieve($player);
+            if ($player->getManager() != $manager->getName()) {
+                $this->remove($player);
+            }
+        }
+    }
+
     function retrieveManagerFromName($name)
     {
         $new = new Sqlite3\Manager($this->db);

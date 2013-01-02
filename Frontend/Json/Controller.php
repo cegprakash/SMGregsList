@@ -161,6 +161,11 @@ class Controller extends HTMLController
         $params = $this->getParams('search');
         if (isset($params['ids'])) {
             $players = array();
+            if (isset($params['manager']) && isset($players['code']) && isset($players['players'])) {
+                $players['manager'] = $params['manager'];
+                $players['code'] = $params['code'];
+                $params['ids'] = $players['players'];
+            }
             foreach ($params['ids'] as $id) {
                 $player = new SellPlayer;
                 $player->id = $id;

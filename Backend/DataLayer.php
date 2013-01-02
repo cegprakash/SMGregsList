@@ -56,10 +56,23 @@ abstract class DataLayer extends Messager
             $this->broadcast('existsResult', $this->exists($content) ? true : false);
         } elseif ($message == 'existsmultiple') {
             $result = array();
+            if (isset($content['manager']) && isset($content['code'])) {
+                $manager = $content['manager'];
+                unset($content['manager']);
+                $code = $content['code'];
+                unset($content['code']);
+                $manager = $this->retrieveManagerFromName($manager);
+                if ($manager->getCode() != $code) {
+                    // we don't check out, don't remove old listings
+                    $manager = null;
+                }
+            }
+            
             foreach ($content as $player) {
                 if (!($player instanceof Player)) {
                     throw new \Exception('Internal error: retrieve message received, but content was not a Player object');
                 }
+                $this->removeOldListings($manager, $player);
                 $result[$player->getId()] = $this->exists($player) ? true : false;
             }
             $this->broadcast('existsResult', $result);
