@@ -13,7 +13,8 @@ abstract class DataLayer extends Messager
     function listMessages(array $newmessages)
     {
         return parent::listMessages(array_merge($newmessages, array('addPlayer', 'deletePlayer', 'search', 'retrieve', 'exists',
-                                                                    'existsmultiple', 'retrieveManager', 'checkDeleteAndExists')));
+                                                                    'existsmultiple', 'retrieveManager', 'checkDeleteAndExists',
+                                                                    'retrieveManagerFromName')));
     }
 
     function receive($message, $content)
@@ -76,6 +77,12 @@ abstract class DataLayer extends Messager
             }
             $result = $this->retrieveManager($content);
             $this->broadcast('managerRetrieved', $result);
+        } elseif ($message == 'retrieveManagerFromName') {
+            if (!is_string($content)) {
+                throw new \Exception('Internal error: retrieveManagerFromName message received, but content was not a string');
+            }
+            $result = $this->retrieveManagerFromName($content);
+            $this->broadcast('managerRetrievedFromName', $result);
         } elseif ($message == 'generateCode') {
         }
     }

@@ -9,9 +9,11 @@ class Manager
     {
         if ($name == 'code') {
             $this->code = $value;
+            return;
         }
         if ($name == 'name') {
             $this->name = $value;
+            return;
         }
         throw new \Exception('Internal error: unknown manager variable: ' . $name);
     }

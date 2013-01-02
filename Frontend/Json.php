@@ -14,7 +14,7 @@ class Json extends HTML
 
     function listMessages(array $newmessages)
     {
-        return parent::listMessages(array_merge($newmessages, array('existsResult')));
+        return parent::listMessages(array_merge($newmessages, array('existsResult', 'managerRetrievedFromName')));
     }
 
     function receive($message, $content)
@@ -43,6 +43,9 @@ class Json extends HTML
         } elseif ($message == 'playerRemoved') {
             $this->broadcast('reply', array('message' => 'playerRemoved',
                                             'params' => array('id' => $content->getId())));
+        } elseif ($message = 'managerRetrievedFromName') {
+            $this->broadcast('reply', array('message' => 'manager',
+                                            'params' => array('manager' => $content->getName(), 'code' => $content->getCode())));
         }
     }
 

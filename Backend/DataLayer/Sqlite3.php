@@ -119,6 +119,13 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
         return $new->retrieve();
     }
 
+    function retrieveManagerFromName($name)
+    {
+        $new = new Sqlite3\Manager($this->db);
+        $new->name = $name;
+        return $new->retrieve();
+    }
+
     function retrieveManager(Player $player)
     {
         $new = new Sqlite3\Manager($this->db);

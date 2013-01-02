@@ -74,6 +74,10 @@ class Controller extends HTMLController
             exit(0);
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!preg_match('/^http:\/\/en[1-3]?\.strikermanager\.com/', $_SERVER['HTTP_REFERER'])) {
+                echo "Nice try";
+                exit;
+            }
             $content = explode(';', $_SERVER['CONTENT_TYPE']);
             $content = $content[0];
             if ($content == 'application/json') {
@@ -115,7 +119,7 @@ class Controller extends HTMLController
 
     function listMessages(array $newmessages)
     {
-        return parent::listMessages(array('reply', 'parseJson'));
+        return parent::listMessages(array('reply', 'parseJson', 'getManager', 'managerRetrievedFromName'));
     }
 
     function receive($message, $content)
@@ -141,10 +145,14 @@ class Controller extends HTMLController
                     return $this->detectPlayer($player);
                 }
                 return $this->detectPlayer();
+            } elseif ($this->getMessage('search') == 'getmanager') {
+                $params = $this->getParams('search');
+                $this->broadcast('retrieveManagerFromName', $params);
             } else {
                 return $this->detectSell();
             }
         }
+        // STOP - add new json API to the parseJson message handler above
         return parent::receive($message, $content);
     }
 
