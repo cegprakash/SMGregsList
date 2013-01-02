@@ -7,42 +7,18 @@
     <ul class="nav">
       <li><a href="/sm/index.php">Search for Players</a></li>
       <li class="active"><a href="<?php echo $phpSelf ?>">Sell a Player</a></li>
+      <li class="dropdown">
+       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>Found a bug?</strong><b class="caret"></b></a>
+       <ul class="dropdown-menu">
+        <li><a href="https://github.com/cellog/SMGregsList/issues">Please report it</a>.</li>
+       </ul>
+      </li>
     </ul>
   </div>
 </div>
  <p>List a Striker Manager player as being available for transfer agreement</p>
 <form name="sell" action="<?php echo $phpSelf ?>" method="post" class="form-horizontal">
 <div class="accordion" id="accordion2">
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-        Click Here to update or delete an existing listing
-      </a>
-    </div>
-    <div id="collapseOne" class="accordion-body collapse">
-      <div class="accordion-inner">
-<div class="control-group">
- <label class="control-label" for="id">Player ID</label>
- <div class="controls">
-  <input placeholder="Enter the ID or the full URL" class="span5" type="text" name="pid" id="pid" value="<?php
-if ($context->getId()) echo $context->getUrl() . $context->getId()
-?>"/>
- </div>
-</div>
-<div class="control-group">
- <label class="control-label" for="id">Edit Code</label>
- <div class="controls">
-  <input placeholder="To retrieve player details, enter a code" type="text" name="code" id="code" value="<?php
- if ($context->getCode()) echo $context->getCode()
- ?>"/> <input type="submit" value="Retrieve Player" class="btn btn-primary" name="retrieve"/><br>
- <p><small>Note: You must click the "Retrieve Player" button in order to update your player or delete the listing</small></p>
- <p><small>The update code was given when you added the player</small></p>
- 
- </div>
-</div>
-      </div>
-    </div>
-  </div>
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#basic">
@@ -64,6 +40,26 @@ if ($context->getId()) echo $context->getUrl() . $context->getId()
  <div class="controls">
   <input placeholder="Manager name" type="text" class="span5" name="manager" id="manager" value="<?php
 if ($context->getManager()) echo $context->getManager()->getName()
+?>"/><br>
+<small>Note: if you have ever sold a player before, you will need to enter your code</small>
+ </div>
+</div>
+<div class="control-group">
+ <label class="control-label" for="id">Your Code</label>
+ <div class="controls">
+  <input placeholder="To retrieve player details, enter a code" type="text" name="code" id="code" value="<?php
+ if ($context->getCode()) echo $context->getCode()
+ ?>"/> <input type="submit" value="Retrieve Player" class="btn btn-primary" name="retrieve"/><br>
+ <span class="help-block">Note: You must click the "Retrieve Player" button in order to update or delete a listing<br>
+ The update code was given when you added the player</span>
+ 
+ </div>
+</div>
+<div class="control-group">
+ <label class="control-label" for="average">Average</label>
+ <div class="controls">
+  <input placeholder="Average" type="text" class="input-mini" name="average" id="average" value="<?php
+if ($context->getAverage()) echo $context->getAverage()
 ?>"/>
  </div>
 </div>
@@ -72,14 +68,6 @@ if ($context->getManager()) echo $context->getManager()->getName()
  <div class="controls">
   <input placeholder="Age" type="text" class="input-mini" name="age" id="age" value="<?php
 if ($context->getAge()) echo $context->getAge()
-?>"/>
- </div>
-</div>
-<div class="control-group">
- <label class="control-label" for="average">Average</label>
- <div class="controls">
-  <input placeholder="Average" type="text" class="input-mini" name="average" id="average" value="<?php
-if ($context->getAverage()) echo $context->getAverage()
 ?>"/>
  </div>
 </div>
@@ -145,7 +133,8 @@ if ($context->getExperience()) echo $context->getExperience()
 </div>
 </div>
 </div> <!-- stats accordion -->
-</div> <!-- accordion content -->
+<div class="control-group">
+ <div class="controls">
 <input type="submit" class="btn btn-primary" value="<?php if ($context->getRetrieved()) echo 'Update'; else echo 'Sell' ?>" name="verify" ?>
 <input type="submit" class="btn btn-warning" value="Cancel<?php if ($context->getRetrieved()) echo ' Update' ?>" name="cancel"/>
 <?php
@@ -154,5 +143,7 @@ if ($context->getExperience()) echo $context->getExperience()
  <input type="submit" class="btn btn-danger" value="Stop Selling" name="delete" onclick="return confirm('This will remove your player from the for sale list.  Are you sure?');"/>
 <?php endif;
 ?>
+ </div>
+</div>
 </form>
-<p>Found a bug? <a href="https://github.com/cellog/SMGregsList/issues">Please report it</a>.</p>
+</div> <!-- accordion content -->

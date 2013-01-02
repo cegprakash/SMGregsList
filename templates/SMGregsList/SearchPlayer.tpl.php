@@ -14,7 +14,7 @@
        <ul class="dropdown-menu">
         <li><a href="https://github.com/cellog/SMGregsList/issues">Please report it</a>.</li>
        </ul>
-</li>
+      </li>
     </ul>
   </div>
 </div>

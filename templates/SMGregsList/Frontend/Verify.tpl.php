@@ -1,21 +1,34 @@
-<h1>Sell a Player</h1>
-<h2>Please verify submitted information</h2>
  <?php
  $phpSelf = filter_input(INPUT_SERVER, 'PHP_SELF', FILTER_SANITIZE_URL);
  ?>
+<div class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Merc's List: Striker Manager Transfer Market</a>
+    <ul class="nav">
+      <li><a href="/sm/index.php">Search for Players</a></li>
+      <li class="active"><a href="<?php echo $phpSelf ?>">Sell a Player</a></li>
+      <li class="dropdown">
+       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>Found a bug?</strong><b class="caret"></b></a>
+       <ul class="dropdown-menu">
+        <li><a href="https://github.com/cellog/SMGregsList/issues">Please report it</a>.</li>
+       </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+ <p>Please verify submitted information</p>
 <form name="search" action="<?php echo $phpSelf ?>" method="post" class="form-horizontal">
-<ul class="nav nav-tabs">
- <li class="active"><a href="#basic" data-toggle="tab">Basic Information</a></li>
- <li><a href="#stats" data-toggle="tab">Stats and Skills</a></li>
-<?php
- if ($context->getRetrieved()):
-?>
- <li><a href="#update" data-toggle="tab">Update a listing</a></li>
-<?php endif ?>
- <li><a href="index.php">Search for players</a></li>
-</ul>
-<div class="tab-content">
-<div class="tab-pane active" id="basic">
+<div class="control-group">
+ <label class="control-label" for="id">Your Code</label>
+ <div class="controls">
+  <input type="hidden" name="code" id="code" value="<?php
+ if ($context->getCode()) echo $context->getCode()
+ ?>"/><?php
+ if ($context->getCode()) echo $context->getCode()
+ ?><br>
+ 
+ </div>
+</div>
 <div class="control-group">
  <label class="control-label" for="id">Player ID</label>
  <div class="controls">
@@ -84,8 +97,6 @@ if ($context->getPosition()) echo $context->getPosition()
 ?>
  </div>
 </div>
-</div> <!-- basic tab pane -->
-<div class="tab-pane" id="stats">
 <div class="control-group">
  <label class="control-label" for="stats">Stats</label>
  <div class="controls">
@@ -102,13 +113,9 @@ if ($context->getPosition()) echo $context->getPosition()
  </span>
  </div>
 </div>
-<input type="submit" class="btn btn-primary" value="<?php if ($context->getRetrieved()) echo 'Update'; else echo 'Sell' ?>" name="sellfinal" ?>
-<input type="submit" class="btn btn-warning" value="Cancel<?php if ($context->getRetrieved()) echo ' Update' ?>" name="cancel"/>
-</div> <!-- stats tab -->
 <?php
  if ($context->getRetrieved()):
 ?>
-<div class="tab-pane" id="update">
 <div class="control-group">
  <label class="control-label" for="id">Player ID</label>
  <div class="controls">
@@ -130,10 +137,12 @@ if ($context->getId()) echo $context->getUrl() . $context->getId()
  
  </div>
 </div>
-<input type="submit" class="btn btn-primary" value="<?php if ($context->getRetrieved()) echo 'Update'; else echo 'Sell' ?>" name="sellfinal" ?>
-<input type="submit" class="btn btn-warning" value="Cancel<?php if ($context->getRetrieved()) echo ' Update' ?>" name="cancel"/>
-</div> <!-- update tab -->
 <?php endif; ?>
-</div> <!-- tab content -->
+<div class="control-group">
+ <div class="controls">
+  <input type="submit" class="btn btn-primary" value="<?php if ($context->getRetrieved()) echo 'Update'; else echo 'Sell' ?>" name="sellfinal" ?>
+  <input type="submit" class="btn btn-warning" value="Cancel<?php if ($context->getRetrieved()) echo ' Update' ?>" name="cancel"/>
+ </div>
+</div>
 
 </form>

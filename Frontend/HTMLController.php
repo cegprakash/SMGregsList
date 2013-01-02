@@ -156,6 +156,8 @@ class HTMLController extends Messager
             if ($value > 0 && $value < 100) {
                 $player->average = $value;
             }
+        } elseif ($this->getMessage('sell') == 'verify' || $this->getMessage('sell') == 'confirm') {
+            throw new \Exception('Error: Player average must be set');
         }
         if (isset($params['position']) && $params['position']) {
             $player->position = $params['position'];
