@@ -43,7 +43,7 @@ class Json extends HTML
         } elseif ($message == 'playerRemoved') {
             $this->broadcast('reply', array('message' => 'playerRemoved',
                                             'params' => array('id' => $content->getId())));
-        } elseif ($message = 'managerRetrievedFromName') {
+        } elseif ($message == 'managerRetrievedFromName') {
             $this->broadcast('reply', array('message' => 'manager',
                                             'params' => array('manager' => $content->getName(), 'code' => $content->getCode())));
         }
