@@ -46,7 +46,7 @@ function remote(message, params, callback, blocking)
   }
   if (extreme_sm_debug) {
    if (sm_debug) console.log("extreme: message " + message + ", params " + JSON.stringify(params));
-   xhr.open("POST", "http://localhost/sm/jsonrpc.php", blocking);
+   xhr.open("POST", "http://localhost/sm/jsonrpc.php?XDEBUG_SESSION_START=XDEBUG_ECLIPSE", blocking);
   } else {
    if (sm_debug) console.log("normal: message " + message + ", params " + JSON.stringify(params));
    xhr.open("POST", "http://chiaraquartet.net/sm/jsonrpc.php", blocking);
