@@ -9,10 +9,10 @@ function scrapepage() {
     var player = players[i].match(/jugador.php\?id_jugador=([0-9]+)/);
     ids.push(Number(player[1]));
   }
-  chrome.extension.sendMessage([6], function(response) {
+  chrome.extension.sendMessage([6], function(parenthtml) {
     chrome.storage.sync.get(['SMGregsList.codes'], function(a) {
       var codes = a['SMGregsList.codes'];
-      var parentuser = parenthtml.match(/<a target="marco" href="usuario.php" class="color_skin" ?>([^<]+)<\/a/);
+      var parentuser = parenthtml.match(/<a target="marco" href="usuario.php" class="color_skin" ?>([^<]+)<\/a/)[1];
       var params = {'ids': ids};
       if (codes[parentuser]) {
         params.manager = parentuser;

@@ -131,7 +131,7 @@ class Controller extends HTMLController
                 return $this->detectSearch();
             } elseif ($this->getMessage('search') == 'exists') {
                 $params = $this->getParams('search');
-                if (isset($params['code']) && isset($params['manager'])) {
+                if (isset($params['code']) && isset($params['manager']) && !isset($params['ids'])) {
                     $player = new SellPlayer;
                     $player->id = $params['id'];
                     $player->code = $params['code'];
@@ -161,10 +161,9 @@ class Controller extends HTMLController
         $params = $this->getParams('search');
         if (isset($params['ids'])) {
             $players = array();
-            if (isset($params['manager']) && isset($players['code']) && isset($players['players'])) {
+            if (isset($params['manager']) && isset($params['code'])) {
                 $players['manager'] = $params['manager'];
                 $players['code'] = $params['code'];
-                $params['ids'] = $players['players'];
             }
             foreach ($params['ids'] as $id) {
                 $player = new SellPlayer;

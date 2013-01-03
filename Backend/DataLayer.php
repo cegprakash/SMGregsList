@@ -72,7 +72,9 @@ abstract class DataLayer extends Messager
                 if (!($player instanceof Player)) {
                     throw new \Exception('Internal error: retrieve message received, but content was not a Player object');
                 }
-                $this->removeOldListings($manager, $player);
+                if (isset($manager)) {
+                    $this->removeOldListings($manager, $player);
+                }
                 $result[$player->getId()] = $this->exists($player) ? true : false;
             }
             $this->broadcast('existsResult', $result);

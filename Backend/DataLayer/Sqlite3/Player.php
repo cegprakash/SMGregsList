@@ -74,6 +74,7 @@ class Player extends p implements DataPlayer
         $manager->fromPlayer($this);
         $manager->retrieve();
         $this->manager = $manager;
+        return $this;
     }
 
     function retrieve()
