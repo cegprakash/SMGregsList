@@ -375,13 +375,17 @@ var player = {
     var age = html.match(/<td>([0-9]+) years/);
     ret.age = Number(age[1]);
     this.player.age = ret.age;
-    var inf = html.match(/<td>Total average<\/td>\s+<td class="numerico">\s+(\d+)<span style="font-size: 0.7em;">\.(\d+)<\/span>/);
-    if (inf[2] == "100") {
-      ret.average = Number(inf[1] + 1);
+    var inf = html.match(/<td>Total average<\/td>[^0-9]+(\d+)<span style="font-size: 0\.7em;">\.(\d+)<\/span>/);
+    if (inf) {
+      if (inf[2] == "100") {
+        ret.average = Number(inf[1] + 1);
+      } else {
+        ret.average = Number(inf[1] + "." + inf[2]);
+      }
+      this.player.average = ret.average;
     } else {
-      ret.average = Number(inf[1] + "." + inf[2]);
+      this.player.average = prompt("Unable to read player average, please enter it manually");
     }
-    this.player.average = ret.average;
     return this.player;
   }
 }
