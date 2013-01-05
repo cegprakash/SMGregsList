@@ -305,7 +305,7 @@ var player = {
     var pos = html.match(/<td>Position<\/td>\s+<td>([^<]+)<\/td>/);
     this.player.isyouth = html.match(/\(Youth\)/);
     var stats = html.match(/<td>([a-zA-Z ]+)<\/td>\s+<td>\s+<span style="display: none;">(\d\d\d)<\/span>\s+<div class="jugbarra" style="width: 99px">\s+<div class="jugbarracar" style="border: 1px outset #[a-f0-9]+; width: \d+px; background: #[a-f0-9]+;"><\/div>\s+<div class="jugbarranum">\d+%/g);
-    var summaries = html.match(/<td>([A-Za-z]+ (?:points|average))<\/td>\s+<td class="numerico">\s+(\d+)<span style="font-size: 0.7em;">\.(\d+)<\/span>/g);
+    var summaries = html.match(/<td>([A-Za-z]+ (?:points|average))<\/td>\s+<td class="numerico">\s+(\d+)<span style="font-size: 0.7em;">[\.,](\d+)<\/span>/g);
     var i;
     switch (pos[1]) {
       case "Goalkeeper" :
@@ -379,14 +379,14 @@ var player = {
     }
     this.player.stats = ret.stats;
     var exp = html.match(/<td>Experience<\/td>\s+<td>([0-9\.,]+)/);
-    ret.experience = Number(exp[1]);
+    ret.experience = Number(exp[1].replace(',','.'));
     this.player.experience = ret.experience;
     var age = html.match(/<td>([0-9]+) years/);
     ret.age = Number(age[1]);
     this.player.age = ret.age;
     var inf = document.getElementsByClassName('resumenjugador2')[0].querySelector('table tr.tipo2:nth-last-of-type(1) td:nth-last-of-type(2)');
     var avg = inf.firstChild.nodeValue.replace(/\s+/,'') + inf.firstElementChild.firstChild.nodeValue;
-    ret.average = avg;
+    ret.average = avg.replace(',','.');
     this.player.average = avg;
     return this.player;
   }
