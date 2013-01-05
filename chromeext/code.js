@@ -196,6 +196,15 @@ var player = {
           self.player.progression = 0;
         }
       }
+      if (!self.player.average) {
+        self.player.average = prompt("Unable to read player average, please enter it manually (with decimal place like \"50.23\")");
+        if (!self.player.average.match(/^[0-9]+\.[0-9]+$/)) {
+          self.player.average = 0;
+        }
+        if (!self.player.average) {
+          alert("Cannot add player without average");
+        }
+      }
       if (self.player.isyouth && Number(self.player.age) < 16) {
         self.alert("Cannot sell youth players younger than 16");
         return;
@@ -219,18 +228,18 @@ var player = {
     }
   },
   scrapeskills: function (html) {
+    var doc = document.implementation.createHTMLDocument("stuff");
+    doc.documentElement.innerHTML = html;
     var ret = {};
-    var skills = html.match(/<tr><th colspan="2">([a-z-A-Z ]+)<\/th><\/tr>\s+<tr>\s+<td style="padding: 0;"><img style="width: 68px;" src="\/img\/powerups\/[^\.]+\.jpg" ?\/?><\/td>\s+<td style="padding: 0; padding-left: 5px;">\s+<div style="width: 90px;">\s+<div style="font-size: 9px; line-height: 10px; font-weight: normal; height: 20px; overflow: hidden;">[^<]+<\/div>\s+<div class="balones"><img src="\/img\/new\/sport_soccer.png" title="([0-9]+)%/g);
-    if (!skills) {
-      this.player.skills = ret;
-      return ret;
+    var ths = doc.getElementsByTagName('th');
+    for (var i = 0; i < ths.length; i++) {
+      var balls = ths[i].parentElement.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling;
+      if (balls.firstChild) {
+        var id = ths[i].firstChild.nodeValue;
+        ret[id] = balls.children.length;
+      }
     }
-    for (var i=0; i < skills.length; i++) {
-      var skill = skills[i].match(/<tr><th colspan="2">([a-z-A-Z ]+)<\/th><\/tr>\s+<tr>\s+<td style="padding: 0;"><img style="width: 68px;" src="\/img\/powerups\/[a-z_A-Z]+\.jpg" ?\/?><\/td>\s+<td style="padding: 0; padding-left: 5px;">\s+<div style="width: 90px;">\s+<div style="font-size: 9px; line-height: 10px; font-weight: normal; height: 20px; overflow: hidden;">[^<]+<\/div>\s+<div class="balones"><img src="\/img\/new\/sport_soccer.png" title="([0-9]+)%/);
-      calc = Number(skill[2]);
-      calc = calc/20;
-      ret[skill[1]] = calc;
-    }
+    
     this.player.skills = ret;
     return ret;
   },
@@ -375,17 +384,10 @@ var player = {
     var age = html.match(/<td>([0-9]+) years/);
     ret.age = Number(age[1]);
     this.player.age = ret.age;
-    var inf = html.match(/<td>Total average<\/td>[^0-9]+(\d+)<span style="font-size: 0\.7em;">\.(\d+)<\/span>/);
-    if (inf) {
-      if (inf[2] == "100") {
-        ret.average = Number(inf[1] + 1);
-      } else {
-        ret.average = Number(inf[1] + "." + inf[2]);
-      }
-      this.player.average = ret.average;
-    } else {
-      this.player.average = prompt("Unable to read player average, please enter it manually");
-    }
+    var inf = document.getElementsByClassName('resumenjugador2')[0].querySelector('table tr.tipo2:nth-last-of-type(1) td:nth-last-of-type(2)');
+    var avg = inf.firstChild.nodeValue.replace(/\s+/,'') + inf.firstElementChild.firstChild.nodeValue;
+    ret.average = avg;
+    this.player.average = avg;
     return this.player;
   }
 }
