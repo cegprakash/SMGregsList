@@ -387,7 +387,7 @@ var player = {
     var inf = document.getElementsByClassName('resumenjugador2')[0].querySelector('table tr.tipo2:nth-last-of-type(1) td:nth-last-of-type(2)');
     var avg = inf.firstChild.nodeValue.replace(/\s+/,'') + inf.firstElementChild.firstChild.nodeValue;
     ret.average = avg.replace(',','.');
-    this.player.average = avg;
+    this.player.average = avg.replace(',','.');
     return this.player;
   }
 }
