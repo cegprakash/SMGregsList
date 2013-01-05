@@ -22,7 +22,7 @@
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#basic">
-        Basic Information
+        Basic Information [Step 1]
       </a>
     </div>
     <div id="basic" class="accordion-body collapse in">
@@ -30,7 +30,7 @@
 <div class="control-group">
  <label class="control-label" for="id">Player ID</label>
  <div class="controls">
-  <input placeholder="Enter the ID or the full URL" type="text" class="span5" name="id" id="id" value="<?php
+  <input placeholder="Enter ID or URL (http://en3.strikermanager.com/jugador.php?id_jugador=12345)" type="text" class="span5" name="id" id="id" value="<?php
 if ($context->getId()) echo $context->getUrl() . $context->getId()
 ?>"/>
  </div>
@@ -47,7 +47,7 @@ if ($context->getManager()) echo $context->getManager()->getName()
 <div class="control-group">
  <label class="control-label" for="id">Your Code</label>
  <div class="controls">
-  <input placeholder="To retrieve player details, enter a code" type="text" name="code" id="code" value="<?php
+  <input placeholder="your code" type="text" name="code" id="code" value="<?php
  if ($context->getCode()) echo $context->getCode()
  ?>"/> <input type="submit" value="Retrieve Player" class="btn btn-primary" name="retrieve"/><br>
  <span class="help-block">Note: You must click the "Retrieve Player" button in order to update or delete a listing<br>
@@ -107,7 +107,7 @@ if ($context->getExperience()) echo $context->getExperience()
  <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#stats">
-        Advanced (stats and skills)
+        Advanced (stats and skills) [Step 2]
       </a> 
     </div>
     <div id="stats" class="accordion-body collapse">
@@ -128,11 +128,14 @@ if ($context->getExperience()) echo $context->getExperience()
  </span>
  </div>
 </div>
-<input type="submit" class="btn btn-primary" value="<?php if ($context->getRetrieved()) echo 'Update'; else echo 'Sell' ?>" name="verify" ?>
 </div> <!-- stats tab -->
 </div>
 </div>
 </div> <!-- stats accordion -->
+<div class="alert alert-info">
+ <strong>Notice!</strong> If you are updating or deleting a listing, you must retrieve the player info first
+ <button type="button" class="close" data-dismiss="alert">x</button>
+</div>
 <div class="control-group">
  <div class="controls">
 <input type="submit" class="btn btn-primary" value="<?php if ($context->getRetrieved()) echo 'Update'; else echo 'Sell' ?>" name="verify" ?>

@@ -98,7 +98,6 @@ abstract class DataLayer extends Messager
             }
             $result = $this->retrieveManagerFromName($content);
             $this->broadcast('managerRetrievedFromName', $result);
-        } elseif ($message == 'generateCode') {
         }
     }
 }

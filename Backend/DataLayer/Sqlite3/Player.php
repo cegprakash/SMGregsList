@@ -67,6 +67,9 @@ class Player extends p implements DataPlayer
         $data = $this->db->query("SELECT * FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
         $row = $data->fetchArray(SQLITE3_ASSOC);
         $data->finalize();
+        if (!$row) {
+            return;
+        }
         foreach ($row as $name => $value) {
             $this->$name = $value;
         }
@@ -80,7 +83,7 @@ class Player extends p implements DataPlayer
     function retrieve()
     {
         if (!$this->exists()) {
-            throw new \Exception("Error: player does not exist", -1);
+            throw new \Exception("Error: player is not listed for sale", -1);
         }
         $data = $this->db->query("SELECT * FROM player WHERE id='" . $this->db->escapeString($this->id) . "'");
         $row = $data->fetchArray(SQLITE3_ASSOC);
@@ -91,6 +94,10 @@ class Player extends p implements DataPlayer
         foreach ($row as $name => $value) {
             $this->$name = $value;
         }
+        $manager = new Manager($this->db);
+        $manager->fromPlayer($this);
+        $manager->retrieve();
+        $this->manager = $manager;
         $data = $this->db->query("SELECT * FROM skills WHERE id='" . $this->db->escapeString($this->id) . "'");
         while ($row = $data->fetchArray(SQLITE3_ASSOC)) {
             $this->skills->{$row['name']} = $row['value'];

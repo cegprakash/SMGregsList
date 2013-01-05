@@ -4,6 +4,10 @@ use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsL
 class HTMLController extends Messager
 {
     protected $retrieved;
+    protected $manager = false;
+    protected $code = false;
+    protected $state = 'normal';
+    protected $existsResult = false;
     function __construct()
     {
         set_exception_handler(function ($e) {
@@ -30,7 +34,8 @@ class HTMLController extends Messager
 
     function listMessages(array $newmessages)
     {
-        return parent::listMessages(array_merge($newmessages, array('detectSearch', 'detectSell', 'retrieved', 'managerRetrieved')));
+        return parent::listMessages(array_merge($newmessages, array('detectSearch', 'detectSell', 'retrieved', 'managerRetrieved', 'cookieRetrieved',
+                                                                    'existsResult')));
     }
 
     function getParams($type)
@@ -79,11 +84,17 @@ class HTMLController extends Messager
         if ($message == 'detectSearch') {
             return $this->detectSearch();
         } elseif ($message == 'detectSell') {
+            $this->broadcast('retrieveCookie');
             return $this->detectSell();
         } elseif ($message == 'retrieved') {
             $this->retrieved = $content;
         } elseif ($message == 'managerRetrieved') {
             $this->retrieved->manager = $content;
+        } elseif ($message == 'cookieRetrieved') {
+            $this->manager = $content['manager'];
+            $this->code = $content['code'];
+        } elseif ($message == 'existsResult' && $this->state = 'existsCheck') {
+            $this->existsResult = $content;
         }
     }
 
@@ -100,6 +111,13 @@ class HTMLController extends Messager
                 $player->id = (int) $params['id'];
             } elseif (preg_match('/id_jugador(?:=|%3[dD])([0-9]+)/', $params['id'], $matches)) {
                 $player->id = (int) $matches[1];
+            }
+        }
+        if (!isset($params['manager'])) {
+            $this->broadcast('retrieveCookie');
+            if ($this->manager) {
+                $params['manager'] = $this->manager;
+                $params['code'] = $this->code;
             }
         }
         if (isset($params['manager']) && $params['manager']) {
@@ -129,7 +147,12 @@ class HTMLController extends Messager
         if (isset($params['code'])) {
             $player->code = $params['code'];
             try {
-                $this->broadcast('retrieve', $player);
+                $this->state = 'existsCheck';
+                $this->broadcast('exists', $player);
+                $this->state = 'normal';
+                if ($this->existsResult) {
+                    $this->broadcast('retrieve', $player);
+                }
                 // if we get to here, the code matched
             } catch (\Exception $e) {
                 if ($e->getCode() == -2) {

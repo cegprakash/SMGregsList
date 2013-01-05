@@ -10,6 +10,8 @@ class HTML extends Messager implements Frontend
     protected $confirmphase = false;
     protected $deleted = false;
     protected $body;
+    protected $manager = false;
+    protected $code = false;
     protected $extrarender;
 
     function __construct(HTMLController $controller = null)
@@ -24,11 +26,23 @@ class HTML extends Messager implements Frontend
             'template_path' => realpath(__DIR__ . '/../templates'),
             'escape' => 'htmlentities',
         ));
+        $this->manager = filter_input(INPUT_COOKIE, 'manager', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $this->code = filter_input(INPUT_COOKIE, 'code', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     }
 
     function getBody()
     {
         return $this->body;
+    }
+
+    function getManager()
+    {
+        return $this->manager;
+    }
+
+    function getCode()
+    {
+        return $this->code;
     }
 
     function getExtraRender()
@@ -39,7 +53,7 @@ class HTML extends Messager implements Frontend
     function listMessages(array $newmessages)
     {
         return parent::listMessages(array_merge($newmessages, array('ready', 'searchResult', 'search', 'playerAdded', 'sellDetected',
-                                          'verify', 'confirm', 'playerRemoved')));
+                                          'verify', 'confirm', 'playerRemoved', 'retrieveCookie')));
     }
 
     function receive($message, $content)
@@ -81,6 +95,11 @@ class HTML extends Messager implements Frontend
             $this->searchfor = $content;
         } elseif ($message == 'playerAdded' || $message == 'sellDetected') {
             $this->sellplayer = $content;
+            if ($message == 'playerAdded') {
+                $domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+                setcookie('manager', $content->getManager()->getName(), strtotime("+365 days"), '/sm', $domain, false, false);
+                setcookie('code', $content->getManager()->getCode(), strtotime("+365 days"), '/sm', $domain, false, false);
+            }
         } elseif ($message == 'verify') {
             $this->verifyphase = true;
             $this->confirmphase = false;
@@ -90,6 +109,10 @@ class HTML extends Messager implements Frontend
         } elseif ($message == 'confirm') {
             $this->confirmphase = true;
             $this->verifyphase = false;
+        } elseif ($message == 'retrieveCookie') {
+            if ($this->manager) {
+                $this->broadcast('cookieRetrieved', array('manager' => $this->manager, 'code' => $this->code));
+            }
         }
     }
 

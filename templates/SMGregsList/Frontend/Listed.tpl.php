@@ -1,10 +1,13 @@
-<h1>Thank you, your player has been placed for sale</h1>
-<p>If you wish to change this listing in the future you will need this code exactly as shown as well as the player's ID:</p>
-<table>
-    <tr><td><b>Player ID</b></td><td><b>Code</b></td></tr>
+<div class="alert alert-success">
+<strong>Thank you, your player has been placed for sale</strong>
+<p>To update this listing you will need all three of the following:</p>
+<table class="table">
+    <tr><th>Player ID</th><th>Code</th><th>Manager</th></tr>
     <tr>
-     <td style="background-color:#FFDDDD"><?php echo $context->getId() ?></td>
-     <td style="background-color:#FFDDDD"><?php echo $context->getCreatestamp() ?></td>
+     <td><?php echo $context->getId() ?></td>
+     <td><?php echo $context->getCode() ?></td>
+     <td><?php echo $context->getManager()->getName() ?></td>
     </tr>
 </table>
+</div>
 <?php echo $savant->render($context, 'SMGregsList/Frontend/Sell.tpl.php') ?>

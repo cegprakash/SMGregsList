@@ -18,6 +18,25 @@
 </div>
  <p>Please verify submitted information</p>
 <form name="search" action="<?php echo $phpSelf ?>" method="post" class="form-horizontal">
+<input type="hidden" name="verifytoken" value="1">
+<div class="control-group">
+ <label class="control-label" for="id">Player ID</label>
+ <div class="controls">
+  <input type="hidden" name="id" id="id" value="<?php
+if ($context->getId()) echo $context->getUrl() . $context->getId()
+?>"/><?php if ($context->getId()) echo $context->getUrl() . $context->getId()?>
+ </div>
+</div>
+<div class="control-group">
+ <label class="control-label" for="manager">Your Manager name</label>
+ <div class="controls">
+  <input type="hidden" name="manager" id="manager" value="<?php
+if ($context->getManager()) echo $context->getManager()->getName()
+?>"/><?php
+if ($context->getManager()) echo $context->getManager()->getName()
+?>
+ </div>
+</div>
 <div class="control-group">
  <label class="control-label" for="id">Your Code</label>
  <div class="controls">
@@ -27,14 +46,6 @@
  if ($context->getCode()) echo $context->getCode()
  ?><br>
  
- </div>
-</div>
-<div class="control-group">
- <label class="control-label" for="id">Player ID</label>
- <div class="controls">
-  <input type="hidden" name="id" id="id" value="<?php
-if ($context->getId()) echo $context->getUrl() . $context->getId()
-?>"/><?php if ($context->getId()) echo $context->getUrl() . $context->getId()?>
  </div>
 </div>
 <div class="control-group">
@@ -113,31 +124,6 @@ if ($context->getPosition()) echo $context->getPosition()
  </span>
  </div>
 </div>
-<?php
- if ($context->getRetrieved()):
-?>
-<div class="control-group">
- <label class="control-label" for="id">Player ID</label>
- <div class="controls">
-  <input type="hidden" name="pid" id="pid" value="<?php
-if ($context->getId()) echo $context->getUrl() . $context->getId()
-?>"/><?php
-if ($context->getId()) echo $context->getUrl() . $context->getId()
-?>
- </div>
-</div>
-<div class="control-group">
- <label class="control-label" for="id">Edit Code</label>
- <div class="controls">
-  <input type="hidden" name="code" id="code" value="<?php
- if ($context->getCode()) echo $context->getCode()
- ?>"/><?php
- if ($context->getCode()) echo $context->getCode()
- ?>
- 
- </div>
-</div>
-<?php endif; ?>
 <div class="control-group">
  <div class="controls">
   <input type="submit" class="btn btn-primary" value="<?php if ($context->getRetrieved()) echo 'Update'; else echo 'Sell' ?>" name="sellfinal" ?>

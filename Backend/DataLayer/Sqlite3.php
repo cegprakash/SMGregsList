@@ -112,11 +112,14 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
         return $new->save();
     }
 
-    function retrieve(Player $player)
+    function retrieve(Player $player, $private = false)
     {
         $new = new Sqlite3\Player($this->db);
         $new->fromPlayer($player);
-        return $new->privateRetrieve();
+        if ($private) {
+            return $new->privateRetrieve();
+        }
+        return $new->retrieve();
     }
 
     function removeOldListings(\SMGregsList\Manager $manager, \SMGregsList\Player $player)

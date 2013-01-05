@@ -24,7 +24,7 @@
   <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#basic">
-        Basic Information
+        Basic Information [Step 1]
       </a>
     </div>
     <div id="basic" class="accordion-body collapse in">
@@ -109,7 +109,7 @@ if ($context->getName()) echo $context->getName()
  <div class="accordion-group">
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#stats">
-        Advanced (stats and skills)
+        Advanced (stats and skills) [Step 2]
       </a> 
     </div>
     <div id="stats" class="accordion-body collapse">
