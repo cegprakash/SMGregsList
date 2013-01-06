@@ -62,8 +62,7 @@ class SearchPlayer extends s implements SearchablePlayer
         foreach ($info as $name => $value) {
             switch ($name) {
                 case 'id' :
-                case 'createstamp' :
-                case 'lastaccess' :
+                case 'lastsearch' :
                 case 'manager' :
                     break;
                 case 'sellingmanager' :

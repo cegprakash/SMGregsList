@@ -47,7 +47,7 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
         return 'CREATE TABLE savedsearch (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   manager TEXT NOT NULL,
-  createstamp DATE NOT NULL default CURRENT_TIMESTAMP,
+  lastsearch DATE NOT NULL default CURRENT_TIMESTAMP,
   minaverage INT,
   maxaverage INT,
   minage INT,
