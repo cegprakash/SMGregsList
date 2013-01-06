@@ -23,9 +23,15 @@ echo $savant->render($context->searchform->getRawObject()) ?>
     </table>
   </div>
   <div class="modal-footer">
-    <input type="text" placeholder="Your Manager Name" name="managername">
-    <input type="text" placeholder="Your Code" name="managercode">
-    <input type="submit" class="btn btn-success" value="Save Search" id="savesearch" name="savesearch"
+    <table class="table">
+        <tr><th>Manager Name</th><th>Code</th></tr>
+        <tr><td>
+    <input type="text" placeholder="Your Manager Name" name="managername" value="<?php if ($context->manager) echo $context->manager ?>">
+    </td><td>
+    <input type="text" placeholder="Your Code" name="managercode" value="<?php if ($context->code) echo $context->code ?>">
+    </td></tr>
+    </table>
+    <input type="submit" class="btn btn-success" value="Save Search" id="savesearch" name="savesearch" data-placement="top"
     rel="popover" data-trigger="hover" data-content="Saving a search will notify you whenever anyone lists a player for sale that matches the search.  You need to enter your manager name on Striker Manager, and the manager code (leave it blank if you don't have one, and one will be generated for you)" data-title="Save a search">
   </div>
 </div>

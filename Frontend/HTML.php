@@ -67,7 +67,7 @@ class HTML extends Messager implements Frontend
                 $this->subtitle = 'List a Player for sale';
             } else {
                 $this->discoverSearch();
-                $this->body = new SearchResults($this->searchfor, $this->searchresults);
+                $this->body = new SearchResults($this->searchfor, $this->searchresults, $this->manager, $this->code);
                 $this->subtitle = 'Search for Players for sale';
                 if (count($_GET)) {
                     $this->extrarender = "<script type=\"text/javascript\">
