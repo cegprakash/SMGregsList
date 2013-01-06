@@ -23,12 +23,25 @@
 <div class="accordion" id="accordion2">
   <div class="accordion-group">
     <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#savedsearches">
+        Saved Searches
+      </a>
+    </div>
+    <div id="savedsearches" class="accordion-body collapse in">
+      <div class="accordion-inner">
+        <?php echo $savant->render($parent->context->savedSearches) ?>
+      </div>
+    </div>
+  </div> <!-- saved searches -->
+  <div class="accordion-group">
+    <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#basic">
         Basic Information [Step 1]
       </a>
     </div>
     <div id="basic" class="accordion-body collapse in">
       <div class="accordion-inner">
+      </div>
 <div class="control-group">
  <label class="control-label" for="id">Player ID</label>
  <div class="controls">
@@ -139,4 +152,3 @@ if ($context->getName()) echo $context->getName()
   <input type="submit" value="Search" class="btn btn-primary" name="searchbutton"/>
  </div>
 </div>
-</form>

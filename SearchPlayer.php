@@ -2,10 +2,26 @@
 namespace SMGregsList;
 class SearchPlayer extends Player implements SearchablePlayer
 {
+    protected $searchmanager = false;
     function search()
     {
         // can't search without a data source
         throw new \Exception("Internal error: attempt to search with a generic searchable player, no data source selected");
+    }
+
+    function __set($name, $value)
+    {
+        if ($name == 'position') {
+            $positions = explode(',', $value);
+            foreach ($positions as $pos) {
+                if (!in_array($pos, $this->listPositions())) {
+                    throw new \Exception("Invalid position detected: " . $pos);
+                }
+            }
+            $this->position = $value;
+            return;
+        }
+        return parent::__set($name, $value);
     }
 
     function getSearchComponents()
@@ -75,9 +91,11 @@ class SearchPlayer extends Player implements SearchablePlayer
         return $ret;
     }
 
-    function humanReadableName()
+    function humanReadableName($components = null)
     {
-        $components = $this->getSearchComponents();
+        if ($components === null) {
+            $components = $this->getSearchComponents();
+        }
         $ret = 'Players with';
         $and = '';
         if (isset($components['minaverage']) && $components['maxaverage']) {
@@ -103,19 +121,31 @@ class SearchPlayer extends Player implements SearchablePlayer
         foreach ($components as $component => $value) {
             switch ($component) {
                 case 'positions':
+                    if (count($value) == 1) {
+                        $n = 'n';
+                        switch ($value[0]) {
+                            case 'CDF' :
+                            case 'DFM' :
+                            case 'CF' :
+                                $n = '';
+                        }
+                        $ret .= $and . " is a$n " . $value[0];
+                        $and = ' and';
+                        break;
+                    }
                     $ret .= $and . ' one of these positions: ' . implode(',', $value);
                     $and = ' and';
                     break;
                 case 'country':
-                    $ret .= $and . ' country containing "' . $value . '"';
+                    $ret .= $and . ' country contains "' . $value . '"';
                     $and = ' and';
                     break;
                 case 'manager':
-                    $ret .= $and . ' selling manager containing "' . $value . '"';
+                    $ret .= $and . ' selling manager contains "' . $value . '"';
                     $and = ' and';
                     break;
                 case 'name':
-                    $ret .= $and . ' player name containing "' . $value . '"';
+                    $ret .= $and . ' player name contains "' . $value . '"';
                     $and = ' and';
                     break;
                 case 'experience':
@@ -137,12 +167,9 @@ class SearchPlayer extends Player implements SearchablePlayer
         return $ret;
     }
 
-    function getHashedId()
+    function getSearchManager()
     {
-        if (!$this->createstamp) {
-            return 0;
-        }
-        return base_convert(strtotime($this->createstamp), 10, 25);
+        return $this->searchmanager;
     }
 
     function getMinage()

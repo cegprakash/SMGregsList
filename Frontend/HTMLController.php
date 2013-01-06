@@ -56,6 +56,12 @@ class HTMLController extends Messager
         if (!$params) {
             return 'sellform';
         }
+        if (isset($params['deletesearch'])) {
+            return 'deletesearch';
+        }
+        if (isset($params['executesearch'])) {
+            return 'executesearch';
+        }
         if (isset($params['savesearch'])) {
             return 'savesearch';
         }
@@ -150,10 +156,7 @@ class HTMLController extends Messager
         if (isset($params['code'])) {
             $player->code = $params['code'];
             try {
-                $this->state = 'existsCheck';
-                $this->broadcast('exists', $player);
-                $this->state = 'normal';
-                if ($this->existsResult) {
+                if ($this->ask('exists', $player)) {
                     $this->broadcast('retrieve', $player);
                 }
                 // if we get to here, the code matched
@@ -234,6 +237,17 @@ class HTMLController extends Messager
 
     function detectSearch()
     {
+        if ($this->getMessage('search') == 'deletesearch') {
+            $params = $this->getParams('search');
+            $_GET = array();
+            $this->broadcast('deleteSearch', $params['deletesearch']);
+            return;
+        }
+        if ($this->getMessage('search') == 'executesearch') {
+            $params = $this->getParams('search');
+            $this->broadcast('executeSearch', $params['executesearch']);
+            return;
+        }
         if ($this->getMessage('search') !== 'search' && $this->getMessage('search') !== 'savesearch') {
             return;
         }
@@ -242,7 +256,34 @@ class HTMLController extends Messager
             $this->broadcast('searchResults', array());
             return;
         }
+        if (!isset($params['managername']) || !$params['managername']) {
+            $this->broadcast('retrieveCookie');
+            if ($this->manager) {
+                $params['managername'] = $this->manager;
+                $params['managercode'] = $this->code;
+            }
+        }
         $player = new SearchPlayer;
+        if ($this->getMessage('search') == 'savesearch' && isset($params['managername']) && $params['managername']) {
+            if ($code = $this->ask('managerExists', $params['managername'])) {
+                if (!isset($params['managercode']) || !$params['managercode']) {
+                    throw new \Exception("Error: Manager code must be set to save a search.  If you have lost your code, please " .
+                                         "send a message to CelloG from within Striker Manager asking him to retrieve it");
+                }
+                if ($code != $params['managercode']) {
+                    throw new \Exception("Error: Cannot save search, code does not match.  If you have lost your code, please " .
+                                         "send a message to CelloG from within Striker Manager asking him to retrieve it");
+                }
+            } else {
+                // new manager, generate a code
+                $p = new SellPlayer;
+                $p->manager = $params['managername'];
+                $test = $this->ask('retrieveManager', $p);
+                $params['managercode'] = $test->getCode();
+            }
+            $player->searchmanager = $params['managername'];
+            $player->code = $params['managercode'];
+        }
         if (isset($params['minage']) || isset($params['maxage'])) {
             if (!isset($params['minage']) || !$params['minage']) {
                 $player->age = $params['maxage'];
@@ -299,6 +340,8 @@ class HTMLController extends Messager
             }
         }
         if ($this->getMessage('search') == 'savesearch') {
+            // remove possibility of unintended search
+            $_GET = array();
             $this->broadcast('savesearch', $player);
         } else {
             $this->broadcast('search', $player);

@@ -1,6 +1,7 @@
 <?php
 namespace SMGregsList\Backend\DataLayer;
-use SMGregsList\WriteablePlayer, SMGregsList\SearchablePlayer, SMGregsList\Player, SMGregsList\Backend\DataLayer;
+use SMGregsList\WriteablePlayer, SMGregsList\SearchablePlayer, SMGregsList\Player, SMGregsList\Backend\DataLayer,
+    SMGregsList\SavedSearch, SMGregsList\SavedSearches;
 class Sqlite3 extends DataLayer
 {
     public static $DATABASEPATH = '';
@@ -41,15 +42,14 @@ CREATE TABLE skills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id
 CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));';
     }
 
-    function getSearchSchema()
+    function getSavedSearchSchema()
     {
-        return 'CREATE TABLE playersearch (
+        return 'CREATE TABLE savedsearch (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   manager TEXT NOT NULL,
   createstamp DATE NOT NULL default CURRENT_TIMESTAMP,
-  lastaccess DATE NOT NULL default CURRENT_TIMESTAMP
   minaverage INT,
-  maxaverage INT
+  maxaverage INT,
   minage INT,
   maxage INT,
   country TEXT,
@@ -76,13 +76,18 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
   RF NUMBER NOT NULL default 0,
   RW NUMBER NOT NULL default 0
   );
-CREATE TABLE skills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));
-CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));';
+CREATE TABLE savedskills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));
+CREATE TABLE savedstats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));';
     }
 
     function exists(Player $player)
     {
         return $this->db->querySingle("SELECT id FROM player WHERE id ='" . $this->db->escapeString($player->getId()) . "'");
+    }
+
+    function managerExists($name)
+    {
+        return $this->db->querySingle("SELECT code FROM manager WHERE name ='" . $this->db->escapeString($name) . "'");
     }
 
     function checkManager(\SMGregsList\Player $player, \SMGregsList\Manager $manager)
@@ -158,10 +163,38 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
         return $new->search();
     }
 
+    function executeSearch($id)
+    {
+        $new = new Sqlite3\SearchPlayer($this->db);
+        return $new->executeSavedSearch($id);
+    }
+
     function savesearch(SearchablePlayer $player)
     {
         $new = new Sqlite3\SearchPlayer($this->db);
         $new->fromPlayer($player);
         return $new->savesearch();
+    }
+
+    function deleteSearch($id)
+    {
+        if ($this->db->querySingle("SELECT id FROM savedsearch WHERE id='" . $this->db->escapeString($id) . "'")) {
+            $this->db->exec("DELETE FROM savedsearch WHERE id='" . $this->db->escapeString($id) . "'");
+        }
+    }
+
+    function retrieveSavedSearch($manager)
+    {
+        $dummy = new Sqlite3\SearchPlayer($this->db);
+        $ret = array();
+        if (!$manager->getName()) {
+            return $ret;
+        }
+        $data = $this->db->query("SELECT id FROM savedsearch WHERE manager='" . $this->db->escapeString($manager->getName()) . "'");
+        while ($info = $data->fetchArray(SQLITE3_ASSOC)) {
+            $ret[] = array($info['id'], $dummy->humanReadableNameFromSavedSearch($info['id']), $dummy->savedSearchCount($info['id']));
+        }
+        $ret = new SavedSearches($ret);
+        return $ret;
     }
 }

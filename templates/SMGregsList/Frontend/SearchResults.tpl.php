@@ -32,7 +32,7 @@ echo $savant->render($context->searchform->getRawObject()) ?>
     </td></tr>
     </table>
     <input type="submit" class="btn btn-success" value="Save Search" id="savesearch" name="savesearch" data-placement="top"
-    rel="popover" data-trigger="hover" data-content="Saving a search will notify you whenever anyone lists a player for sale that matches the search.  You need to enter your manager name on Striker Manager, and the manager code (leave it blank if you don't have one, and one will be generated for you)" data-title="Save a search">
+    rel="popover" data-trigger="hover" data-content="Saving a search will notify you whenever anyone lists a player for sale that matches the search.  You need to enter your manager name on Striker Manager, and the manager code (leave the code blank if you don't have one, and one will be generated for you)" data-title="Save a search">
   </div>
 </div>
 </form>

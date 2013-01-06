@@ -59,6 +59,46 @@ class Messager
         
     }
 
+    function reply($message, $content)
+    {
+        
+    }
+
+    /**
+     * find the first responder and return a single reply
+     */
+    function ask($message, $content = false)
+    {
+        foreach ($this->controllers as $controller) {
+            $reply = $controller->query($message, $content);
+            if (null !== $reply) {
+                return $reply;
+            }
+        }
+    }
+
+    protected function query($message, $content = false)
+    {
+        if (self::$DEBUG) {
+            var_dump("query sending: $message");
+        }
+        foreach ($this->receivers as $receiver) {
+            if (self::$DEBUG) {
+                var_dump("receiver is a " . get_class($receiver));
+            }
+            if (!in_array($message, $receiver->listMessages(array()))) {
+                continue;
+            }
+            if (self::$DEBUG) {
+                var_dump("query received by " . get_class($receiver) . ": $message");
+            }
+            $response = $receiver->reply($message, $content);
+            if (null !== $response) {
+                return $response;
+            }
+        }
+    }
+
     function broadcast($message, $content = false)
     {
         foreach ($this->controllers as $controller) {

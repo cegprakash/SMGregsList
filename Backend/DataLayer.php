@@ -3,6 +3,7 @@ namespace SMGregsList\Backend;
 use SMGregsList\Player,SMGregsList\WriteablePlayer,SMGregsList\SearchablePlayer,SMGregsList\Messager,SMGregsList\Manager;
 abstract class DataLayer extends Messager
 {
+    abstract function managerExists($name);
     abstract function exists(Player $player);
     abstract function checkManager(Player $player, Manager $manager);
     abstract function retrieve(Player $player);
@@ -10,12 +11,41 @@ abstract class DataLayer extends Messager
     abstract function save(WriteablePlayer $player);
     abstract function search(SearchablePlayer $player);
     abstract function savesearch(SearchablePlayer $player);
+    abstract function retrieveSavedSearch($manager);
+    abstract function deleteSearch($id);
+    abstract function executeSearch($id);
 
     function listMessages(array $newmessages)
     {
         return parent::listMessages(array_merge($newmessages, array('addPlayer', 'deletePlayer', 'search', 'retrieve', 'exists',
                                                                     'existsmultiple', 'retrieveManager', 'checkDeleteAndExists',
-                                                                    'retrieveManagerFromName', 'savesearch')));
+                                                                    'retrieveManagerFromName', 'savesearch', 'managerExists',
+                                                                    'getAllSavedSearches', 'deleteSearch', 'executeSearch')));
+    }
+
+    function reply($message, $content)
+    {
+        if ($message == 'managerExists') {
+            if (!is_string($content)) {
+                throw new \Exception('Internal error: managerExists query received, but content was not a string');
+            }
+            return $this->managerExists($content);
+        } elseif ($message == 'exists') {
+            if (!($content instanceof Player)) {
+                throw new \Exception('Internal error: retrieve query received, but content was not a Player object');
+            }
+            return $this->exists($content) ? true : false;
+        } elseif ($message == 'retrieveManager') {
+            if (!($content instanceof Player)) {
+                throw new \Exception('Internal error: retrieveManager query received, but content was not a Player object');
+            }
+            return $this->retrieveManager($content);
+        } elseif ($message == 'getAllSavedSearches') {
+            if (!($content instanceof Manager)) {
+                throw new \Exception('Internal error: getAllSavedSearches query received, but content was not a Manager object');
+            }
+            return $this->retrieveSavedSearch($content);
+        }
     }
 
     function receive($message, $content)
@@ -99,11 +129,23 @@ abstract class DataLayer extends Messager
             }
             $result = $this->retrieveManagerFromName($content);
             $this->broadcast('managerRetrievedFromName', $result);
-        } elseif ($message == 'saveSearch') {
+        } elseif ($message == 'savesearch') {
             if (!($content instanceof SearchablePlayer)) {
                 throw new \Exception('Internal error: search message received, but content was not a SearchablePlayer object');
             }
             $result = $this->savesearch($content);
+            $this->broadcast('searchSaved', $result);
+        } elseif ($message == 'deleteSearch') {
+            if (!is_string($content)) {
+                throw new \Exception('Internal error: deleteSearch message received, but content was not a string');
+            }
+            $this->deleteSearch($content);
+            $this->broadcast('searchDeleted', true);
+        } elseif ($message == 'executeSearch') {
+            if (!is_string($content)) {
+                throw new \Exception('Internal error: deleteSearch message received, but content was not a string');
+            }
+            $result = $this->executeSearch($content);
             $this->broadcast('searchResult', $result);
         }
     }

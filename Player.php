@@ -28,6 +28,9 @@ abstract class Player
 
     function __set($name, $value)
     {
+        if ($name == 'position' && !in_array($value, $this->listPositions())) {
+            throw new \Exception('Invalid position: ' . $value);
+        }
         $this->$name = $value;
     }
 

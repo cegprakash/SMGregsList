@@ -1,10 +1,12 @@
 <?php
 namespace SMGregsList\Frontend;
-use SMGregsList\Messager, SMGregsList\Frontend, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsList\SellPlayer;
+use SMGregsList\Messager, SMGregsList\Frontend, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsList\SellPlayer, SMGregsList\SavedSearches,
+    SMGregsList\Manager;
 class HTML extends Messager implements Frontend
 {
     protected $template;
     protected $searchresults = array();
+    protected $savedSearches;
     protected $searchfor;
     protected $verifyphase = false;
     protected $confirmphase = false;
@@ -53,7 +55,7 @@ class HTML extends Messager implements Frontend
     function listMessages(array $newmessages)
     {
         return parent::listMessages(array_merge($newmessages, array('ready', 'searchResult', 'search', 'playerAdded', 'sellDetected',
-                                          'verify', 'confirm', 'playerRemoved', 'retrieveCookie')));
+                                          'verify', 'confirm', 'playerRemoved', 'retrieveCookie', 'searchSaved', 'savedSearches')));
     }
 
     function receive($message, $content)
@@ -67,7 +69,8 @@ class HTML extends Messager implements Frontend
                 $this->subtitle = 'List a Player for sale';
             } else {
                 $this->discoverSearch();
-                $this->body = new SearchResults($this->searchfor, $this->searchresults, $this->manager, $this->code);
+                $this->discoverSavedSearches();
+                $this->body = new SearchResults($this->savedSearches, $this->searchfor, $this->searchresults, $this->manager, $this->code);
                 $this->subtitle = 'Search for Players for sale';
                 if (count($_GET)) {
                     $this->extrarender = "<script type=\"text/javascript\">
@@ -133,6 +136,19 @@ class HTML extends Messager implements Frontend
     {
         $this->searchresults = array();
         $this->broadcast('detectSearch');
+    }
+
+    function discoverSavedSearches()
+    {
+        $manager = new Manager();
+        if ($this->manager) {
+            $manager->name = $this->manager;
+            $manager->code = $this->code;
+        }
+        $this->savedSearches = $this->ask('getAllSavedSearches', $manager);
+        if (!$this->savedSearches) {
+            $this->savedSearches = new SavedSearches;
+        }
     }
 
     function discoverSell()
