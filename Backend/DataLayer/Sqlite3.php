@@ -44,11 +44,16 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
     function getSearchSchema()
     {
         return 'CREATE TABLE playersearch (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  manager TEXT NOT NULL,
   createstamp DATE NOT NULL default CURRENT_TIMESTAMP,
+  lastaccess DATE NOT NULL default CURRENT_TIMESTAMP
   minaverage INT,
   maxaverage INT
   minage INT,
   maxage INT,
+  country TEXT,
+  sellingmanager TEXT,
   experience REAL,
   forecast INT,
   progression INT,
@@ -69,9 +74,8 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
   LF NUMBER NOT NULL default 0,
   CF NUMBER NOT NULL default 0,
   RF NUMBER NOT NULL default 0,
-  RW NUMBER NOT NULL default 0,
-  lastmodified DATE NOT NULL default CURRENT_TIMESTAMP,
-  PRIMARY KEY (email, lastmodified));
+  RW NUMBER NOT NULL default 0
+  );
 CREATE TABLE skills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));
 CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));';
     }
@@ -152,5 +156,12 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
         $new = new Sqlite3\SearchPlayer($this->db);
         $new->fromPlayer($player);
         return $new->search();
+    }
+
+    function savesearch(SearchablePlayer $player)
+    {
+        $new = new Sqlite3\SearchPlayer($this->db);
+        $new->fromPlayer($player);
+        return $new->savesearch();
     }
 }

@@ -9,12 +9,13 @@ abstract class DataLayer extends Messager
     abstract function remove(Player $player);
     abstract function save(WriteablePlayer $player);
     abstract function search(SearchablePlayer $player);
+    abstract function savesearch(SearchablePlayer $player);
 
     function listMessages(array $newmessages)
     {
         return parent::listMessages(array_merge($newmessages, array('addPlayer', 'deletePlayer', 'search', 'retrieve', 'exists',
                                                                     'existsmultiple', 'retrieveManager', 'checkDeleteAndExists',
-                                                                    'retrieveManagerFromName')));
+                                                                    'retrieveManagerFromName', 'savesearch')));
     }
 
     function receive($message, $content)
@@ -98,6 +99,12 @@ abstract class DataLayer extends Messager
             }
             $result = $this->retrieveManagerFromName($content);
             $this->broadcast('managerRetrievedFromName', $result);
+        } elseif ($message == 'saveSearch') {
+            if (!($content instanceof SearchablePlayer)) {
+                throw new \Exception('Internal error: search message received, but content was not a SearchablePlayer object');
+            }
+            $result = $this->savesearch($content);
+            $this->broadcast('searchResult', $result);
         }
     }
 }

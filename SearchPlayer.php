@@ -75,6 +75,68 @@ class SearchPlayer extends Player implements SearchablePlayer
         return $ret;
     }
 
+    function humanReadableName()
+    {
+        $components = $this->getSearchComponents();
+        $ret = 'Players with';
+        $and = '';
+        if (isset($components['minaverage']) && $components['maxaverage']) {
+            $ret .= ' average between ' . $components['minaverage'] . '-' . $components['maxaverage'];
+            $and = ' and';
+        } elseif (isset($components['minaverage'])) {
+            $ret .= ' minimum average ' . $components['minaverage'];
+            $and = ' and';
+        } elseif (isset($components['maxaverage'])) {
+            $ret .= ' maximum average ' . $components['maxaverage'];
+            $and = ' and';
+        }
+        if (isset($components['minage']) && $components['maxage']) {
+            $ret .= $and . ' age between ' . $components['minage'] . '-' . $components['maxage'];
+            $and = ' and';
+        } elseif (isset($components['minage'])) {
+            $ret .= $and . ' minimum age ' . $components['minage'];
+            $and = ' and';
+        } elseif (isset($components['maxage'])) {
+            $ret .= $and . ' maximum age ' . $components['maxage'];
+            $and = ' and';
+        }
+        foreach ($components as $component => $value) {
+            switch ($component) {
+                case 'positions':
+                    $ret .= $and . ' one of these positions: ' . implode(',', $value);
+                    $and = ' and';
+                    break;
+                case 'country':
+                    $ret .= $and . ' country containing "' . $value . '"';
+                    $and = ' and';
+                    break;
+                case 'manager':
+                    $ret .= $and . ' selling manager containing "' . $value . '"';
+                    $and = ' and';
+                    break;
+                case 'name':
+                    $ret .= $and . ' player name containing "' . $value . '"';
+                    $and = ' and';
+                    break;
+                case 'experience':
+                case 'forecast':
+                case 'progression':
+                    $ret .= $and . ' ' . $component . ' >= ' . $value;
+                    $and = ' and';
+                    break;
+                case 'skills':
+                case 'stats':
+                    foreach ($value as $skill => $minvalue) {
+                        $ret .= $and . ' minimum ' . $minvalue . ' ' . $skill . ' ' . $component;
+                        $and = ' and';
+                    }
+                    break;
+            }
+        }
+        if ($ret == 'Players with') $ret = 'Any Player for sale';
+        return $ret;
+    }
+
     function getHashedId()
     {
         if (!$this->createstamp) {

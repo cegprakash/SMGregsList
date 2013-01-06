@@ -56,6 +56,9 @@ class HTMLController extends Messager
         if (!$params) {
             return 'sellform';
         }
+        if (isset($params['savesearch'])) {
+            return 'savesearch';
+        }
         if (isset($params['searchbutton'])) {
             return 'search';
         }
@@ -231,7 +234,7 @@ class HTMLController extends Messager
 
     function detectSearch()
     {
-        if ($this->getMessage('search') !== 'search') {
+        if ($this->getMessage('search') !== 'search' && $this->getMessage('search') !== 'savesearch') {
             return;
         }
         $params = $this->getParams('search');
@@ -295,6 +298,10 @@ class HTMLController extends Messager
                 }
             }
         }
-        $this->broadcast('search', $player);
+        if ($this->getMessage('search') == 'savesearch') {
+            $this->broadcast('savesearch', $player);
+        } else {
+            $this->broadcast('search', $player);
+        }
     }
 }

@@ -70,5 +70,10 @@
   <?php if ($context->getExtrarender()) {
    echo $context->getRawObject()->getExtrarender();
   } ?>
+  <script type="text/javascript">
+   if (document.getElementById('savesearch')) {
+    $('#savesearch').popover();
+   }
+  </script>
  </body>
 </html>
