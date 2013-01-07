@@ -112,6 +112,10 @@ class HTML extends Messager implements Frontend
         } elseif ($message == 'confirm') {
             $this->confirmphase = true;
             $this->verifyphase = false;
+        } elseif ($message == 'searchSaved') {
+            $domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+            setcookie('manager', $content->getSearchManager(), strtotime("+365 days"), '/sm', $domain, false, false);
+            setcookie('code', $content->getCode(), strtotime("+365 days"), '/sm', $domain, false, false);
         } elseif ($message == 'retrieveCookie') {
             if ($this->manager) {
                 $this->broadcast('cookieRetrieved', array('manager' => $this->manager, 'code' => $this->code));
