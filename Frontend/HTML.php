@@ -147,7 +147,7 @@ class HTML extends Messager implements Frontend
         }
         $this->savedSearches = $this->ask('getAllSavedSearches', $manager);
         if (!$this->savedSearches) {
-            $this->savedSearches = new SavedSearches;
+            $this->savedSearches = new SavedSearches(array());
         }
     }
 
