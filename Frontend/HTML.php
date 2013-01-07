@@ -116,6 +116,15 @@ class HTML extends Messager implements Frontend
             $domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
             setcookie('manager', $content->getSearchManager(), strtotime("+365 days"), '/sm', $domain, false, false);
             setcookie('code', $content->getCode(), strtotime("+365 days"), '/sm', $domain, false, false);
+            $this->manager = $content->getSearchManager();
+            $this->code = $content->getCode();
+            $manager = new Manager();
+            $manager->name = $this->manager;
+            $manager->code = $this->code;
+            $this->savedSearches = $this->ask('getAllSavedSearches', $manager);
+            if (!$this->savedSearches) {
+                $this->savedSearches = new SavedSearches(array());
+            }
         } elseif ($message == 'retrieveCookie') {
             if ($this->manager) {
                 $this->broadcast('cookieRetrieved', array('manager' => $this->manager, 'code' => $this->code));
