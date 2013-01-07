@@ -27,7 +27,7 @@
         Saved Searches
       </a>
     </div>
-    <div id="savedsearches" class="accordion-body collapse in">
+    <div id="savedsearches" class="accordion-body collapse<?php if (count($parent->context->savedSearches->ids)): ?> in<?php endif ?>">
       <div class="accordion-inner">
         <?php echo $savant->render($parent->context->savedSearches) ?>
       </div>
