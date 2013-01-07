@@ -47,7 +47,6 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
         return 'CREATE TABLE savedsearch (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   manager TEXT NOT NULL,
-  lastsearch DATE NOT NULL default CURRENT_TIMESTAMP,
   minaverage INT,
   maxaverage INT,
   minage INT,
@@ -74,7 +73,8 @@ CREATE TABLE stats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id,
   LF NUMBER NOT NULL default 0,
   CF NUMBER NOT NULL default 0,
   RF NUMBER NOT NULL default 0,
-  RW NUMBER NOT NULL default 0
+  RW NUMBER NOT NULL default 0,
+  lastsearch DATE NOT NULL default CURRENT_TIMESTAMP
   );
 CREATE TABLE savedskills (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));
 CREATE TABLE savedstats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY (id, name));';

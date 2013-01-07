@@ -144,7 +144,7 @@ class SearchPlayer extends s implements SearchablePlayer
         $components = $this->getSearchComponents();
 
         $db = $this->db;
-        $t = function($a, $quote = true) use ($db) {
+        $t = function($a, $quote = true) use ($db, $components) {
             if (!isset($components[$a])) {
                 return "''";
             }
