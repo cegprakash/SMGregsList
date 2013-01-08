@@ -56,6 +56,14 @@ if ($context->getManager()) echo $context->getManager()->getName()
  </div>
 </div>
 <div class="control-group">
+ <label class="control-label" for="name">Player Name</label>
+ <div class="controls">
+  <input placeholder="Player's name" type="text" class="input" name="name" id="name" value="<?php
+if ($context->getName()) echo $context->getName()
+?>"/>
+ </div>
+</div>
+<div class="control-group">
  <label class="control-label" for="average">Average</label>
  <div class="controls">
   <input placeholder="Average" type="text" class="input-mini" name="average" id="average" value="<?php
