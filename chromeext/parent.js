@@ -13,6 +13,9 @@ chrome.storage.local.get(["debug_setting_SM","extremedebug_setting_SM"], functio
       extreme_sm_debug = true;
     }
     var codes = ret['SMGregsList.codes'];
+    if (!codes) {
+      codes = {};
+    }
     if (!codes[user]) {
       remote("getmanager", user, function(result) {
         if (result.error) {
