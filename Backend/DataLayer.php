@@ -14,13 +14,15 @@ abstract class DataLayer extends Messager
     abstract function retrieveSavedSearch($manager);
     abstract function deleteSearch($id);
     abstract function executeSearch($id);
+    abstract function findNewPlayers($manager, $code);
 
     function listMessages(array $newmessages)
     {
         return parent::listMessages(array_merge($newmessages, array('addPlayer', 'deletePlayer', 'search', 'retrieve', 'exists',
                                                                     'existsmultiple', 'retrieveManager', 'checkDeleteAndExists',
                                                                     'retrieveManagerFromName', 'savesearch', 'managerExists',
-                                                                    'getAllSavedSearches', 'deleteSearch', 'executeSearch')));
+                                                                    'getAllSavedSearches', 'deleteSearch', 'executeSearch',
+                                                                    'newMatches')));
     }
 
     function reply($message, $content)
@@ -45,6 +47,11 @@ abstract class DataLayer extends Messager
                 throw new \Exception('Internal error: getAllSavedSearches query received, but content was not a Manager object');
             }
             return $this->retrieveSavedSearch($content);
+        } elseif ($message == 'newMatches') {
+            if (!is_array($content)) {
+                throw new \Exception('Internal error: newMatches query received, but content was not an array');
+            }
+            return $this->findNewPlayers($content['manager'], $content['code']);
         }
     }
 

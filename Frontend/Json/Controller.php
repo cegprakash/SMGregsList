@@ -148,6 +148,15 @@ class Controller extends HTMLController
             } elseif ($this->getMessage('search') == 'getmanager') {
                 $params = $this->getParams('search');
                 $this->broadcast('retrieveManagerFromName', $params);
+            } elseif ($this->getMessage('search') == 'findplayers') {
+                $params = $this->getParams('search');
+                $players = $this->ask('newMatches', $params);
+                $newplayers = array();
+                foreach ($players as $player) {
+                    $newplayers[] = $player->getId();
+                }
+                $this->broadcast('reply', array('message' => 'newplayers',
+                                                'params' => array('players' => $newplayers)));
             } else {
                 return $this->detectSell();
             }

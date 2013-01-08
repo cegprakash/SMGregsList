@@ -197,4 +197,47 @@ CREATE TABLE savedstats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY
         $ret = new SavedSearches($ret);
         return $ret;
     }
+
+    function findNewPlayers($manager, $code)
+    {
+        if (!is_string($manager) || !is_string($code)) {
+            throw new \Exception('Internal error: both manager and code must be a string in findNewPlayers');
+        }
+        if (!$manager || !$code) {
+            return array();
+        }
+        $test = new Sqlite3\Manager($this->db);
+        $test->name = $manager;
+        $test->retrieve();
+        if ($code != $test->getCode()) {
+            throw new \Exception("Error: Manager code does not match.  If you have forgotten your code, please send a message " .
+                                 "to CelloG inside Striker Manager asking for it");
+        }
+
+        $matches = array();
+        $data = $this->db->query($sql = "SELECT DISTINCT p.id FROM savedsearch s, player p WHERE s.manager='" . $this->db->escapeString($manager) . "'
+                                 AND strftime('%s', p.lastmodified) > strftime('%s', s.lastsearch)");
+        if ($info = $data->fetchArray()) {
+            // we have new players, check to see if any of them match saved searches
+            $players = array($info[0]);
+            while ($info = $data->fetchArray()) {
+                $players[] = $info[0];
+            }
+            // now check each saved search
+            $data = $this->db->query("SELECT id FROM savedsearch WHERE manager='" . $this->db->escapeString($manager) . "'");
+            while ($info = $data->fetchArray()) {
+                $results = $this->executeSearch($info[0]);
+                if (count($results)) {
+                    foreach ($results as $player) {
+                        if (in_array($player->getId(), $players)) {
+                            $matches[] = $player;
+                        }
+                    }
+                }
+            }
+        }
+        // make sure we only return these new results once
+        //$this->db->exec("UPDATE savedsearch SET lastsearch=datetime("now") WHERE manager='" . $this->db->escapeString($manager) . "'");
+        return $matches;
+    }
 }

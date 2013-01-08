@@ -16,11 +16,22 @@ chrome.storage.local.get(["debug_setting_SM","extremedebug_setting_SM"], functio
     if (!codes) {
       codes = {};
     }
+    var getPlayers = function(result) {
+      if (result.error) {
+        if (sm_debug) {
+          alert(result.error.message);
+        } else {
+          console.log(result.error.message);
+        }
+        return;
+      }
+      alert('New Players found in saved searches!');
+    }
     if (!codes[user]) {
       remote("getmanager", user, function(result) {
         if (result.error) {
           if (sm_debug) {
-            self.alert(result.error.message);
+            alert(result.error.message);
           } else {
             console.log(result.error.message);
           }
@@ -30,8 +41,11 @@ chrome.storage.local.get(["debug_setting_SM","extremedebug_setting_SM"], functio
           codes[user] = result.params.code;
           chrome.storage.sync.set({'SMGregsList.codes': codes}, function(result) {
           });
+          remote("findplayers", {'manager' : user, 'code' : result.params.code}, getPlayers);
         }
       });
+    } else {
+      remote("findplayers", {'manager' : user, 'code' : codes[user]}, getPlayers);
     }
   });
 });
