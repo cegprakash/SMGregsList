@@ -49,6 +49,16 @@ if ($context->getManager()) echo $context->getManager()->getName()
  </div>
 </div>
 <div class="control-group">
+ <label class="control-label" for="name">Player Name</label>
+ <div class="controls">
+  <input type="hidden" name="name" id="name" value="<?php
+if ($context->getName()) echo $context->getName()
+?>"/><?php
+if ($context->getName()) echo $context->getName()
+?>
+ </div>
+</div>
+<div class="control-group">
  <label class="control-label" for="age">Age</label>
  <div class="controls">
   <input type="hidden" name="age" id="age" value="<?php
