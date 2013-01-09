@@ -237,7 +237,7 @@ CREATE TABLE savedstats (id NOT NULL, name NOT NULL, value NOT NULL, PRIMARY KEY
             }
         }
         // make sure we only return these new results once
-        //$this->db->exec("UPDATE savedsearch SET lastsearch=datetime("now") WHERE manager='" . $this->db->escapeString($manager) . "'");
+        $this->db->exec("UPDATE savedsearch SET lastsearch=datetime('now') WHERE manager='" . $this->db->escapeString($manager) . "'");
         return $matches;
     }
 }

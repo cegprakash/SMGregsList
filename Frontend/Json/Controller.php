@@ -153,7 +153,8 @@ class Controller extends HTMLController
                 $players = $this->ask('newMatches', $params);
                 $newplayers = array();
                 foreach ($players as $player) {
-                    $newplayers[] = $player->getId();
+                    $newplayers[] = array('id' => $player->getId(), 'name' => $player->getName(), 'age' => $player->getAge(),
+                                          'average' => $player->getAverage(), 'position' => $player->getPosition());
                 }
                 $this->broadcast('reply', array('message' => 'newplayers',
                                                 'params' => array('players' => $newplayers)));
