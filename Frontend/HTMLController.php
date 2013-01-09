@@ -32,6 +32,20 @@ class HTMLController extends Messager
         return true;
     }
 
+    static function serverPrefix()
+    {
+        if (strpos($_SERVER['PHP_SELF'], '/en1/')) {
+            return 'en1';
+        }
+        if (strpos($_SERVER['PHP_SELF'], '/en2/')) {
+            return 'en2';
+        }
+        if (strpos($_SERVER['PHP_SELF'], '/en/')) {
+            return 'en';
+        }
+        return 'en3';
+    }
+
     function listMessages(array $newmessages)
     {
         return parent::listMessages(array_merge($newmessages, array('detectSearch', 'detectSell', 'retrieved', 'managerRetrieved', 'cookieRetrieved',

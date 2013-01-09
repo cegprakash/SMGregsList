@@ -2,7 +2,7 @@
 namespace SMGregsList;
 abstract class Player
 {
-    const PLAYERURL = 'http://en3.strikermanager.com/jugador.php?id_jugador=';
+    const PLAYERURL = '.strikermanager.com/jugador.php?id_jugador=';
     protected
         $average = 0,
         $id = 0,
@@ -47,7 +47,7 @@ abstract class Player
     function getUrl()
     {
         if ($this->id) {
-            return static::PLAYERURL;
+            return 'http://' . Frontend\HTMLController::serverPrefix() . static::PLAYERURL;
         }
     }
 
