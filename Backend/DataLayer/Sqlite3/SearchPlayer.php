@@ -43,11 +43,11 @@ class SearchPlayer extends s implements SearchablePlayer
         return $this->search($this->componentsFromSavedSearch($id), $countonly);
     }
 
-    private $componentsCache = null;
+    private $componentsCache = array();
     function componentsFromSavedSearch($id)
     {
-        if (null !== $this->componentsCache) {
-            return $this->componentsCache;
+        if (isset($this->componentsCache[$id])) {
+            return $this->componentsCache[$id];
         }
         $data = $this->db->query("SELECT * FROM savedsearch WHERE id='" . $this->db->escapeString($id) . "'");
         if (!$data) {
@@ -125,7 +125,7 @@ class SearchPlayer extends s implements SearchablePlayer
         if (count($stats)) {
             $components['stats'] = $stats;
         }
-        $this->componentsCache = $components;
+        $this->componentsCache[$id] = $components;
         return $components;
     }
 
