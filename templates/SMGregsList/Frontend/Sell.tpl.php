@@ -36,7 +36,7 @@ if ($context->getId()) echo $context->getUrl() . $context->getId()
  </div>
 </div>
 <div class="control-group">
- <label class="control-label" for="manager">Your Manager name<br><small>(such as <a href="http://en3.strikermanager.com/usuario.php?id=10460314">CelloG</a>)</small></label>
+ <label class="control-label" for="manager">Your Manager name<br><small>(such as <a href="http://en.strikermanager.com/usuario.php?id=10460314">CelloG</a>)</small></label>
  <div class="controls">
   <input placeholder="Manager name" type="text" class="span5" name="manager" id="manager" value="<?php
 if ($context->getManager()) echo $context->getManager()->getName()

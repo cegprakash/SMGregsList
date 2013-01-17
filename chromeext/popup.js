@@ -10,7 +10,7 @@ chrome.extension.sendMessage([6], function(response) {
        info.skills = player.scrapeskills(xhr.responseText);
       } // ignore all failures
     };
-    xhr.open("GET", "http://en3.strikermanager.com/powerups.php?id_jugador=" + info.id, true);
+    xhr.open("GET", "/powerups.php?id_jugador=" + info.id, true);
     xhr.send();
     
     xhr2 = new XMLHttpRequest();
@@ -24,12 +24,12 @@ chrome.extension.sendMessage([6], function(response) {
               info.forecast = player.scrapeforecast(xhr3.responseXML);
             }
           }
-          xhr3.open("GET", "http://en3.strikermanager.com/jugador_graf.php?id=" + info.id + "&car=media", true);
+          xhr3.open("GET", "/jugador_graf.php?id=" + info.id + "&car=media", true);
           xhr3.send();
         }
       }
     };
-    xhr2.open("GET", "http://en3.strikermanager.com/jugador_entrenamiento.php?id_jugador=" + info.id, true);
+    xhr2.open("GET", "/jugador_entrenamiento.php?id_jugador=" + info.id, true);
     xhr2.send();
   }
 });

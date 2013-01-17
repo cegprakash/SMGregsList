@@ -34,14 +34,21 @@ class HTMLController extends Messager
 
     static function serverPrefix()
     {
+        session_start();
         if (strpos($_SERVER['PHP_SELF'], '/en1/')) {
+            $_SESSION['server'] = 'en1';
             return 'en1';
         }
         if (strpos($_SERVER['PHP_SELF'], '/en2/')) {
+            $_SESSION['server'] = 'en2';
             return 'en2';
         }
         if (strpos($_SERVER['PHP_SELF'], '/en/')) {
+            $_SESSION['server'] = 'en';
             return 'en';
+        }
+        if (isset($_SESSION['server'])) {
+            return $_SESSION['server'];
         }
         return 'en3';
     }
