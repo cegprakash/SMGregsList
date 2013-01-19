@@ -22,6 +22,7 @@ class HTMLController extends Messager
         
         <?php
         });
+        self::serverPrefix();
     }
 
     static function showSell()
