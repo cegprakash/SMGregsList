@@ -8,3 +8,7 @@ chromeext/SMGregsListChrome.komodoproject
 *.komodoproject
 
 data/gregslist.db
+
+config.json
+
+.test.html.swp
