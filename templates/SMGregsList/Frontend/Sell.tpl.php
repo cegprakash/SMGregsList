@@ -50,33 +50,9 @@ if ($context->getManager()) echo $context->getManager()->getName()
   <input placeholder="your code" type="text" name="code" id="code" value="<?php
  if ($context->getCode()) echo $context->getCode()
  ?>"/> <input type="submit" value="Retrieve Player" class="btn btn-primary" name="retrieve"/><br>
- <span class="help-block">Note: You must click the "Retrieve Player" button in order to update or delete a listing<br>
- The update code was given when you added the player</span>
+ <span class="help-block">Note: You must enter an update code in order to update or delete a listing<br>
+ The update code was sent to your account in Striker Manager</span>
  
- </div>
-</div>
-<div class="control-group">
- <label class="control-label" for="name">Player Name</label>
- <div class="controls">
-  <input placeholder="Player's name" type="text" class="input" name="name" id="name" value="<?php
-if ($context->getName()) echo $context->getName()
-?>"/>
- </div>
-</div>
-<div class="control-group">
- <label class="control-label" for="average">Average</label>
- <div class="controls">
-  <input placeholder="Average" type="text" class="input-mini" name="average" id="average" value="<?php
-if ($context->getAverage()) echo $context->getAverage()
-?>"/>
- </div>
-</div>
-<div class="control-group">
- <label class="control-label" for="age">Age</label>
- <div class="controls">
-  <input placeholder="Age" type="text" class="input-mini" name="age" id="age" value="<?php
-if ($context->getAge()) echo $context->getAge()
-?>"/>
  </div>
 </div>
 <div class="control-group">
@@ -96,58 +72,7 @@ if ($context->getProgression()) echo $context->getProgression()
  </div>
 </div>
 <div class="control-group">
- <label class="control-label" for="experience">Experience</label>
  <div class="controls">
-  <input placeholder="Experience" type="text" class="input-mini" name="experience" id="experience" value="<?php
-if ($context->getExperience()) echo $context->getExperience()
-?>"/>
- </div>
-</div>
-<div class="control-group">
- <label class="control-label" for="position">Position</label>
- <div class="controls">
-  <?php echo $savant->render($context, 'SMGregsList/sellpositions.tpl.php') ?>
- </div>
-</div>
-</div>
-</div>
-</div> <!-- basic accordion -->
- <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#stats">
-        Advanced (stats and skills) [Step 2]
-      </a> 
-    </div>
-    <div id="stats" class="accordion-body collapse">
-      <div class="accordion-inner">
-<div class="control-group">
- <label class="control-label" for="stats">Stats</label>
- <div class="controls">
- <span class="span3">
- <?php echo $savant->render($context, 'SMGregsList/stats.tpl.php') ?>
- </span>
- <span class="span8">
- <div class="control-group">
-  <label id="adjust-label" class="control-label" for="skills">Skills</label>
-  <div class="controls" id="adjust-controls">
-  <?php echo $savant->render($context, 'SMGregsList/skills.tpl.php') ?>
-  </div>
- </div>
- </span>
- </div>
-</div>
-</div> <!-- stats tab -->
-</div>
-</div>
-</div> <!-- stats accordion -->
-<div class="alert alert-info">
- <strong>Notice!</strong> If you are updating or deleting a listing, you must retrieve the player info first
- <button type="button" class="close" data-dismiss="alert">x</button>
-</div>
-<div class="control-group">
- <div class="controls">
-<input type="submit" class="btn btn-primary" value="<?php if ($context->getRetrieved()) echo 'Update'; else echo 'Sell' ?>" name="verify" ?>
-<input type="submit" class="btn btn-warning" value="Cancel<?php if ($context->getRetrieved()) echo ' Update' ?>" name="cancel"/>
 <?php
  if ($context->getRetrieved()):
 ?>

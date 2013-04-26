@@ -23,14 +23,10 @@ class SMGrabber extends DataLayer
 
     function checkManager(\SMGregsList\Player $player, \SMGregsList\Manager $manager)
     {
-        if (!$this->exists($player)) {
+        $player = new SMGrabber\Player($this->downloader);
+        if (!$player->exists()) {
             return false;
         }
-        $new = new Sqlite3\SellPlayer($this->db);
-        $new->fromPlayer($player);
-        // get the manager and other data
-        $player = $new;
-        $player->privateRetrieve();
         if ($player->getManager()->getName() == $manager->getName() && $player->getManager()->getCode() == $manager->getCode()) {
             // this player was put up for sale, and then sold.  we must remove it
             $this->remove($player);
@@ -40,25 +36,18 @@ class SMGrabber extends DataLayer
 
     function remove(Player $player)
     {
-        $new = new Sqlite3\SellPlayer($this->db);
-        $new->fromPlayer($player);
-        return $new->remove();
+        // do nothing
     }
 
     function save(WriteablePlayer $player)
     {
-        $new = new Sqlite3\SellPlayer($this->db);
-        $new->fromPlayer($player);
-        return $new->save();
+        // do nothing
     }
 
     function retrieve(Player $player, $private = false)
     {
-        $new = new Sqlite3\Player($this->db);
+        $new = new SMGrabber\Player($this->downloader);
         $new->fromPlayer($player);
-        if ($private) {
-            return $new->privateRetrieve();
-        }
         return $new->retrieve();
     }
 

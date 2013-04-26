@@ -103,8 +103,8 @@ class SMGrabber
         file_get_contents('http://en.strikermanager.com/logout.php', false, $context);
         $this->cookies = array();
         $login = http_build_query(array(
-                'alias' => $this->getLogin(),
-                'pass' => $this->getPassword(),
+                'alias' => $this->login,
+                'pass' => $this->password,
                 'dest' => ''
             ));
         $context = stream_context_create(array('http' => array(
@@ -129,10 +129,6 @@ class SMGrabber
         $fp = fopen('http://en.strikermanager.com/loginweb.php', 'r', false, $context);
         $info = stream_get_meta_data($fp);
         $this->getCookies($info['wrapper_data']);
-        if (Main::DEBUG) {
-            $a = stream_get_contents($fp);
-            //var_export($info['wrapper_data']);
-        }
         fclose($fp);
         $context = stream_context_create(array('http' => array(
             'user_agent' => $this->useragent,
@@ -149,10 +145,6 @@ class SMGrabber
         )));
         $fp = fopen('http://en.strikermanager.com/inicio.php', 'r', false, $context);
         $info = stream_get_meta_data($fp);
-        if (Main::DEBUG) {
-            $a = stream_get_contents($fp);
-            //var_export($info['wrapper_data']);
-        }
         $this->getCookies($info['wrapper_data']);
         // TODO: update the database with new cookie somehow, so others can pull it in too.
         fclose($fp);

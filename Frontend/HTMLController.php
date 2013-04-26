@@ -1,9 +1,11 @@
 <?php
 namespace SMGregsList\Frontend;
-use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsList\SellPlayer, SMGregsList\Manager;
+use SMGregsList\Messager, SMGregsList\SearchPlayer, SMGregsList\Player, SMGregsList\SellPlayer, SMGregsList\Manager,
+    SMGregsList\Backend\DataLayer\SMGrabber;
 class HTMLController extends Messager
 {
     protected $retrieved;
+    protected $remote;
     protected $manager = false;
     protected $code = false;
     protected $state = 'normal';
@@ -23,6 +25,7 @@ class HTMLController extends Messager
         <?php
         });
         self::serverPrefix();
+        $this->remote = new SMGrabber;
     }
 
     static function showSell()
@@ -173,13 +176,16 @@ class HTMLController extends Messager
             $this->broadcast('deletePlayer', $player);
             return;
         }
-        if ($this->getMessage('sell') == 'retrieve' && isset($params['code'])) {
-            $player->code = $params['code'];
-            $this->broadcast('retrieve', $player);
+        if ($this->getMessage('sell') == 'retrieve') {
+            $testplayer = $this->remote->retrieve($player);
+            if (isset($params['code']) && $params['code']) {
+                $player->code = $params['code'];
+                $this->broadcast('retrieve', $player);
+            }
+            $params = $testplayer->stackPOST();
             $this->broadcast('sellDetected', $this->retrieved);
-            return;
-        }
-        if (isset($params['code'])) {
+            $this->broadcast('verify');
+        } elseif (isset($params['code'])) {
             $player->code = $params['code'];
             try {
                 if ($this->ask('exists', $player)) {

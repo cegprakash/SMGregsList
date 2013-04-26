@@ -1,6 +1,6 @@
 <?php
 namespace SMGregsList\Backend\DataLayer\SMGrabber;
-use SMGregsList\Player as p, SMGregsList\DataPlayer, SMGregsList\Backend\DataLayer\SMGrabber, SMGregsList\Manager;
+use SMGregsList\Player as p, SMGregsList\DataPlayer, SMGregsList\SMGrabber, SMGregsList\Manager;
 class Player extends p implements DataPlayer
 {
     protected $downloader;
@@ -16,6 +16,63 @@ class Player extends p implements DataPlayer
         parent::__construct();
     }
 
+    function fromPlayer(p $player)
+    {
+        $this->id = $player->getId();
+        $this->code = $player->getCode();
+        $this->age = $player->getAge();
+        $this->average = $player->getAverage();
+        $this->experience = $player->getExperience();
+        $this->forecast = $player->getForecast();
+        $this->position = $player->getPosition();
+        $this->progression = $player->getProgression();
+        $this->forecast = $player->getForecast();
+        $this->skills = clone $player->getSkills();
+        $this->stats = clone $player->getStats();
+        $this->retrieved = $player->getRetrieved();
+        $this->country = $player->getCountry();
+        $this->name = $player->getName();
+        $this->manager = $player->getManager();
+    }
+
+    function exists()
+    {
+        $this->download();
+        return $this->exists;
+    }
+
+    function retrieve()
+    {
+        $this->download();
+        if (!$this->exists) {
+            throw new \Exception('Unknown user id: ' . $this->id);
+        }
+        return $this;
+    }
+
+    /**
+     * Populate $_POST based on the retrieved values
+     */
+    function stackPOST()
+    {
+        $p = $_POST;
+        $p['id'] = $this->id;
+        $p['name'] = $this->name;
+        $p['age'] = $this->age;
+        $p['average'] = $this->average;
+        $p['experience'] = $this->experience;
+        $p['position'] = $this->position;
+        $p['stats'] = array();
+        $p['skills'] = array();
+        foreach ($this->stats as $name => $value) {
+            $p['stats'][$name] = $value;
+        }
+        foreach ($this->skills as $name => $value) {
+            $p['skills'][$name] = $value;
+        }
+        return $p;
+    }
+
     function download()
     {
         if (!$this->downloaded) {
@@ -24,6 +81,8 @@ class Player extends p implements DataPlayer
             if ($result == 404) {
                 $this->exists = false;
             }
+        } else {
+            return;
         }
         if (!preg_match('/<a href="equipo\.php\?id=(\d+)/', $this->rawdata, $matches)) {
             $this->exists = false;
@@ -78,7 +137,6 @@ class Player extends p implements DataPlayer
         $contArr = array(
             'Morale' => 1,
             'Stamina' => 1,
-            'Versatility' => 1,
             'Fitness' => 1
         );
         $value = function($a) {
@@ -99,8 +157,32 @@ class Player extends p implements DataPlayer
         $this->experience = str_replace(',', '.', $matches[1]);
         preg_match('/<td>([0-9]+) years/', $this->rawdata, $matches);
         $this->age = $matches[1];
-        preg_match('/<td>Total average</td>\s+<td class="numerico">\s+(\d+)<span style="font-size: 0.7em;">[\.,](\d+)</',
+        preg_match('@<td>Total average</td>\s+<td class="numerico">\s+(\d+)<span style="font-size: 0.7em;">[\.,](\d+)<@',
                    $this->rawdata, $matches);
         $this->average = $matches[1] . '.' . $matches[2];
+        $skillshtml = $this->downloader->download('http://en.strikermanager.com/powerups.php?id_jugador=' . $this->id);
+        preg_match_all('@<img style="width: 68px;" src="/img/powerups/logo_([^\.]+).jpg" /></td>\s+' .
+				'<td style="padding: 0; padding-left: 5px;">\s+' .
+					'<div style="width: 90px;">\s+' .
+		    '<div style="font-size: 9px; line-height: 10px; font-weight: normal; height: 20px; overflow: hidden;">[^<]+</div>\s+' .
+		    '<div class="balones"><img src="/img/new/sport_soccer.png" title="(\d+)%@',
+                    $skillshtml, $skills);
+        $skillmap = array(
+            'TIRO_PENALTIS' => 'Penalty expert',
+            'CAMBIO_DE_RITMO' => 'Change of pace',
+            'CORRER_CON_BALON' => 'Running with the ball',
+            'PULMON_DE_ACERO' => 'Steel lung',
+            'ROMPE_REDES' => 'Net-breaker',
+            'PANTERA' => 'Panther save',
+            'JUEGO_AEREO' => 'Aerial play',
+            'ENTRADA_DESLIZANTE' => 'Sliding tackle',
+            'PASE_PRECISO' => 'Precise Pass',
+            'AS_DEL_ESLALOM' => 'Slalom Ace',
+            'MEDIATICO' => 'Celebrity',
+            'MURO_DEFENSIVO' => 'Defensive wall'
+        );
+        foreach ($skills[0] as $i => $unused) {
+            $this->skills->{$skillmap[$skills[1][$i]]} = $skills[2][$i]/20;
+        }
     }
 }
